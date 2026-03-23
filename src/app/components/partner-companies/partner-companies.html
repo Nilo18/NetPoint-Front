@@ -1,0 +1,10 @@
+<section class="trusted">
+  <div class="trusted__inner">
+    <p class="trusted__label">Trusted by leading businesses</p>
+    <div class="trusted__logos">
+      @for (company of companies; track company) {
+        <span class="trusted__logo">{{ company }}</span>
+      }
+    </div>
+  </div>
+</section>

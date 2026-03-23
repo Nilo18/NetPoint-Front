@@ -1,0 +1,100 @@
+.features {
+  background-color: #f4f5f7;
+  padding: 100px 0;
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+  }
+
+  // ── Header ────────────────────────────────────────
+  &__header {
+    text-align: center;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 800;
+    color: #0f0f1a;
+    letter-spacing: -1px;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #666;
+    margin: 0;
+  }
+
+  // ── Grid ──────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+    }
+  }
+
+  // ── Card ──────────────────────────────────────────
+  &__card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+  }
+
+  // ── Icon ──────────────────────────────────────────
+  &__icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background-color: #eeecfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  // ── Card text ─────────────────────────────────────
+  &__card-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f0f1a;
+    margin: 0;
+    letter-spacing: -0.2px;
+  }
+
+  &__card-desc {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #666;
+    margin: 0;
+  }
+}

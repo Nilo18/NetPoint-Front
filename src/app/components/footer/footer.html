@@ -1,1 +1,72 @@
-<p>footer works!</p>
+<footer class="footer">
+  <div class="footer__inner">
+
+    <!-- Top grid -->
+    <div class="footer__grid">
+
+      <!-- Brand column -->
+      <div class="footer__brand">
+        <a class="footer__logo" routerLink="/">
+          <div class="footer__logo-icon">
+            <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 28 L8 8 L14.5 8 L22 22 L22 8 L28.5 8 L28.5 28 L22 28 L14.5 14 L14.5 28 Z" fill="white"/>
+              <circle cx="31.5" cy="27" r="3.5" fill="#5b50f0"/>
+            </svg>
+          </div>
+          <span class="footer__logo-text">NetPoint</span>
+        </a>
+        <p class="footer__tagline">
+          The flexible POS & expense ecosystem for modern businesses.
+        </p>
+      </div>
+
+      <!-- Product column -->
+      <div class="footer__col">
+        <h4 class="footer__col-title">Product</h4>
+        <nav class="footer__nav">
+          <a routerLink="/product" class="footer__link">Features</a>
+          <a routerLink="/pricing" class="footer__link">Pricing</a>
+          <a routerLink="/demo" class="footer__link">Demo</a>
+        </nav>
+      </div>
+
+      <!-- Security column -->
+      <div class="footer__col">
+        <h4 class="footer__col-title">Security</h4>
+        <nav class="footer__nav">
+          <a routerLink="/privacy" class="footer__link">Privacy Policy</a>
+          <a routerLink="/terms" class="footer__link">Terms of Service</a>
+          <a routerLink="/compliance" class="footer__link">Compliance</a>
+        </nav>
+      </div>
+
+      <!-- Newsletter column -->
+      <div class="footer__col">
+        <h4 class="footer__col-title">Newsletter</h4>
+        <p class="footer__newsletter-desc">
+          Get updates on new features and best practices.
+        </p>
+        <div class="footer__newsletter">
+          <input
+            class="footer__input"
+            type="email"
+            placeholder="your@email.com"
+            [(ngModel)]="email"
+            (keyup.enter)="subscribe()"
+          />
+          <button class="footer__subscribe" (click)="subscribe()">Subscribe</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="footer__divider"></div>
+
+    <!-- Bottom bar -->
+    <div class="footer__bottom">
+      <span class="footer__copy">© {{ currentYear }} NetPoint. All rights reserved.</span>
+    </div>
+
+  </div>
+</footer>

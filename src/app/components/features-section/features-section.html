@@ -1,1 +1,53 @@
-<p>features-section works!</p>
+<section class="features">
+  <div class="features__inner">
+
+    <!-- Heading -->
+    <div class="features__header">
+      <h2 class="features__title">Built for Modern Commerce</h2>
+      <p class="features__subtitle">
+        Everything you need to run a successful retail business, all in one platform.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="features__grid">
+
+      @for (feature of features; track feature.icon) {
+      <div class="features__card">
+        <div class="features__icon-wrap">
+
+          <!-- Dynamic Schema: layers icon -->
+          @if (feature.icon === 'schema') {
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 7L12 12L22 7" stroke="#5b50f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="#5b50f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="#5b50f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+              <path d="M12 2L22 7L12 12L2 7L12 2Z" stroke="#5b50f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          }
+
+          <!-- Profit Guard: trending up icon -->
+          @if (feature.icon === 'profit') {
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="3,17 9,11 13,15 21,7" stroke="#5b50f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="15,7 21,7 21,13" stroke="#5b50f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          }
+
+          <!-- Cashier-First UI: lightning bolt -->
+          @if (feature.icon === 'cashier') {
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="13,2 3,14 12,14 11,22 21,10 12,10" stroke="#5b50f0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          }
+
+        </div>
+
+        <h3 class="features__card-title">{{ feature.title }}</h3>
+        <p class="features__card-desc">{{ feature.description }}</p>
+      </div>
+      }
+    </div>
+
+  </div>
+</section>
