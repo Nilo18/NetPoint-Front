@@ -16,3 +16,10 @@ html, body {
 .cont {
     @include FlexContainer;
 }
+
+.error {
+    margin-top: 5px;
+    color: red;
+    line-height: 0;
+    font-size: 11px;
+}

@@ -18,54 +18,72 @@
                         <p>Step 2 of 2: Business Setup</p>
                     }
                 </div>
-                <form class="signup__body" [formGroup]="signupForm">
-                    @if (!showNextStep) {
+                @if (!showNextStep) {
+                    <form class="signup__body" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
                         <div class="signup__email">
                             <label for="email">Business Email</label>
                             <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
+                            <p class="error">{{ getError('email', signupForm) }}</p>
                         </div>
                         <div class="signup__password">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" placeholder="Minimum 8 characters" 
                             formControlName="password">
+                            <p class="error">{{ getError('password', signupForm) }}</p>
                         </div>
                         <div class="signup__confirm">
                             <label for="confirm_password">Confirm Password</label>
                             <input type="password" class="form-control" placeholder="Re-enter password" 
                             formControlName="confirm_password">
+                            <p class="error">{{ getError('confirm_password', signupForm) }}</p>
                         </div>
+                        <div class="signup__buttons">
+                            <!-- @if (showNextStep) {
+                                <button class="signup__prevbtn btn" (click)="setShowNextStep(false)">Back</button>
+                            } -->
+                            <button class="signup__submitbtn btn btn-primary" type="submit">
+                                Continue
+                            </button>
+                        </div>
+                    </form>
                     } @else {
-                        <div class="signup__name">
-                            <label for="name">Business Name</label>
-                            <input type="text" class="form-control" placeholder="Your Store Name" formControlName="name">
-                        </div>
-                        <div class="signup__industry">
-                            <label for="industry">Industry</label>
-                            <select type="text" class="form-select" placeholder="Select your industry" 
-                            formControlName="industry">
-                                <option value="" disabled selected hidden class="signup__hidden-select">
-                                    Select your industry
-                                </option>
-                                <option value="Retail">Retail</option>
-                                <option value="Restaurant">Restaurant & Food Service</option>
-                                <option value="Grocery">Grocery & Supermarket</option>
-                                <option value="Fashion">Fashion & Apparel</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Pharmacy">Pharmacy & Healthcare</option>
-                                <option value="Salon">Salon & Beauty</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
+                        <form class="signup__body" [formGroup]="signupFormStageTwo" (ngSubmit)="onFinalSubmit()">
+                            <div class="signup__name">
+                                <label for="name">Business Name</label>
+                                <input type="text" class="form-control" placeholder="Your Store Name" formControlName="name">
+                                <p class="error">{{ getError('name', signupFormStageTwo) }}</p>
+                            </div>
+                            <div class="signup__industry">
+                                <label for="industry">Industry</label>
+                                <select type="text" class="form-select" placeholder="Select your industry" 
+                                formControlName="industry">
+                                    <option value="" disabled selected hidden class="signup__hidden-select">
+                                        Select your industry
+                                    </option>
+                                    <option value="Retail">Retail</option>
+                                    <option value="Restaurant">Restaurant & Food Service</option>
+                                    <option value="Grocery">Grocery & Supermarket</option>
+                                    <option value="Fashion">Fashion & Apparel</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Pharmacy">Pharmacy & Healthcare</option>
+                                    <option value="Salon">Salon & Beauty</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <p class="error">{{ getError('industry', signupFormStageTwo) }}</p>
+                                <div class="signup__buttons">
+                                    <!-- @if (showNextStep) { -->
+                                    <button class="signup__prevbtn btn" (click)="setShowNextStep(false)"
+                                    type="button">
+                                        Back
+                                    </button>
+                                    <!-- } -->
+                                    <button class="signup__submitbtn btn btn-primary" type="submit">
+                                        Create Account
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     }
-                    <div class="signup__buttons">
-                        @if (showNextStep) {
-                            <button class="signup__prevbtn btn" (click)="setShowNextStep(false)">Back</button>
-                        }
-                        <button class="signup__submitbtn btn btn-primary" (click)="setShowNextStep(true)">
-                            {{ !showNextStep ? 'Continue' : 'Create Account' }}
-                        </button>
-                    </div>
-                </form>
             </div>
 
             <div class="signup__bannerimg">
