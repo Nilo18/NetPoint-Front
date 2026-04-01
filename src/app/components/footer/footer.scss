@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .footer {
   background-color: #0f1117;
   padding: 64px 0 0;
@@ -45,9 +47,7 @@
     border-radius: 10px;
     background-color: #1a1a2e;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include FlexContainer;
     flex-shrink: 0;
   }
 

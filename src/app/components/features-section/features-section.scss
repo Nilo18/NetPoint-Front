@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .features {
   background-color: #f4f5f7;
   padding: 100px 0;
@@ -74,9 +76,7 @@
     height: 52px;
     border-radius: 14px;
     background-color: #eeecfc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include FlexContainer;
     flex-shrink: 0;
   }
 

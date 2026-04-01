@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .trusted {
   background: #ffffff;
   padding: 56px 0;
@@ -23,9 +25,7 @@
   }
 
   &__logos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include FlexContainer;
     flex-wrap: wrap;
     gap: 56px;
   }

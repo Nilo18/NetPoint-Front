@@ -1,3 +1,5 @@
+@use './styles/mixins.scss' as *;
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,7 +14,5 @@ html, body {
 }
 
 .cont {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include FlexContainer;
 }

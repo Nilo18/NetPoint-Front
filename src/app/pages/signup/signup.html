@@ -12,23 +12,60 @@
                         <img src="/assets/netpoint-logo.png" alt="Logo">
                     </div>
                     <h4>Create Your Account</h4>
-                    <p>Step 1 of 2: Account Credentials</p>
+                    @if (!showNextStep) {
+                       <p>Step 1 of 2: Account Credentials</p>
+                    } @else {
+                        <p>Step 2 of 2: Business Setup</p>
+                    }
                 </div>
-                <div class="signup__body">
-                    <div class="signup__email">
-                        <label for="email">Business Email</label>
-                        <input type="email" class="form-control" placeholder="you@example.com">
+                <form class="signup__body" [formGroup]="signupForm">
+                    @if (!showNextStep) {
+                        <div class="signup__email">
+                            <label for="email">Business Email</label>
+                            <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
+                        </div>
+                        <div class="signup__password">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" placeholder="Minimum 8 characters" 
+                            formControlName="password">
+                        </div>
+                        <div class="signup__confirm">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="Re-enter password" 
+                            formControlName="confirm_password">
+                        </div>
+                    } @else {
+                        <div class="signup__name">
+                            <label for="name">Business Name</label>
+                            <input type="text" class="form-control" placeholder="Your Store Name" formControlName="name">
+                        </div>
+                        <div class="signup__industry">
+                            <label for="industry">Industry</label>
+                            <select type="text" class="form-select" placeholder="Select your industry" 
+                            formControlName="industry">
+                                <option value="" disabled selected hidden class="signup__hidden-select">
+                                    Select your industry
+                                </option>
+                                <option value="Retail">Retail</option>
+                                <option value="Restaurant">Restaurant & Food Service</option>
+                                <option value="Grocery">Grocery & Supermarket</option>
+                                <option value="Fashion">Fashion & Apparel</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Pharmacy">Pharmacy & Healthcare</option>
+                                <option value="Salon">Salon & Beauty</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    }
+                    <div class="signup__buttons">
+                        @if (showNextStep) {
+                            <button class="signup__prevbtn btn" (click)="setShowNextStep(false)">Back</button>
+                        }
+                        <button class="signup__submitbtn btn btn-primary" (click)="setShowNextStep(true)">
+                            {{ !showNextStep ? 'Continue' : 'Create Account' }}
+                        </button>
                     </div>
-                    <div class="signup__password">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" placeholder="Minimum 8 characters">
-                    </div>
-                    <div class="signup__confirm">
-                        <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" placeholder="Re-enter password">
-                    </div>
-                    <button class="signup__submitbtn btn">Continue</button>
-                </div>
+                </form>
             </div>
 
             <div class="signup__bannerimg">
