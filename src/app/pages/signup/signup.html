@@ -77,11 +77,22 @@
                                         Back
                                     </button>
                                     <!-- } -->
-                                    <button class="signup__submitbtn btn btn-primary" type="submit">
+                                    <button class="signup__submitbtn btn btn-primary" type="submit" 
+                                    [disabled]="requestSent() && !gotBackendError()"
+                                    [class.disabledBtn]="requestSent() && !gotBackendError()">
                                         Create Account
                                     </button>
                                 </div>
                             </div>
+                            @if (requestSent() && !gotBackendError()) {
+                                <p class="loading">Processing...</p>
+                            } 
+                            
+                            @if (!requestSent() && gotBackendError()) {
+                                <p class="error" style="word-break: break-all; line-height: normal;">
+                                    {{ gotBackendError() ? backendErrorMsg() : '' }}
+                                </p>
+                            }
                         </form>
                     }
             </div>

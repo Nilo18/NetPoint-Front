@@ -1,6 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormValidatorService } from '../../services/form-validator-service';
+import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-signup',
@@ -12,8 +15,14 @@ export class Signup {
   signupForm!: FormGroup
   signupFormStageTwo!: FormGroup
   showNextStep: boolean = false
+  gotBackendError = signal(false)
+  requestSent = signal(false)
+  backendErrorMsg = signal('')
   private formValidator = inject(FormValidatorService)
   private fb = inject(FormBuilder) 
+  private authService = inject(AuthService)
+  private router = inject(Router)
+  private cdr = inject(ChangeDetectorRef)
 
   ngOnInit() {
     this.signupForm = this.fb.group({
@@ -62,7 +71,7 @@ export class Signup {
     // }
   }
 
-  onFinalSubmit() {
+  async onFinalSubmit() {
     if (this.signupFormStageTwo.invalid) {
       this.signupFormStageTwo.markAllAsTouched()
       console.log('The form is invalid.')
@@ -70,7 +79,40 @@ export class Signup {
     }
 
     if (this.showNextStep) {
-      console.log(this.signupForm.value)
+      this.requestSent.set(true)
+      this.gotBackendError.set(false)
+      const { confirm_password, ...payload } = this.signupForm.value
+      const finalFormValue = { ...payload, ...this.signupFormStageTwo.value }
+      console.log(finalFormValue)
+      try {
+        await this.authService.signup(finalFormValue)
+        this.router.navigate(['/admin'])
+      } catch (error: any) {
+        console.log(error)
+        console.log(error.error)
+        console.log('catch block reached')
+        console.log('error status:', error.status)
+        this.requestSent.set(false)
+        this.gotBackendError.set(true)
+        switch (error.status) {
+          case 400:
+            this.backendErrorMsg.set('Please make sure all fields are filled in correctly.')
+            break;
+          case 409:
+            this.backendErrorMsg.set('An account with this email already exists.')
+            break;
+          case 500:
+            this.backendErrorMsg.set('Something went wrong on our end. Please try again later.')
+            break;
+          default:
+            this.backendErrorMsg.set('Something went wrong. Please try again.')
+        }
+        // this.cdr.detectChanges()
+        console.log('requestSent:', this.requestSent)
+        console.log('gotBackendError:', this.gotBackendError)
+        console.log('backendErrorMsg:', this.backendErrorMsg)
+        console.log(this.backendErrorMsg)
+      }      
     }
   }
 }

@@ -1,6 +1,11 @@
 @use '../../../styles/variables.scss';
 @use '../../../styles/mixins.scss';
 
+.disabledBtn {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
 .signup {
     @include mixins.FlexContainer;
     height: 100vh;
