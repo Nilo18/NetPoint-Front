@@ -20,8 +20,9 @@ export class AuthService {
 
   async signup(value: SignupData) {
     try {
-      const res = await firstValueFrom(this.http.post(`${this.baseUrl}/auth/signup`, value))
+      const res = await firstValueFrom(this.http.post<any>(`${this.baseUrl}/auth/signup`, value))
       console.log(res)
+      return res.access_token
     } catch (error) {
       console.log('Failed to signup: ', error)
       throw error

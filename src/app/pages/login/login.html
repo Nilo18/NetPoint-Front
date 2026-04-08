@@ -1,1 +1,133 @@
-<p>login works!</p>
+<section>
+    <!-- <div class="cont"> -->
+        <div class="login">
+            <div class="login__content">
+                <div class="login__header">
+                    <div class="login__icon">
+                        <!-- <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 28 L8 8 L14.5 8 L22 22 L22 8 L28.5 8 L28.5 28 L22 28 L14.5 14 L14.5 28 Z"
+                                fill="white"/>
+                        <circle cx="31.5" cy="27" r="3.5" fill="#5b50f0"/>
+                        </svg> -->
+                        <img src="/assets/netpoint-logo.png" alt="Logo">
+                    </div>
+                    <h4>Log In To Your Business Account</h4>
+                    @if (!checkboxValues.cashier()) {
+                        @if (!showNextStep()) {
+                           <p>Step 1 of 2: Personal Credentials</p>
+                        } @else {
+                            <p>Step 2 of 2: Verification</p>
+                        }   
+                    }
+                </div>
+                @if (checkboxValues.cashier()) {
+                    <app-cashier-login-form></app-cashier-login-form>
+                } @else {
+                    @if (!showNextStep()) {
+                        <form class="form__body" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                            <div class="form__field-container">
+                                <label for="email">Business Email</label>
+                                <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
+                                <p class="error">{{ getError('email', loginForm) }}</p>
+                            </div>
+                            <div class="form__field-container">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" placeholder="Minimum 8 characters" 
+                                formControlName="password">
+                                <p class="error">{{ getError('password', loginForm) }}</p>
+                            </div>
+                            <div class="form__buttons">
+                                @if (showNextStep()) {
+                                    <button class="form__prevbtn btn" (click)="setShowNextStep(false)">Back</button>
+                                }
+                                <button class="form__submitbtn btn btn-primary" type="submit">
+                                    Continue
+                                </button>
+                            </div>
+                        </form>
+                    } @else { 
+                        <form class="form__body" [formGroup]="loginFormStageTwo" (ngSubmit)="onFinalSubmit()">
+                            <div class="form__field-container">
+                                <label for="owner_name">Your Name</label>
+                                <input type="text" class="form-control" placeholder="Your Name">
+                                <p class="error">{{ getError('owner_name', loginFormStageTwo) }}</p>
+                            </div>
+                            <div class="form__field-container">
+                                <label for="owner_email">Your Email</label>
+                                <input type="email" class="form-control" placeholder="you@example.com" 
+                                >
+                                <p class="error">{{ getError('owner_email', loginFormStageTwo) }}</p>
+                            </div>
+                            <div class="form__field-container">
+                                <label for="owner_password">Your Personal Account Password</label>
+                                <input type="password" class="form-control"
+                                placeholder="Minimum 8 characters"
+                                >
+                                <p class="error">{{ getError('owner_password', loginFormStageTwo) }}</p>
+                            </div>
+                            <div class="form__field-container">
+                                <label for="phone_number">Your Phone Number</label>
+                                <input type="tel" class="form-control"
+                                
+                                placeholder="+1 555 555 5555" 
+                                autocomplete="tel" >
+                                <p class="error">{{ getError('phone_number', loginFormStageTwo) }}</p>
+                            </div>
+                            <div class="form__buttons">
+                                <!-- @if (showNextStep) { -->
+                                <button class="login__prevbtn btn" (click)="setShowNextStep(false)"
+                                type="button">
+                                    Back
+                                </button>
+                                <!-- } -->
+                                <button class="form__submitbtn btn btn-primary" type="submit" 
+                                [disabled]="requestSent() && !gotBackendError()"
+                                [class.disabledBtn]="requestSent() && !gotBackendError()">
+                                    Create Account
+                                </button>
+                            </div>
+                            @if (requestSent() && !gotBackendError()) {
+                                <p class="loading">Processing...</p>
+                            } 
+                            
+                            @if (!requestSent() && gotBackendError()) {
+                                <p class="error" style="word-break: break-all; line-height: normal;">
+                                    {{ gotBackendError() ? backendErrorMsg() : '' }}
+                                </p>
+                            }
+                        </form>
+                    }
+                }
+                <div class="login__options">
+                    <div class="login__option" (click)="setCheckboxValue('owner')">
+                        <input type="checkbox" class="login__option--checkbox"
+                        [(ngModel)]="checkboxValues.owner"
+                        [checked]="checkboxValues.owner()"
+                        (click)="setCheckboxValue('owner')">
+                        <p class="login__option--heading">Owner</p>
+                        <p class="login__option--paragraph">Full access to dashboard & settings</p>
+                    </div>
+                    <div class="login__option" (click)="setCheckboxValue('admin')">
+                        <input type="checkbox" 
+                        [(ngModel)]="checkboxValues.admin"
+                        [checked]="checkboxValues.admin()"
+                        (click)="setCheckboxValue('adminr')">
+                        <p class="login__option--heading">Admin</p>
+                        <p class="login__option--paragraph">Limited access to dashboard & settings</p>
+                    </div>
+                    <div class="login__option" (click)="setCheckboxValue('cashier')">
+                        <input type="checkbox"
+                        [(ngModel)]="checkboxValues.cashier"
+                        [checked]="checkboxValues.cashier()"
+                        (click)="setCheckboxValue('cashier')">
+                        <p class="login__option--heading">Cashier</p>
+                        <p class="login__option--paragraph">POS terminal access only</p>
+                    </div>
+                </div>
+            </div>
+            <div class="login__bannerimg">
+                <app-auth-banner></app-auth-banner>
+            </div> 
+        </div>
+    <!-- </div> -->
+</section>

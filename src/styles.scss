@@ -1,4 +1,5 @@
 @use './styles/mixins.scss' as *;
+@use './styles/variables.scss' as variables; 
 
 * {
     box-sizing: border-box;
@@ -29,4 +30,48 @@ html, body {
     // color: red;
     line-height: 0;
     font-size: 11px;
+}
+
+.form__body {
+    @include FlexContainerColumn;
+    width: 100%;
+    // height: 67.09%;
+    gap: 0.5rem;
+
+    input, select {
+        height: 36px;
+        background-color: #f3f3f5;
+    }
+}
+
+.form__field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.form__buttons {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.form__submitbtn {
+    width: 100%;
+    background-color: variables.$primary-color;
+    color: white;
+}
+
+.form__submitbtn:hover {
+    background-color: variables.$primary-color-hover;
+}
+
+.form__prevbtn {
+    width: 100%;
+    border: 1px solid #0000001a;
+}
+
+.form__prevbtn:hover {
+    background-color: #E8E9EB
 }

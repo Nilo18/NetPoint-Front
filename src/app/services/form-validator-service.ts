@@ -33,13 +33,20 @@ export class FormValidatorService {
       // field.charAt(0)
       return `${label} is required.`
     }
-    if (control.hasError('email')) return 'Invalid email address.'
+    if (control.hasError('email')) {
+      console.log("returning 'Invalid email address.'")
+      return 'Invalid email address.'
+    }
     if (control.hasError('minlength')) {
       const min = control.getError('minlength').requiredLength
       console.log(control.getError('minlength'))
       console.log('value of min is: ', min)
       return `${label} must be at least ${min} characters long`
     }
+
+    if (control.hasError('pattern')) return 'Pattern mismatch'
+
+    if (field === 'phome_number' && control.hasError('pattern')) return 'Please enter a valid phone number'
 
     if (field === 'confirm_password' && form.hasError('passwordMismatch')) {
       return 'Passwords do not match';
