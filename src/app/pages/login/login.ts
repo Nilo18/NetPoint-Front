@@ -5,10 +5,17 @@ import { Router } from '@angular/router';
 import { FormValidatorService } from '../../services/form-validator-service';
 import { AuthBanner } from '../../components/auth-banner/auth-banner';
 import { CashierLoginForm } from '../../components/cashier-login-form/cashier-login-form';
+import { AdminLoginFirstStageForm } from '../../components/admin-login-first-stage-form/admin-login-first-stage-form';
+import { AdminLoginSecondStageForm } from '../../components/admin-login-second-stage-form/admin-login-second-stage-form';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, AuthBanner, FormsModule, CashierLoginForm],
+  imports: [
+    ReactiveFormsModule, 
+    AuthBanner, FormsModule, 
+    CashierLoginForm, AdminLoginFirstStageForm,
+    AdminLoginSecondStageForm
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -23,23 +30,7 @@ export class Login {
   private fb = inject(FormBuilder) 
   private authService = inject(AuthService)
   private router = inject(Router)
-  bannerFeatures: any = [
-  {
-    id: 1,
-    heading: 'Real-time Analytics',
-    paragraph: 'Track sales, expenses, and profits in real-time with comprehensive dashboards.'
-  },
-  {
-    id: 2,
-    heading: 'Customizable Schema',
-    paragraph: 'Build custom product attributes tailored to your unique business needs.'
-  },
-  {
-    id: 3,
-    heading: 'Role-Based Access',
-    paragraph: 'Secure cashier and admin roles with optimized interfaces for each user type.'
-  },
-]
+  
   checkboxValues = {
     owner: signal(true),
     admin: signal(false),
@@ -47,7 +38,6 @@ export class Login {
   }
 
   ngOnInit() {
-    console.log(this.bannerFeatures)
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -55,7 +45,7 @@ export class Login {
     })
 
     this.loginFormStageTwo = this.fb.group({
-
+      otpCode: ['', [Validators.required]]
     })
     // console.log(this.email)
   }
