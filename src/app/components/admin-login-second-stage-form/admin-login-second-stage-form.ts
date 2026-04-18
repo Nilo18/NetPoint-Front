@@ -1,8 +1,9 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { FormValidatorService } from '../../services/form-validator-service';
+import { LoginStateManagementService } from '../../services/login-state-management-service';
 
 @Component({
   selector: 'app-admin-login-second-stage-form',
@@ -12,14 +13,11 @@ import { FormValidatorService } from '../../services/form-validator-service';
 })
 export class AdminLoginSecondStageForm {
   loginFormStageTwo!: FormGroup
-  showNextStep: WritableSignal<boolean> = signal(false)
-  gotBackendError = signal(false)
-  requestSent = signal(false)
-  backendErrorMsg = signal('')
   private fb = inject(FormBuilder)
   private authService = inject(AuthService)
   private router = inject(Router)
   private formValidator = inject(FormValidatorService)
+  public loginStateService = inject(LoginStateManagementService)
 
   ngOnInit() {
     this.loginFormStageTwo = this.fb.group({
@@ -28,7 +26,7 @@ export class AdminLoginSecondStageForm {
   }
 
   setShowNextStep(val: boolean) {
-    this.showNextStep.set(val)
+    this.loginStateService.setShowLoginNextStep(val)
     console.log('Set showNextStep to: ', val)
   }
 
@@ -39,9 +37,9 @@ export class AdminLoginSecondStageForm {
       return
     }
 
-    if (this.showNextStep()) {
-      this.requestSent.set(true)
-      this.gotBackendError.set(false)
+    if (this.loginStateService.showLoginNextStep()) {
+      this.loginStateService.setRequestSent(true)
+      this.loginStateService.setGotBackendLoginError(false)
       // const { confirm_password, ...payload } = this.loginForm.value
       // const finalFormValue = { ...payload, ...this.loginFormStageTwo.value }
       // console.log(finalFormValue)
@@ -55,27 +53,27 @@ export class AdminLoginSecondStageForm {
         console.log(error.error)
         console.log('catch block reached')
         console.log('error status:', error.status)
-        this.requestSent.set(false)
-        this.gotBackendError.set(true)
+        this.loginStateService.setRequestSent(false)
+        this.loginStateService.setGotBackendLoginError(true)
         switch (error.status) {
           case 400:
-            this.backendErrorMsg.set('Please make sure all fields are filled in correctly.')
+            this.loginStateService.setBackendLoginErrorMsg('Please make sure all fields are filled in correctly.')
             break;
           case 409:
-            this.backendErrorMsg.set('An account with this email already exists.')
+            this.loginStateService.setBackendLoginErrorMsg('An account with this email already exists.')
             break;
           case 500:
-            this.backendErrorMsg.set('Something went wrong on our end. Please try again later.')
+            this.loginStateService.setBackendLoginErrorMsg('Something went wrong on our end. Please try again later.')
             break;
           default:
-            this.backendErrorMsg.set('Something went wrong. Please try again.')
+            this.loginStateService.setBackendLoginErrorMsg('Something went wrong. Please try again.')
         }
         // this.cdr.detectChanges()
-        console.log('requestSent:', this.requestSent)
-        console.log('gotBackendError:', this.gotBackendError)
-        console.log('backendErrorMsg:', this.backendErrorMsg)
-        console.log(this.backendErrorMsg)
-      }      
+        console.log('requestSent:', this.loginStateService.requestSent())
+        console.log('gotBackendError:', this.loginStateService.gotBackendLoginError())
+        console.log('backendErrorMsg:', this.loginStateService.backendLoginErrorMsg())
+        console.log(this.loginStateService.backendLoginErrorMsg())
+      }
     }
   }
 

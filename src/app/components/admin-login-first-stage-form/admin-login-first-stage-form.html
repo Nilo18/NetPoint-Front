@@ -11,7 +11,7 @@
         <p class="error">{{ getError('password', loginForm) }}</p>
     </div>
     <div class="form__buttons">
-        @if (showNextStep()) {
+        @if (loginStateService.showLoginNextStep()) {
             <button class="form__prevbtn btn" (click)="setShowNextStep(false)">Back</button>
         }
         <button class="form__submitbtn btn btn-primary" type="submit">

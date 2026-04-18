@@ -17,7 +17,7 @@
             @if (checkboxValues.cashier()) {
                 <app-cashier-login-form></app-cashier-login-form>
             } @else {
-                @if (!showNextStep()) {
+                @if (!loginStateService.showLoginNextStep()) {
                     <app-admin-login-first-stage-form></app-admin-login-first-stage-form>
                 } @else {
                     <app-admin-login-second-stage-form></app-admin-login-second-stage-form>

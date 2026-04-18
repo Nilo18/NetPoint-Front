@@ -1,10 +1,10 @@
 <form class="form__body" [formGroup]="loginFormStageTwo" (ngSubmit)="onFinalSubmit()">
     <div class="form__field-container">
-        <label for="owner_name">Your Name</label>
-        <input type="text" class="form-control" placeholder="Your Name">
+        <label for="owner_name">Verificaton Code</label>
+        <input type="text" class="form-control" placeholder="Enter the code you received">
         <p class="error">{{ getError('owner_name', loginFormStageTwo) }}</p>
     </div>
-    <div class="form__field-container">
+    <!-- <div class="form__field-container">
         <label for="owner_email">Your Email</label>
         <input type="email" class="form-control" placeholder="you@example.com" 
         >
@@ -24,27 +24,27 @@
         placeholder="+1 555 555 5555" 
         autocomplete="tel" >
         <p class="error">{{ getError('phone_number', loginFormStageTwo) }}</p>
-    </div>
+    </div> -->
     <div class="form__buttons">
         <!-- @if (showNextStep) { -->
-        <button class="login__prevbtn btn" (click)="setShowNextStep(false)"
+        <button class="form__prevbtn btn" (click)="setShowNextStep(false)"
         type="button">
             Back
         </button>
         <!-- } -->
         <button class="form__submitbtn btn btn-primary" type="submit" 
-        [disabled]="requestSent() && !gotBackendError()"
-        [class.disabledBtn]="requestSent() && !gotBackendError()">
-            Create Account
+        [disabled]="loginStateService.requestSent() && !loginStateService.gotBackendLoginError()"
+        [class.disabledBtn]="loginStateService.requestSent() && !loginStateService.gotBackendLoginError()">
+            Login
         </button>
     </div>
-    @if (requestSent() && !gotBackendError()) {
+    @if (loginStateService.requestSent() && !loginStateService.gotBackendLoginError()) {
         <p class="loading">Processing...</p>
     } 
     
-    @if (!requestSent() && gotBackendError()) {
+    @if (!loginStateService.requestSent() && loginStateService.gotBackendLoginError()) {
         <p class="error" style="word-break: break-all; line-height: normal;">
-            {{ gotBackendError() ? backendErrorMsg() : '' }}
+            {{ loginStateService.gotBackendLoginError() ? loginStateService.backendLoginErrorMsg() : '' }}
         </p>
     }
 </form>
