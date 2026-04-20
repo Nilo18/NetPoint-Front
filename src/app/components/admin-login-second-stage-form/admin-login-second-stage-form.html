@@ -1,30 +1,9 @@
 <form class="form__body" [formGroup]="loginFormStageTwo" (ngSubmit)="onFinalSubmit()">
     <div class="form__field-container">
         <label for="owner_name">Verificaton Code</label>
-        <input type="text" class="form-control" placeholder="Enter the code you received">
+        <input type="text" class="form-control" placeholder="Enter the code you received" formControlName="otpCode">
         <p class="error">{{ getError('owner_name', loginFormStageTwo) }}</p>
     </div>
-    <!-- <div class="form__field-container">
-        <label for="owner_email">Your Email</label>
-        <input type="email" class="form-control" placeholder="you@example.com" 
-        >
-        <p class="error">{{ getError('owner_email', loginFormStageTwo) }}</p>
-    </div>
-    <div class="form__field-container">
-        <label for="owner_password">Your Personal Account Password</label>
-        <input type="password" class="form-control"
-        placeholder="Minimum 8 characters"
-        >
-        <p class="error">{{ getError('owner_password', loginFormStageTwo) }}</p>
-    </div>
-    <div class="form__field-container">
-        <label for="phone_number">Your Phone Number</label>
-        <input type="tel" class="form-control"
-        
-        placeholder="+1 555 555 5555" 
-        autocomplete="tel" >
-        <p class="error">{{ getError('phone_number', loginFormStageTwo) }}</p>
-    </div> -->
     <div class="form__buttons">
         <!-- @if (showNextStep) { -->
         <button class="form__prevbtn btn" (click)="setShowNextStep(false)"

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './admin-dashboard.scss',
 })
 export class AdminDashboard {
+  private router = inject(Router)
 
+  logout() {
+    localStorage.removeItem('net_token')
+    this.router.navigate(['/'])
+  }
 }

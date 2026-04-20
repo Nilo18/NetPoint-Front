@@ -16,6 +16,8 @@ export class LoginStateManagementService {
   readonly role = this._role.asReadonly()
   private _loginStageOneData = signal<any | null>(null)
   readonly loginStageOneData = this._loginStageOneData.asReadonly()
+  private _tempToken = signal<any | null>(null)
+  readonly tempToken = this._tempToken.asReadonly()
 
   setShowLoginNextStep(val: boolean) {
     this._showLoginNextStep.set(val)
@@ -45,5 +47,10 @@ export class LoginStateManagementService {
   setStageOneData(val: any) {
     this._loginStageOneData.set(val)
     console.log('Set stageOneData to: ', val)
+  }
+
+  setTempToken(val: any) {
+    this._tempToken.set(val)
+    console.log('Set tempToken to: ', val)
   }
 }

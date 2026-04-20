@@ -21,7 +21,8 @@ export class AdminLoginSecondStageForm {
 
   ngOnInit() {
     this.loginFormStageTwo = this.fb.group({
-      otpCode: ['', [Validators.required]]
+      otpCode: ['', [Validators.required]],
+      tempToken: [this.loginStateService.tempToken() || '', [Validators.required]]
     })
   }
 
@@ -33,7 +34,7 @@ export class AdminLoginSecondStageForm {
   async onFinalSubmit() {
     if (this.loginFormStageTwo.invalid) {
       this.loginFormStageTwo.markAllAsTouched()
-      console.log('The form is invalid.')
+      console.log('The form is invalid: ', this.loginFormStageTwo.value)
       return
     }
 
@@ -43,11 +44,12 @@ export class AdminLoginSecondStageForm {
       // const { confirm_password, ...payload } = this.loginForm.value
       // const finalFormValue = { ...payload, ...this.loginFormStageTwo.value }
       // console.log(finalFormValue)
-      // return
+      // return 
       try {
-        // const res = await this.authService.signup(finalFormValue)
-        // localStorage.setItem('net_token', res)
-        // this.router.navigate(['/admin'])
+        console.log(this.loginFormStageTwo.value)
+        const res = await this.authService.login2fa(this.loginFormStageTwo.value)
+        localStorage.setItem('net_token', res)
+        this.router.navigate(['/admin'])
       } catch (error: any) {
         console.log(error)
         console.log(error.error)

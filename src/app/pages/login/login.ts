@@ -38,26 +38,12 @@ export class Login {
     const stdField = field.trim().toLocaleLowerCase()
     if (stdField === '') return
 
-    if (stdField === 'owner') {
-      this.checkboxValues.owner.set(true)
-      this.loginStateService.setRole(stdField)
-      this.checkboxValues.admin.set(false)
-      this.checkboxValues.cashier.set(false)
-    }
+    // update the form control
+    this.loginStateService.setRole(stdField)
 
-    if (stdField === 'admin') {
-      this.checkboxValues.admin.set(true)
-      this.loginStateService.setRole(stdField)
-      this.checkboxValues.owner.set(false)
-      this.checkboxValues.cashier.set(false)
-    }
-
-    if (stdField === 'cashier') {
-      this.checkboxValues.cashier.set(true)
-      this.loginStateService.setRole(stdField)
-      this.checkboxValues.admin.set(false)
-      this.checkboxValues.owner.set(false)
-    }
+    this.checkboxValues.owner.set(stdField === 'owner')
+    this.checkboxValues.admin.set(stdField === 'admin')
+    this.checkboxValues.cashier.set(stdField === 'cashier')
   }
 
   setShowNextStep(val: boolean) {
