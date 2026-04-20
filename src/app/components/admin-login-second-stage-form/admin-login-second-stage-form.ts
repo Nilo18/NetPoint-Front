@@ -20,6 +20,11 @@ export class AdminLoginSecondStageForm {
   public loginStateService = inject(LoginStateManagementService)
 
   ngOnInit() {
+    // this.loginStateService.setGotBackendLoginError(false)
+    // this.loginStateService.setBackendLoginErrorMsg('')
+    // this.loginStateService.setRequestSent(false)
+    this.loginStateService.refreshLoginState()
+
     this.loginFormStageTwo = this.fb.group({
       otpCode: ['', [Validators.required]],
       tempToken: [this.loginStateService.tempToken() || '', [Validators.required]]
@@ -52,24 +57,25 @@ export class AdminLoginSecondStageForm {
         this.router.navigate(['/admin'])
       } catch (error: any) {
         console.log(error)
-        console.log(error.error)
+        console.log('error.error from the second stage component: ', error.error)
         console.log('catch block reached')
         console.log('error status:', error.status)
         this.loginStateService.setRequestSent(false)
         this.loginStateService.setGotBackendLoginError(true)
-        switch (error.status) {
-          case 400:
-            this.loginStateService.setBackendLoginErrorMsg('Please make sure all fields are filled in correctly.')
-            break;
-          case 409:
-            this.loginStateService.setBackendLoginErrorMsg('An account with this email already exists.')
-            break;
-          case 500:
-            this.loginStateService.setBackendLoginErrorMsg('Something went wrong on our end. Please try again later.')
-            break;
-          default:
-            this.loginStateService.setBackendLoginErrorMsg('Something went wrong. Please try again.')
-        }
+        this.loginStateService.setBackendLoginErrorMsg(error.error.error)
+        // switch (error.status) {
+        //   case 400:
+        //     this.loginStateService.setBackendLoginErrorMsg('Please make sure all fields are filled in correctly.')
+        //     break;
+        //   case 409:
+        //     this.loginStateService.setBackendLoginErrorMsg('An account with this email already exists.')
+        //     break;
+        //   case 500:
+        //     this.loginStateService.setBackendLoginErrorMsg('Something went wrong on our end. Please try again later.')
+        //     break;
+        //   default:
+        //     this.loginStateService.setBackendLoginErrorMsg('Something went wrong. Please try again.')
+        // }
         // this.cdr.detectChanges()
         console.log('requestSent:', this.loginStateService.requestSent())
         console.log('gotBackendError:', this.loginStateService.gotBackendLoginError())

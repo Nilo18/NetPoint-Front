@@ -7,7 +7,7 @@
                 </div>
                 <h4>Log In To Your Business Account</h4>
                 @if (!checkboxValues.cashier()) {
-                    @if (!showNextStep()) {
+                    @if (!loginStateService.showLoginNextStep()) {
                         <p>Step 1 of 2: Personal Credentials</p>
                     } @else {
                         <p>Step 2 of 2: Verification</p>

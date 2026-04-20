@@ -18,4 +18,11 @@
             Continue
         </button>
     </div>
+    @if (loginStateService.requestSent() && !loginStateService.gotBackendLoginError()) {
+        <p class="loading">Processing...</p>
+    }
+
+    @if (!loginStateService.requestSent() && loginStateService.gotBackendLoginError()) {
+        <p class="error">{{loginStateService.backendLoginErrorMsg()}}</p>
+    }
 </form>

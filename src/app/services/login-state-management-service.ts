@@ -53,4 +53,26 @@ export class LoginStateManagementService {
     this._tempToken.set(val)
     console.log('Set tempToken to: ', val)
   }
+
+  clearLoginError() {
+    this.setGotBackendLoginError(false)
+    this.setBackendLoginErrorMsg('')
+    this.setRequestSent(true)
+  }
+
+  refreshLoginState() {
+    this.setGotBackendLoginError(false)
+    this.setBackendLoginErrorMsg('')
+    this.setRequestSent(false)
+  }
+
+  hardRefreshLoginState() {
+    this.setShowLoginNextStep(false)
+    this.setGotBackendLoginError(false)
+    this.setRequestSent(false)
+    this.setBackendLoginErrorMsg('')
+    this.setRole('owner')
+    this.setStageOneData(null)
+    this.setTempToken(null)
+  }
 }

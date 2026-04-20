@@ -20,6 +20,8 @@ export class AdminLoginFirstStageForm {
   
   ngOnInit() {
     // console.log(this.bannerFeatures)
+    this.loginStateService.refreshLoginState()
+    
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -52,6 +54,10 @@ export class AdminLoginFirstStageForm {
     }
 
     if (!this.loginStateService.showLoginNextStep()) {
+      // this.loginStateService.setGotBackendLoginError(false)
+      // this.loginStateService.setBackendLoginErrorMsg('')
+      // this.loginStateService.setRequestSent(true)
+      this.loginStateService.clearLoginError()
       // Determine the role dynamically
       const role = this.loginStateService.role().trim().toUpperCase() 
       const payload = {
@@ -62,8 +68,12 @@ export class AdminLoginFirstStageForm {
         console.log('Sending request...')
         const res = await this.authService.login(payload) 
         this.loginStateService.setTempToken(res.token)
-      } catch (error) {
+      } catch (error: any) {
         console.log('Not showing next step because got error: ', error)
+        this.loginStateService.setGotBackendLoginError(true)
+        this.loginStateService.setRequestSent(false)
+        console.log(error.error)
+        this.loginStateService.setBackendLoginErrorMsg(error.error.error)
         return
       }
       this.loginStateService.setShowLoginNextStep(true)

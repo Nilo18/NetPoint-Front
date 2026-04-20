@@ -31,7 +31,7 @@ export class Login {
   }
 
   ngOnInit() {
-    
+    this.loginStateService.hardRefreshLoginState()
   }
 
   setCheckboxValue(field: string) {
