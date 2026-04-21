@@ -52,4 +52,13 @@ export class SignupStateManagementService {
     const { confirm_password, ...stageOne } = this._stageOneData()
     return { ...stageOne, ...stageTwoData }
   }
+
+  hardRefreshSignupState() {
+    this._showNextStep.set(false)
+    this._gotBackendError.set(false)
+    this._requestSent.set(false)
+    this._backendErrorMsg.set('')
+    this._stageOneData.set(null)
+    this._stageTwoData.set(null)
+  }
 }

@@ -14,4 +14,8 @@ export class AdminDashboard {
     localStorage.removeItem('net_token')
     this.router.navigate(['/'])
   }
+
+  navToSettings() {
+    this.router.navigate(['/settings'])
+  }
 }

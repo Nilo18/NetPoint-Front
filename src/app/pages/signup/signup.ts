@@ -22,4 +22,8 @@ export class Signup {
     ? 'Step 2 of 2: Personal Account Setup' 
     : 'Step 1 of 2: Business Credentials'
   })
+
+  ngOnInit() {
+    this.signupService.hardRefreshSignupState()
+  }
 }

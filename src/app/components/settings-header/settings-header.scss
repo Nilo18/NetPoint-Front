@@ -1,0 +1,48 @@
+.settingsheader {
+    height: 5.05rem;
+    width: 100%;
+    border: 1px solid #0000001a;
+    padding: 16px 24px;
+
+    &__heading {
+        height: 100%;
+        gap: 0;
+
+        h1, p {
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 14px;
+            color: oklch(70.8% 0 0);
+        }
+    }
+
+    &__returntodbtn {
+        background-color: transparent;
+        border: none;
+        border-radius: 0.5rem;
+        transition: 0.10s ease-in-out;
+        padding: 5px 10px;
+        font-weight: 600;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        height: 24px;
+        background-color: oklch(92.8% .006 264.531);
+    }
+
+    &__returntodbtn:hover {
+        background-color: #e5e6e7;
+    }
+}
