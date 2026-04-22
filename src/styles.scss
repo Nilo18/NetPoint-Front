@@ -7,13 +7,25 @@
     padding: 0;
 }
 
-html, body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    // font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+html {
+    height: 100%;
 }
 
+html, body {
+    min-height: 100%;
+    // height: 1000px
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+// app-root, app-settings {
+//     display: flex;
+//     flex-direction: column;
+//     // flex: 1;
+// }
 .cont {
     @include FlexContainer;
 }

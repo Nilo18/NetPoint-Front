@@ -1,0 +1,69 @@
+<section class="rolepermissions">
+  <div class="rolepermissions__header">
+    <h2 class="rolepermissions__title">Role Permissions</h2>
+    <p class="rolepermissions__subtitle">Understanding access levels in NetPoint</p>
+  </div>
+
+  <div class="rolepermissions__grid">
+
+    <div class="rolepermissions__card">
+      <div class="rolepermissions__card-header">
+        <div class="rolepermissions__icon rolepermissions__icon--owner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3 class="rolepermissions__role-name">Owner</h3>
+      </div>
+      <ul class="rolepermissions__list">
+        <li class="rolepermissions__item rolepermissions__item--allowed">Full system access</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Add/remove users</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Modify catalog</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">View all reports</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Manage settings</li>
+      </ul>
+    </div>
+
+    <div class="rolepermissions__card">
+      <div class="rolepermissions__card-header">
+        <div class="rolepermissions__icon rolepermissions__icon--admin">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h3 class="rolepermissions__role-name">Admin</h3>
+      </div>
+      <ul class="rolepermissions__list">
+        <li class="rolepermissions__item rolepermissions__item--allowed">Modify catalog</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">View reports</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Manage inventory</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Custom attributes</li>
+        <li class="rolepermissions__item rolepermissions__item--denied">Cannot add users</li>
+      </ul>
+    </div>
+
+    <div class="rolepermissions__card">
+      <div class="rolepermissions__card-header">
+        <div class="rolepermissions__icon rolepermissions__icon--cashier">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
+        </div>
+        <h3 class="rolepermissions__role-name">Cashier</h3>
+      </div>
+      <ul class="rolepermissions__list">
+        <li class="rolepermissions__item rolepermissions__item--allowed">Process sales</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">View products</li>
+        <li class="rolepermissions__item rolepermissions__item--allowed">Manage cart</li>
+        <li class="rolepermissions__item rolepermissions__item--denied">Cannot edit catalog</li>
+        <li class="rolepermissions__item rolepermissions__item--denied">No settings access</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
