@@ -1,0 +1,23 @@
+@if (!shouldShowForm()) {
+    <p>Validating...</p>
+} @else {
+    <p>Session validated successfully! Please sign up to proceed</p>
+    <form [formGroup]="adminSignupForm">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" formControlName="name">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" formControlName="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" formControlName="password">
+        </div>
+        <div>
+            <label for="password">Phone Number</label>
+            <input type="password" formControlName="phone_number">
+        </div>
+    </form>
+}

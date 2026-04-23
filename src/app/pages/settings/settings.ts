@@ -2,10 +2,11 @@ import { Component, effect, ElementRef, HostListener, Renderer2, signal, viewChi
 import { SettingsHeader } from '../../components/settings-header/settings-header';
 import { SettingsUserManagement } from '../../components/settings-user-management/settings-user-management';
 import { SettingsRolePermissions } from '../../components/settings-role-permissions/settings-role-permissions';
+import { SettingsSidebar } from '../../components/settings-sidebar/settings-sidebar';
 
 @Component({
   selector: 'app-settings',
-  imports: [SettingsHeader, SettingsUserManagement, SettingsRolePermissions],
+  imports: [SettingsHeader, SettingsUserManagement, SettingsRolePermissions, SettingsSidebar],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
 })
