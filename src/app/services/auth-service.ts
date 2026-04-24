@@ -21,6 +21,11 @@ export interface TwoFactorCredentials {
   tempToken: string
 }
 
+export interface AuthResponse {
+  status: number
+  token: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
