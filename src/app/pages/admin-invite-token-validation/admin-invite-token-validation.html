@@ -1,23 +1,43 @@
 @if (!shouldShowForm()) {
     <p>Validating...</p>
 } @else {
-    <p>Session validated successfully! Please sign up to proceed</p>
-    <form [formGroup]="adminSignupForm">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" formControlName="name">
+    <section class="admin-signup">
+        <!-- <p>Session validated successfully! Please sign up to proceed</p> -->
+        <div class="form__content">
+            <div class="form__header">
+                <div class="form__icon">
+                    <img src="/assets/netpoint-logo.png" alt="Logo">
+                </div>
+                <h4>Create your account</h4>
+            </div>
+            <form [formGroup]="adminSignupForm" class="form__body admin-signup__body">
+                <div class="form__field-container">
+                    <label for="name">Name</label>
+                    <input type="text" formControlName="name" class="form-control" placeholder="Your Name">
+                    <p class="error">{{ getError('name', adminSignupForm) }}</p>
+                </div>
+                <div class="form__field-container">
+                    <label for="email">Email</label>
+                    <input type="email" formControlName="email" class="form-control"
+                    placeholder="you@example.com">
+                    <p class="error">{{ getError('email', adminSignupForm) }}</p>
+                </div>
+                <div class="form__field-container">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control"
+                    placeholder="Minimum 8 characters">
+                    <p class="error">{{ getError('password', adminSignupForm) }}</p>
+                </div>
+                <div class="form__field-container">
+                    <label for="password">Phone Number</label>
+                    <input type="text" formControlName="phone_number" class="form-control"
+                    placeholder="+1 555 555 5555" >
+                    <p class="error">{{ getError('phone_number', adminSignupForm) }}</p>
+                </div>
+                <button class="form__submitbtn btn btn-primary" type="submit">
+                    Sign Up
+                </button>
+            </form>
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" formControlName="email">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" formControlName="password">
-        </div>
-        <div>
-            <label for="password">Phone Number</label>
-            <input type="password" formControlName="phone_number">
-        </div>
-    </form>
+    </section>
 }

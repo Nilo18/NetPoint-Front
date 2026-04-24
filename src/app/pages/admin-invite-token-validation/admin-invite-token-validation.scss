@@ -1,0 +1,16 @@
+@use '../../../styles/mixins.scss' as *;
+
+.admin-signup {
+    @include FlexContainerColumn;
+    height: 100vh;
+    background: linear-gradient(135deg, #eef0ff 0%, #f5f6ff 40%, #eaffef 100%);
+
+    &__body {
+        // width: 448px;
+        // height: 473.99px;
+        // padding: 0 24px 24px;
+        background-color: white;
+        // box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        // border: 1px solid
+    }
+}

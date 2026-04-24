@@ -2,6 +2,7 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminInviteService } from '../../services/admin-invite-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormValidatorService } from '../../services/form-validator-service';
 
 @Component({
   selector: 'app-admin-invite-token-validation',
@@ -14,6 +15,7 @@ export class AdminInviteTokenValidation {
   private router = inject(Router)
   private adminInviteService = inject(AdminInviteService)
   private fb = inject(FormBuilder)
+  private formValidator = inject(FormValidatorService)
   adminSignupForm!: FormGroup
   shouldShowForm: WritableSignal<boolean> = signal(false)
 
@@ -29,11 +31,12 @@ export class AdminInviteTokenValidation {
     const res = await this.adminInviteService.verifyInvitation(invitationToken)
 
     if (res.status === 200) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {},
-        replaceUrl: true
-      });
+      // *** Uncomment this when you finish writing this component ***
+      // this.router.navigate([], {
+      //   relativeTo: this.route,
+      //   queryParams: {},
+      //   replaceUrl: true
+      // });
 
       this.adminSignupForm = this.fb.group({
         name: ['', [Validators.required]],
@@ -45,5 +48,9 @@ export class AdminInviteTokenValidation {
 
       this.shouldShowForm.set(true)
     }
+  }
+
+  getError(field: string, form: FormGroup) {
+    return this.formValidator.getError(field, form)
   }
 }
