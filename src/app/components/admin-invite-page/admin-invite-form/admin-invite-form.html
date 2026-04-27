@@ -35,5 +35,14 @@
         <button class="form__submitbtn btn btn-primary" type="submit">
             Sign Up
         </button>
+        @if (adminInviteStateService.requestSent() && !adminInviteStateService.gotError()) {
+            <p class="loading">Processing...</p>
+        }
+
+        @if (!adminInviteStateService.requestSent() && adminInviteStateService.gotError()) {
+            <p class="error" style="word-break: break-all; line-height: normal;">
+                {{ adminInviteStateService.gotError() ? adminInviteStateService.backendErrorMsg() : ''}}
+            </p>
+        }
     </form>
 </div>

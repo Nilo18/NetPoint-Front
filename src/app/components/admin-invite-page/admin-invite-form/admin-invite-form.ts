@@ -40,6 +40,7 @@ export class AdminInviteForm {
 
     this.adminInviteStateService.setGotError(false)
     this.adminInviteStateService.setBackendErrorMsg('')
+    this.adminInviteStateService.setRequestSent(true)
 
     console.log('The form value is: ', this.adminSignupForm.value)
     try {
@@ -51,6 +52,7 @@ export class AdminInviteForm {
     } catch (error: any) {
       this.adminInviteStateService.setGotError(true)
       this.adminInviteStateService.setBackendErrorMsg(error.error.error)
+      this.adminInviteStateService.setRequestSent(false)
     }
   }
   

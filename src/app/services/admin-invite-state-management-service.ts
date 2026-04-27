@@ -15,6 +15,8 @@ export class AdminInviteStateManagementService {
   readonly shouldShowForm = this._shouldShowForm.asReadonly()
   private _successfulResMsg: WritableSignal<string> = signal('')
   readonly successfulResMsg = this._successfulResMsg.asReadonly()
+  private _requestSent: WritableSignal<boolean> = signal(false)
+  readonly requestSent = this._requestSent.asReadonly()
   private adminInviteService = inject(AdminInviteService)
 
   setGotError(value: boolean): void {
@@ -35,6 +37,10 @@ export class AdminInviteStateManagementService {
 
   setSuccessfulResMsg(value: string): void {
     this._successfulResMsg.set(value);
+  }
+
+  setRequestSent(value: boolean): void {
+    this._requestSent.set(value);
   }
 
   async validateToken() {
