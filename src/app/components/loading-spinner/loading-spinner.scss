@@ -1,0 +1,44 @@
+.validating-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-height: 200px;
+
+    .spinner-ring {
+        animation: pulse-scale 1.8s ease-in-out infinite;
+    }
+
+    .validating-text {
+        font-size: 15px;
+        font-weight: 500;
+        color: #4F46E5;
+        letter-spacing: 0.02em;
+        margin: 0;
+
+        .dots {
+            display: inline-flex;
+            gap: 1px;
+
+            span {
+                animation: dot-fade 1.4s ease-in-out infinite;
+                opacity: 0;
+
+                &:nth-child(1) { animation-delay: 0s; }
+                &:nth-child(2) { animation-delay: 0.2s; }
+                &:nth-child(3) { animation-delay: 0.4s; }
+            }
+        }
+    }
+}
+
+@keyframes pulse-scale {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.06); }
+}
+
+@keyframes dot-fade {
+    0%, 60%, 100% { opacity: 0; }
+    30%            { opacity: 1; }
+}

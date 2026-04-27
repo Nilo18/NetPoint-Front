@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminInviteService } from '../../services/admin-invite-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormValidatorService } from '../../services/form-validator-service';
+import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-admin-invite-token-validation',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LoadingSpinner],
   templateUrl: './admin-invite-token-validation.html',
   styleUrl: './admin-invite-token-validation.scss',
 })
@@ -23,7 +24,7 @@ export class AdminInviteTokenValidation {
   gotError: WritableSignal<boolean> = signal(false)
   backendErrorMsg: WritableSignal<string> = signal('')
 
-  async ngOnInit() {
+  ngOnInit() {
     const invitationToken = this.route.snapshot.queryParams['token']
 
     if (!invitationToken) {
@@ -33,17 +34,24 @@ export class AdminInviteTokenValidation {
 
     this.invitationToken = invitationToken
 
+    this.validateToken()
+
     console.log(invitationToken)
-    const res = await this.adminInviteService.verifyInvitation(invitationToken)
+  }
 
-    if (res.status === 200) {
-      // *** Uncomment this when you finish writing this component ***
-      // this.router.navigate([], {
-      //   relativeTo: this.route,
-      //   queryParams: {},
-      //   replaceUrl: true
-      // });
+  async validateToken() {
+    if (!this.invitationToken) {
+      this.gotError.set(true)
+      this.backendErrorMsg.set('Invitation token missing')
+      return
+    }
 
+    this.gotError.set(false)
+    this.backendErrorMsg.set('')
+
+    try {
+      const res = await this.adminInviteService.verifyInvitation(this.invitationToken) 
+      // if (res.status === 200) {
       this.successfulResMsg = res.message
 
       this.adminSignupForm = this.fb.group({
@@ -55,6 +63,10 @@ export class AdminInviteTokenValidation {
       })
 
       this.shouldShowForm.set(true)
+      // }
+    } catch (error: any) {
+      this.gotError.set(true)
+      this.backendErrorMsg.set(error.error.error)
     }
   }
 

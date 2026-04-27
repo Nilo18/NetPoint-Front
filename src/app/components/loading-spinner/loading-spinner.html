@@ -1,0 +1,31 @@
+<div class="validating-container">
+    <div class="spinner-ring">
+        <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+            <circle
+                cx="40" cy="40" r="32"
+                fill="none"
+                stroke="#EEF2FF"
+                stroke-width="5"
+            />
+            <circle
+                cx="40" cy="40" r="32"
+                fill="none"
+                stroke="#4F46E5"
+                stroke-width="5"
+                stroke-linecap="round"
+                stroke-dasharray="50 150"
+                stroke-dashoffset="0"
+            >
+                <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 40 40"
+                    to="360 40 40"
+                    dur="1s"
+                    repeatCount="indefinite"
+                />
+            </circle>
+        </svg>
+    </div>
+    <p class="validating-text">Validating<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+</div>
