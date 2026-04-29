@@ -29,14 +29,17 @@
                 </tr>
             </thead>
             <tbody>
+            @for (user of userList; track user.id; let i = $index) {
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <th scope="row">{{ i + 1}}</th>
+                    <!-- <td><p>{{ userList | json }}</p></td> -->
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
                     <td>aaa</td>
                 </tr>
-                <tr>
+            }
+                <!-- <tr>
                     <th scope="row">2</th>
                     <td>Jacob</td>
                     <td>Thornton</td>
@@ -49,7 +52,7 @@
                     <td>Doe</td>
                     <td>@social</td>
                     <td>aaa</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
