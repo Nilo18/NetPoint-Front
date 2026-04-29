@@ -46,4 +46,23 @@
             }
         }
     }
+
+    &__body {
+        table {
+            border: 1px solid $border-color;
+            border-radius: 0.5rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+
+            th, td {
+                margin-bottom: 0;
+                // line-height: 1;
+                // padding: 0;
+                // padding-bottom: 0;
+                // p, div { margin-bottom: 0; }
+                // background-color: red;
+            }
+        }
+    }
 }

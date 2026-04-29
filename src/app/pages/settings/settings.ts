@@ -3,6 +3,7 @@ import { SettingsHeader } from '../../components/settings-header/settings-header
 import { SettingsUserManagement } from '../../components/settings-user-management/settings-user-management';
 import { SettingsRolePermissions } from '../../components/settings-role-permissions/settings-role-permissions';
 import { SettingsSidebar } from '../../components/settings-sidebar/settings-sidebar';
+import { UserTable } from '../../components/settings-page-components/user-table/user-table';
 
 @Component({
   selector: 'app-settings',
