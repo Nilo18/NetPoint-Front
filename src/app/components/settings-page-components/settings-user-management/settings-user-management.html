@@ -5,7 +5,7 @@
             <h4>User Management</h4>
             <p>Manage team members and their access levels</p>
         </div>
-        <button class="settingsmanagement__header--btn">
+        <button class="settingsmanagement__header--btn" (click)="open($event)">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round" class="lucide lucide-user-plus h-4 w-4 mr-2">
@@ -29,30 +29,15 @@
                 </tr>
             </thead>
             <tbody>
-            @for (user of userList; track user.id; let i = $index) {
-                <tr>
-                    <th scope="row">{{ i + 1}}</th>
-                    <!-- <td><p>{{ userList | json }}</p></td> -->
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
-                    <td>aaa</td>
-                </tr>
-            }
-                <!-- <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>aaa</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>@social</td>
-                    <td>aaa</td>
-                </tr> -->
+                @for (user of userList; track user.id; let i = $index) {
+                    <tr>
+                        <th scope="row">{{ i + 1}}</th>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>aaa</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

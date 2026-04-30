@@ -1,17 +1,20 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { SettingsPageService, User } from '../../services/settings-page-service';
+import { SettingsPageService, User } from '../../../services/settings-page-service';
 import { jwtDecode } from 'jwt-decode';
 import { JsonPipe } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
 
 @Component({
   selector: 'app-settings-user-management',
-  imports: [JsonPipe],
+  imports: [],
   templateUrl: './settings-user-management.html',
   styleUrl: './settings-user-management.scss',
 })
 export class SettingsUserManagement {
   private settingsService = inject(SettingsPageService)
   private cdr = inject(ChangeDetectorRef)
+  private modalService = inject(NgbModal)
   decodedToken!: any
   userList: User[] = []
 
@@ -19,6 +22,7 @@ export class SettingsUserManagement {
     const token = localStorage.getItem('net_token') 
 
     if (token) {
+      // console.log()
       this.decodedToken = jwtDecode(token)
       console.log(this.decodedToken)
       const res = await this.settingsService.getUserlist(Number(this.decodedToken.companyId), 0, 10)
@@ -26,5 +30,18 @@ export class SettingsUserManagement {
       this.cdr.detectChanges()
       console.log('The local userList is: ', this.userList)
     }
+  }
+
+  open(event: MouseEvent) {
+    // console.log('Open modal method runs')
+    (event.target as HTMLElement).blur()
+    const modalRef = this.modalService.open(SettingsAddUserModal, {
+      centered: true
+    })
+
+    modalRef.result.then(
+      (result) => console.log('Confirmed!'),
+      (reason) => console.log('Dismissed!')
+    )
   }
 }

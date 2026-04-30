@@ -1,0 +1,45 @@
+<!-- <div class="modal add-user-modal" tabindex="-1">
+  <div class="modal-dialog add-user-modal__dialog"> -->
+    <div class="modal-content add-user-modal" style="height: 100%;">
+      <div class="modal-header add-user-modal__header">
+        <h5 class="modal-title">Add New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.close()">
+
+        </button>
+      </div>
+      <div class="modal-body add-user-modal__body">
+        <select name="roleSelect" class="form-select add-user-modal__role-select" [(ngModel)]="role">
+          <option value="ADMIN">Admin</option>
+          <option value="CASHIER">Cashier</option>
+        </select>
+          @if (role() === 'ADMIN') {
+            <form class="form__body add-user-modal__form" [formGroup]="adminInviteForm">
+              <div class="form__field-container">
+                <label for="email">Admin Email</label>
+                <input type="email" class="form-control" placeholder="admin@example.com" formControlName="email">
+                <p class="error">{{ getError('email', adminInviteForm )}}</p>
+              </div>
+            </form>
+          } @else {
+            <form class="form__body add-user-modal__form">
+              <div class="form__field-container">
+                <label for="email">Cashier Email</label>
+                <input type="email" class="form-control" placeholder="cashier@example.com">
+              </div>
+              <div class="form__field-container">
+                <label for="pin">Cashier Pin</label>
+                <input type="text" class="form-control" placeholder="Enter 6 digit pin for the cashier">
+              </div>
+            </form>
+          }
+        <!-- <p>Modal body text goes here.</p> -->
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.close()">Close</button> -->
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+          {{role() === 'ADMIN' ? 'Invite Admin' : 'Add Cashier'}}
+        </button>
+      </div>
+    </div>
+  <!-- </div>
+</div> -->
