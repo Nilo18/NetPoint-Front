@@ -21,14 +21,23 @@
               </div>
             </form>
           } @else {
-            <form class="form__body add-user-modal__form">
+            <form class="form__body add-user-modal__form" [formGroup]="cashierAdditionForm">
+              <div class="form__field-container">
+                <label for="name">Cashier Name</label>
+                <input type="text" class="form-control" placeholder="John Doe" formControlName="name" autocomplete="off">
+                <p class="error">{{ getError('name', cashierAdditionForm) }}</p>
+              </div>
               <div class="form__field-container">
                 <label for="email">Cashier Email</label>
-                <input type="email" class="form-control" placeholder="cashier@example.com">
+                <input type="email" class="form-control" placeholder="cashier@example.com" 
+                formControlName="email" autocomplete="off">
+                <p class="error">{{ getError('email', cashierAdditionForm) }}</p>
               </div>
               <div class="form__field-container">
                 <label for="pin">Cashier Pin</label>
-                <input type="text" class="form-control" placeholder="Enter 6 digit pin for the cashier">
+                <input type="password" class="form-control" placeholder="Enter 6 digit pin for the cashier" 
+                formControlName="pin" autocomplete="new-password">
+                <p class="error">{{ getError('pin', cashierAdditionForm) }}</p>
               </div>
             </form>
           }

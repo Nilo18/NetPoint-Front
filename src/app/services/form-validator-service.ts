@@ -44,9 +44,11 @@ export class FormValidatorService {
       return `${label} must be at least ${min} characters long`
     }
 
-    if (control.hasError('pattern')) return 'Pattern mismatch'
+    if (field === 'pin' && control.hasError('pattern')) return 'Pin must be 6 digits and a number'
 
-    if (field === 'phome_number' && control.hasError('pattern')) return 'Please enter a valid phone number'
+    if (field === 'phone_number' && control.hasError('pattern')) return 'Please enter a valid phone number'
+
+    if (control.hasError('pattern')) return 'Pattern mismatch'
 
     if (field === 'confirm_password' && form.hasError('passwordMismatch')) {
       return 'Passwords do not match';

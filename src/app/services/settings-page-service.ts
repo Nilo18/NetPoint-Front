@@ -23,6 +23,14 @@ export interface AdminInviteCredentials {
   companyId: number
 }
 
+export interface CashierCredentials {
+  name: string,
+  email: string,
+  role: string,
+  pin: string,
+  companyId: number
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -52,7 +60,20 @@ export class SettingsPageService {
       console.log(res)
       return res
     } catch (error) {
-      console.log("Couldn't get user list: ", error)
+      console.log("Couldn't invite admin: ", error)
+      throw error
+    }
+  }
+
+  async addCashier(credentials: CashierCredentials) {
+    try {
+      const res = await firstValueFrom(
+        this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
+      )
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't add the cashier: ", error)
       throw error
     }
   }
