@@ -1,5 +1,5 @@
-@use '../../../styles/variables.scss' as *;
-@use '../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables.scss' as *;
+@use '../../../../styles/mixins.scss' as *;
 
 .settingsmanagement {
     border: 1px solid #0000001a;
@@ -43,6 +43,29 @@
             svg {
                 width: 1rem;
                 height: 1rem;
+            }
+        }
+
+        button:hover {
+            background-color: $primary-color-hover;
+        }
+    }
+
+    &__body {
+        table {
+            border: 1px solid $border-color;
+            border-radius: 0.5rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+
+            th, td {
+                margin-bottom: 0;
+                // line-height: 1;
+                // padding: 0;
+                // padding-bottom: 0;
+                // p, div { margin-bottom: 0; }
+                // background-color: red;
             }
         }
     }

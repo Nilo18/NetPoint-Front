@@ -1,0 +1,25 @@
+.add-user-modal {
+    // margin-top: 200px;
+    // // width: 500px;
+    // height: 500px;
+
+    // &__dialog {
+    //     height: 500px;
+    // }
+
+    // &__content {
+    //     height: 500px;
+    // }
+
+    // &__body {
+    //     height: 500px;
+    // }
+
+    &__role-select {
+        margin-bottom: 1.5rem;
+    }
+
+    &__form {
+        gap: 1rem;
+    }
+}
