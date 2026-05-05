@@ -29,6 +29,8 @@ export class SettingsUserManagement {
       this.userList = res.userList
       this.cdr.detectChanges()
       console.log('The local userList is: ', this.userList)
+    } else {
+      console.log('Token missing.')
     }
   }
 
