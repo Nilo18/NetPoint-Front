@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -31,6 +31,11 @@ export interface CashierCredentials {
   companyId: number
 }
 
+export interface CashierAdditionResponse {
+  status: number,
+  user: User
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,12 +43,15 @@ export class SettingsPageService {
   private urlHolderService = inject(BackendUrlHolderService)
   private http = inject(HttpClient)
   private baseUrl = this.urlHolderService.getBaseUrl()
+  private users = signal<User[]>([])
+  readonly userList = this.users.asReadonly()
 
   async getUserlist(id: number, page: number, size: number) {
     try {
       const res = await firstValueFrom(
         this.http.get<GetUserListResponse>(`${this.baseUrl}/settings/company-users/${id}?page=${page}&size=${size}`)
       )
+      this.users.set(res.userList)
       console.log(res)
       return res
     } catch (error) {
@@ -68,12 +76,25 @@ export class SettingsPageService {
   async addCashier(credentials: CashierCredentials) {
     try {
       const res = await firstValueFrom(
-        this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
+        this.http.post<CashierAdditionResponse>(`${this.baseUrl}/settings/add-cashier`, credentials)
       )
+      this.users.update(list => [...list, res.user])
       console.log(res)
       return res
     } catch (error) {
       console.log("Couldn't add the cashier: ", error)
+      throw error
+    }
+  }
+
+  async deleteUser(userId: number) {
+    try {
+      const res = await firstValueFrom(this.http.delete<any>(`${this.baseUrl}/settings/users/${userId}`))
+      this.users.update(list => list.filter(user => user.id !== userId))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't delete user: ", error)
       throw error
     }
   }

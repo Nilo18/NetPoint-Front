@@ -81,6 +81,7 @@ export class SettingsAddUserModal {
 
     console.log(this.cashierAdditionForm.value)
     this.settingsService.addCashier(this.cashierAdditionForm.value)
+    this.modal.close()
   }
 
   onSubmit() {
