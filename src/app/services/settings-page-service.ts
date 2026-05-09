@@ -40,6 +40,8 @@ export class SettingsPageService {
   private baseUrl = this.urlHolderService.getBaseUrl()
   private users = signal<User[]>([])
   readonly userList = this.users.asReadonly()
+  private _totalPages = signal<number>(1)
+  readonly totalPages = this._totalPages.asReadonly()
 
   async getUserlist(id: number, page: number, size: number) {
     try {
@@ -47,6 +49,7 @@ export class SettingsPageService {
         this.http.get<GetUserListResponse>(`${this.baseUrl}/settings/company-users/${id}?page=${page}&size=${size}`)
       )
       this.users.set(res.userList)
+      this._totalPages.set(res.totalPages)
       console.log(res)
       return res
     } catch (error) {
@@ -74,6 +77,7 @@ export class SettingsPageService {
         this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
       )
       this.users.set(res.userList)
+      this._totalPages.set(res.totalPages)
       console.log(res)
       return res
     } catch (error) {

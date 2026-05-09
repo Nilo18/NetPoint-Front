@@ -4,10 +4,11 @@ import { jwtDecode } from 'jwt-decode';
 import { JsonPipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
+import { UserPagination } from '../user-pagination/user-pagination';
 
 @Component({
   selector: 'app-settings-user-management',
-  imports: [],
+  imports: [UserPagination],
   templateUrl: './settings-user-management.html',
   styleUrl: './settings-user-management.scss',
 })

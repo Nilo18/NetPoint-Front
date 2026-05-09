@@ -1,0 +1,16 @@
+@use '../../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables' as *; 
+
+.user-pagination {
+    @include FlexContainerColumn;
+
+    ul {
+        li {
+            cursor: pointer;
+
+            a {
+                color: $primary-color-hover;
+            }
+        }
+    }
+}
