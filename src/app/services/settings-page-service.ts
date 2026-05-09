@@ -31,11 +31,6 @@ export interface CashierCredentials {
   companyId: number
 }
 
-export interface CashierAdditionResponse {
-  status: number,
-  user: User
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -76,9 +71,9 @@ export class SettingsPageService {
   async addCashier(credentials: CashierCredentials) {
     try {
       const res = await firstValueFrom(
-        this.http.post<CashierAdditionResponse>(`${this.baseUrl}/settings/add-cashier`, credentials)
+        this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
       )
-      this.users.update(list => [...list, res.user])
+      this.users.set(res.userList)
       console.log(res)
       return res
     } catch (error) {
