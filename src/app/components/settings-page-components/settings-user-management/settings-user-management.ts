@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, output, signal, Signal } from '@angular/core';
 import { SettingsPageService, User } from '../../../services/settings-page-service';
 import { jwtDecode } from 'jwt-decode';
 import { JsonPipe } from '@angular/common';
@@ -18,6 +18,7 @@ export class SettingsUserManagement {
   private modalService = inject(NgbModal)
   decodedToken!: any
   userList: Signal<User[]> = this.settingsService.userList
+  decodedTokenCompanyId = signal<number | null>(null)
 
   async ngOnInit() {
     const token = localStorage.getItem('net_token') 
@@ -26,7 +27,9 @@ export class SettingsUserManagement {
       // console.log()
       this.decodedToken = jwtDecode(token)
       console.log(this.decodedToken)
-      await this.settingsService.getUserlist(Number(this.decodedToken.companyId), 0, 10)
+      const companyId = Number(this.decodedToken.companyId)
+      await this.settingsService.getUserlist(companyId, 1, 10)
+      this.decodedTokenCompanyId.set(companyId)
       // this.userList = res.userList
       this.cdr.detectChanges()
       console.log('The local userList is: ', this.userList)

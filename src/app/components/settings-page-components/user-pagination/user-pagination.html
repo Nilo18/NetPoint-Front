@@ -1,16 +1,18 @@
 <nav aria-label="Page navigation example" class="user-pagination">
   <ul class="pagination">
-    <li class="page-item">
+    <li class="page-item" (click)="settingsService.getUserlist(companyId(), settingsService.currentPage() - 1, 10)">
       <a class="page-link" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     @for (page of pageArray; track page) {
-        <li class="page-item"><a class="page-link">{{ page }}</a></li>
+        <li class="page-item" (click)="settingsService.getUserlist(companyId(), page, 10)">
+            <a class="page-link">{{ page }}</a>
+        </li>
         <!-- <li class="page-item"><a class="page-link">2</a></li>
         <li class="page-item"><a class="page-link">3</a></li> -->
     }
-    <li class="page-item">
+    <li class="page-item" (click)="settingsService.getUserlist(companyId(), settingsService.currentPage() + 1, 10)">
       <a class="page-link" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>

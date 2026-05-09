@@ -14,7 +14,8 @@ export interface GetUserListResponse {
   userList: User[],
   page: number,
   size: number,
-  totalPages: number
+  totalPages: number,
+  currentPage: number
 }
 
 export interface AdminInviteCredentials {
@@ -42,13 +43,27 @@ export class SettingsPageService {
   readonly userList = this.users.asReadonly()
   private _totalPages = signal<number>(1)
   readonly totalPages = this._totalPages.asReadonly()
+  private _currentPage = signal<number>(1)
+  readonly currentPage = this._currentPage.asReadonly()
 
   async getUserlist(id: number, page: number, size: number) {
+    if (page <= 0 || size <= 0) {
+      console.log(`Invalid page or size value: page: ${page}, size: ${size}`)
+      return
+    }
+
+    if (page > this._totalPages()) {
+      console.log('The suggested page exceeds the total amount of pages.')
+      return
+    }
+
     try {
       const res = await firstValueFrom(
-        this.http.get<GetUserListResponse>(`${this.baseUrl}/settings/company-users/${id}?page=${page}&size=${size}`)
+        this.http.get<GetUserListResponse>(`${this.baseUrl}/settings/company-users/${id}?page=${page - 1}&size=${size}`)
       )
       this.users.set(res.userList)
+      this._currentPage.set(res.currentPage + 1)
+      console.log('The currentPage is: ', this._currentPage())
       this._totalPages.set(res.totalPages)
       console.log(res)
       return res
@@ -77,6 +92,7 @@ export class SettingsPageService {
         this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
       )
       this.users.set(res.userList)
+      this._currentPage.set(res.currentPage + 1)
       this._totalPages.set(res.totalPages)
       console.log(res)
       return res

@@ -55,6 +55,8 @@
                 }
             </tbody>
         </table>
-        <app-user-pagination></app-user-pagination>
+        @if (decodedTokenCompanyId()) {
+            <app-user-pagination [companyId]="decodedTokenCompanyId()!"></app-user-pagination>
+        }
     </div>
 </section>

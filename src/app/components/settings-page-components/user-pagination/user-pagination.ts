@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { SettingsPageService } from '../../../services/settings-page-service';
 
 @Component({
@@ -9,6 +9,11 @@ import { SettingsPageService } from '../../../services/settings-page-service';
 })
 export class UserPagination {
   public settingsService = inject(SettingsPageService)
+  companyId = input.required<number>()
+
+  ngOnInit() {
+    console.log('Received the companyId as input: ', this.companyId())
+  }
 
   get pageArray() {
     return Array.from({ length: this.settingsService.totalPages() }, (_, i) => i + 1)
