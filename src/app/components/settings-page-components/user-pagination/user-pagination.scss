@@ -5,6 +5,8 @@
     @include FlexContainerColumn;
 
     ul {
+        gap: 1px;
+
         li {
             cursor: pointer;
 
@@ -13,4 +15,9 @@
             }
         }
     }
+}
+
+.selected-page {
+    border: 1px solid $primary-color-hover;
+    border-color: $primary-color-hover !important;
 }

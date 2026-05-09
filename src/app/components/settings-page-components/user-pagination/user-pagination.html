@@ -5,13 +5,31 @@
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    @for (page of pageArray; track page) {
-        <li class="page-item" (click)="settingsService.getUserlist(companyId(), page, 10)">
-            <a class="page-link">{{ page }}</a>
+    @if (settingsService.totalPages() <= 10) {
+        @for (page of pageArray; track page) {
+          <!-- @if (settingsService.currentPage() === page ) {
+            <p>currentPage === page</p>
+          } -->
+
+            <li class="page-item" (click)="onPageClick(page)" 
+            >
+                <a class="page-link" [style.background-color]="settingsService.currentPage() === page ? 'blue' : ''">{{ page }}</a>
+            </li>
+        }
+    } @else {
+      <!-- <p class="loading">Number of pages is greater than 10</p> -->
+        @for (page of trimemdPageArray; track page) {
+            <li class="page-item" (click)="settingsService.getUserlist(companyId(), page, 10)">
+                <a class="page-link" [class.selected-page]="settingsService.currentPage() === page">{{ page }}</a>
+            </li>
+        }
+        <li class="page-item" (click)="settingsService.getUserlist(companyId(), 
+        settingsService.currentPage() > 10 ? settingsService.currentPage() : 10, 10)">
+            <a class="page-link" [class.selected-page]="settingsService.currentPage() >= 10">{{ 
+              settingsService.currentPage() > 10 ? settingsService.currentPage() : 10 }}</a>
         </li>
-        <!-- <li class="page-item"><a class="page-link">2</a></li>
-        <li class="page-item"><a class="page-link">3</a></li> -->
     }
+
     <li class="page-item" (click)="settingsService.getUserlist(companyId(), settingsService.currentPage() + 1, 10)">
       <a class="page-link" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>

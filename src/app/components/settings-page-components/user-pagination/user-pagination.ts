@@ -15,7 +15,19 @@ export class UserPagination {
     console.log('Received the companyId as input: ', this.companyId())
   }
 
-  get pageArray() {
-    return Array.from({ length: this.settingsService.totalPages() }, (_, i) => i + 1)
+  get pageArray(): number[] {
+    return this.settingsService.totalPages() <= 10 ?
+      Array.from({ length: this.settingsService.totalPages() }, (_, i) => i + 1) 
+      : Array.from({ length: 10 }, (_, i) => i + 1)
+  }
+
+  get trimemdPageArray() {
+    return this.pageArray.slice(0, 9)
+  }
+
+  async onPageClick(page: number) {
+    console.log('clicked page:', page, typeof page)
+    await this.settingsService.getUserlist(this.companyId(), page, 10)
+    console.log('currentPage after:', this.settingsService.currentPage(), typeof this.settingsService.currentPage())
   }
 }
