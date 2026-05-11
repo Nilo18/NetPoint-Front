@@ -5,6 +5,7 @@ import { JsonPipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
 import { UserPagination } from '../user-pagination/user-pagination';
+import { UserDeletionErrorDisplayModal } from '../user-deletion-error-display-modal/user-deletion-error-display-modal';
 
 @Component({
   selector: 'app-settings-user-management',
@@ -66,8 +67,16 @@ export class SettingsUserManagement {
     )
   }
 
-  deleteUser(userId: number) {
+  async deleteUser(userId: number) {
     this.settingsService.setIsLoading(true)
-    this.settingsService.deleteUser(userId)
+    try {
+      await this.settingsService.deleteUser(userId)
+    } catch (error: any) {
+      const modalRef = this.modalService.open(UserDeletionErrorDisplayModal, {
+        centered: true
+      })
+
+      modalRef.componentInstance.errMsg = error.error.error
+    }
   }
 }
