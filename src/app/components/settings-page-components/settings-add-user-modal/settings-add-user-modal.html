@@ -18,7 +18,40 @@
         </div>
       </form>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer add-user-modal__footer">
+    @if (!requestSent() && !gotBackendError() && !success()) {
+      <!-- Empty paragraph tag so that justify-content: space-between holds -->
+      <p></p>
+    }
+
+    @if (requestSent() && !gotBackendError() && !success()) {
+      <p class="loading">Processing...</p>
+    }
+
+    @if (!requestSent() && gotBackendError() && !success()) {
+      <div class="add-user-modal__err-msg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        {{ backendErrMsg() }}
+      </div>
+    }
+
+    @if (requestSent() && !gotBackendError() && success()) {
+      <div class="add-user-modal__success-msg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        User invited successfully.
+      </div>
+    }
+    <!-- <p>{{ gotBackendError() ? backendErrMsg() : 'Processing...' }}</p> -->
     <button type="submit" class="btn btn-primary add-user-modal__submit-btn" (click)="inviteUser()">
       {{role() === 'ADMIN' ? 'Invite Admin' : 'Invite Cashier'}}
     </button>

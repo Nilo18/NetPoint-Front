@@ -67,6 +67,7 @@ export class SettingsUserManagement {
   }
 
   deleteUser(userId: number) {
+    this.settingsService.setIsLoading(true)
     this.settingsService.deleteUser(userId)
   }
 }

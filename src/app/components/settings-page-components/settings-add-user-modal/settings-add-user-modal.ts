@@ -19,6 +19,10 @@ export class SettingsAddUserModal {
   userInviteForm!: FormGroup
   // cashierAdditionForm!: FormGroup
   role: WritableSignal<string> = signal('ADMIN')
+  requestSent: WritableSignal<boolean> = signal(false)
+  gotBackendError: WritableSignal<boolean> = signal(false)
+  success: WritableSignal<boolean> = signal(false)
+  backendErrMsg: WritableSignal<string> = signal('')
   decodedToken!: any
 
   constructor() {
@@ -47,15 +51,33 @@ export class SettingsAddUserModal {
     console.log('The role is: ', this.role())
   }
 
-  inviteUser() {
+  async inviteUser() {
     if (this.userInviteForm.invalid) {
       this.userInviteForm.markAllAsTouched()
       console.log('Invalid form: ', this.userInviteForm.value)
       return
     }
 
+    this.requestSent.set(true)
+    this.gotBackendError.set(false)
+    this.backendErrMsg.set('')
+    this.success.set(false)
     console.log(this.userInviteForm.value)
-    this.settingsService.inviteAdmin(this.userInviteForm.value)
+    try {
+      const res = await this.settingsService.inviteAdmin(this.userInviteForm.value) 
+
+      if (res) {
+        this.success.set(true)
+        setTimeout(() => {
+          this.modal.close()
+        }, 2000)
+      }
+    } catch (error: any) {
+      this.requestSent.set(false)
+      this.gotBackendError.set(true)
+      this.success.set(false)
+      this.backendErrMsg.set(error.error.error)
+    }
   }
 
   getError(field: string, form: FormGroup) {
