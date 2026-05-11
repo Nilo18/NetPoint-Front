@@ -1,3 +1,5 @@
+@use '../../../../styles/variables.scss' as *;
+
 .add-user-modal {
     // margin-top: 200px;
     // // width: 500px;
@@ -21,5 +23,13 @@
 
     &__form {
         gap: 1rem;
+    }
+
+    &__submit-btn {
+        background-color: $primary-color;
+    }
+
+    &__submit-btn:hover {
+        background-color: $primary-color-hover;
     }
 }

@@ -26,8 +26,23 @@ export class UserPagination {
   }
 
   async onPageClick(page: number) {
-    if (this.settingsService.currentPage() === page) {
+    if (this.settingsService.currentPage() === page || this.settingsService.totalPages() === 1) {
       console.log('Already on the selected page.')
+      return
+    }
+
+    if (page <= 0) {
+      this.settingsService.setIsLoading(true)
+      await this.settingsService.getUserlist(this.companyId(), this.settingsService.totalPages(), 10)
+      // this.setIsLoading(false)
+      return
+    }
+
+    if (page > this.settingsService.totalPages()) {
+      this.settingsService.setIsLoading(true)
+      console.log('The suggested page exceeds the total amount of pages.')
+      await this.settingsService.getUserlist(this.companyId(), 1, 10)
+      // this.setIsLoading(false)  
       return
     }
 

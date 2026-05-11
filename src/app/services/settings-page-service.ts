@@ -55,11 +55,13 @@ export class SettingsPageService {
   async getUserlist(id: number, page: number, size: number) {
     if (page <= 0 || size <= 0) {
       console.log(`Invalid page or size value: page: ${page}, size: ${size}`)
+      this.setIsLoading(false)
       return
     }
 
     if (page > this._totalPages()) {
       console.log('The suggested page exceeds the total amount of pages.')
+      this.setIsLoading(false)  
       return
     }
 

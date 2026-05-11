@@ -13,7 +13,7 @@
 
             <li class="page-item" (click)="onPageClick(page)" 
             >
-                <a class="page-link" [style.background-color]="settingsService.currentPage() === page ? 'blue' : ''">{{ page }}</a>
+                <a class="page-link" [class.selected-page]="settingsService.currentPage() === page">{{ page }}</a>
             </li>
         }
     } @else {
