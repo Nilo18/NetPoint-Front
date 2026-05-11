@@ -45,6 +45,12 @@ export class SettingsPageService {
   readonly totalPages = this._totalPages.asReadonly()
   private _currentPage = signal<number>(1)
   readonly currentPage = this._currentPage.asReadonly()
+  private _isLoading = signal(true);
+  readonly isLoading = this._isLoading.asReadonly()
+
+  setIsLoading(val: boolean) {
+    this._isLoading.set(val)
+  }
 
   async getUserlist(id: number, page: number, size: number) {
     if (page <= 0 || size <= 0) {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, output, signal, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, output, signal, Signal } from '@angular/core';
 import { SettingsPageService, User } from '../../../services/settings-page-service';
 import { jwtDecode } from 'jwt-decode';
 import { JsonPipe } from '@angular/common';
@@ -13,12 +13,22 @@ import { UserPagination } from '../user-pagination/user-pagination';
   styleUrl: './settings-user-management.scss',
 })
 export class SettingsUserManagement {
-  private settingsService = inject(SettingsPageService)
+  public settingsService = inject(SettingsPageService)
   private cdr = inject(ChangeDetectorRef)
   private modalService = inject(NgbModal)
   decodedToken!: any
   userList: Signal<User[]> = this.settingsService.userList
   decodedTokenCompanyId = signal<number | null>(null)
+  // isLoading = signal(true); // or wire it to your actual data fetch
+
+  constructor() {
+    // Example: flip it off once users are loaded
+    effect(() => {
+        if (this.userList().length > 0) {
+            this.settingsService.setIsLoading(false);
+        }
+    });
+  }
 
   async ngOnInit() {
     const token = localStorage.getItem('net_token') 
@@ -28,7 +38,12 @@ export class SettingsUserManagement {
       this.decodedToken = jwtDecode(token)
       console.log(this.decodedToken)
       const companyId = Number(this.decodedToken.companyId)
-      await this.settingsService.getUserlist(companyId, 1, 10)
+      const res = await this.settingsService.getUserlist(companyId, 1, 10)
+
+      // if (res) {
+      //   this.settingsService.setIsLoading(false);
+      // }
+
       this.decodedTokenCompanyId.set(companyId)
       // this.userList = res.userList
       this.cdr.detectChanges()

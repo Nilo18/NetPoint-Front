@@ -26,6 +26,8 @@ export class UserPagination {
   }
 
   async onPageClick(page: number) {
+    this.settingsService.setIsLoading(true)
+    console.log('isLoading value is: ', this.settingsService.isLoading())
     console.log('clicked page:', page, typeof page)
     await this.settingsService.getUserlist(this.companyId(), page, 10)
     console.log('currentPage after:', this.settingsService.currentPage(), typeof this.settingsService.currentPage())

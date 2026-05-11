@@ -1,5 +1,21 @@
 <section class="settingsmanagement">
     <!-- <p>settings-user-management works!</p> -->
+
+    @if (settingsService.isLoading()) {
+        <!-- <p>Loader is running</p> -->
+        <div class="settingsmanagement__loader">
+            <div class="settingsmanagement__loader--spinner">
+                <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="track" cx="25" cy="25" r="20" fill="none" stroke-width="4"/>
+                    <circle class="head" cx="25" cy="25" r="20" fill="none" stroke-width="4"/>
+                </svg>
+            </div>
+            <p class="settingsmanagement__loader--text">Loading users…</p>
+        </div>
+    }
+
+    <!-- <p>{{isLoading()}}</p> -->
+    <!-- <p>Loader is NOT running</p> -->
     <div class="settingsmanagement__header">
         <div class="settingsmanagement__header--text">
             <h4>User Management</h4>

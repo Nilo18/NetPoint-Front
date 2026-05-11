@@ -1,6 +1,6 @@
 <nav aria-label="Page navigation example" class="user-pagination">
   <ul class="pagination">
-    <li class="page-item" (click)="settingsService.getUserlist(companyId(), settingsService.currentPage() - 1, 10)">
+    <li class="page-item" (click)="onPageClick(settingsService.currentPage() - 1)">
       <a class="page-link" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
@@ -19,18 +19,18 @@
     } @else {
       <!-- <p class="loading">Number of pages is greater than 10</p> -->
         @for (page of trimemdPageArray; track page) {
-            <li class="page-item" (click)="settingsService.getUserlist(companyId(), page, 10)">
+            <li class="page-item" (click)="onPageClick(page)">
                 <a class="page-link" [class.selected-page]="settingsService.currentPage() === page">{{ page }}</a>
             </li>
         }
-        <li class="page-item" (click)="settingsService.getUserlist(companyId(), 
-        settingsService.currentPage() > 10 ? settingsService.currentPage() : 10, 10)">
+        <li class="page-item" (click)="onPageClick( 
+        settingsService.currentPage() > 10 ? settingsService.currentPage() : 10)">
             <a class="page-link" [class.selected-page]="settingsService.currentPage() >= 10">{{ 
               settingsService.currentPage() > 10 ? settingsService.currentPage() : 10 }}</a>
         </li>
     }
 
-    <li class="page-item" (click)="settingsService.getUserlist(companyId(), settingsService.currentPage() + 1, 10)">
+    <li class="page-item" (click)="onPageClick(settingsService.currentPage() + 1)">
       <a class="page-link" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>

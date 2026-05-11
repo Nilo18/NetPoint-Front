@@ -11,6 +11,68 @@
     // padding-left: 1rem;
     padding: 24px 24px 24px 24px;
     // font-weight: 600;
+    position: relative; // needed for overlay positioning
+
+    &__loader {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        border-radius: 0.875rem;
+        background-color: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(3px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        animation: fadeIn 0.2s ease;
+
+        &--spinner {
+            width: 2.75rem;
+            height: 2.75rem;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                animation: rotate 1.4s linear infinite;
+
+                .track {
+                    stroke: #E0DEFF; // soft indigo tint
+                }
+
+                .head {
+                    stroke: $primary-color;
+                    stroke-linecap: round;
+                    stroke-dasharray: 80;
+                    stroke-dashoffset: 60;
+                    animation: dash 1.4s ease-in-out infinite;
+                }
+            }
+        }
+
+        &--text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $primary-color;
+            letter-spacing: 0.01em;
+            margin: 0;
+        }
+    }
+
+    @keyframes rotate {
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes dash {
+        0%   { stroke-dashoffset: 80; }
+        50%  { stroke-dashoffset: 20; }
+        100% { stroke-dashoffset: 80; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
 
     &__header {
         width: 100%;
