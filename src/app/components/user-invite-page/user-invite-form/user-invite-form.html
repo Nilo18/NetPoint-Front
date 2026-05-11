@@ -3,16 +3,16 @@
         <div class="form__icon">
             <img src="/assets/netpoint-logo.png" alt="Logo">
         </div>
-        @if (adminInviteStateService.successfulResMsg()) {
-            <h4>{{adminInviteStateService.successfulResMsg()}}</h4>
+        @if (userInviteStateService.successfulResMsg()) {
+            <h4>{{userInviteStateService.successfulResMsg()}}</h4>
         }
         <p>Create your account to proceed</p>
     </div>
-    <form [formGroup]="adminSignupForm" class="form__body admin-signup__body" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signupForm" class="form__body admin-signup__body" (ngSubmit)="onSubmit()">
         <div class="form__field-container">
             <label for="name">Name</label>
             <input type="text" formControlName="name" class="form-control" placeholder="Your Name">
-            <p class="error">{{ getError('name', adminSignupForm) }}</p>
+            <p class="error">{{ getError('name', signupForm) }}</p>
         </div>
         <!-- <div class="form__field-container">
             <label for="email">Email</label>
@@ -24,7 +24,7 @@
             <label for="password">Password</label>
             <input type="password" formControlName="password" class="form-control"
             placeholder="Minimum 8 characters">
-            <p class="error">{{ getError('password', adminSignupForm) }}</p>
+            <p class="error">{{ getError('password', signupForm) }}</p>
         </div>
         <!-- <div class="form__field-container">
             <label for="password">Phone Number</label>
@@ -35,13 +35,13 @@
         <button class="form__submitbtn btn btn-primary" type="submit">
             Sign Up
         </button>
-        @if (adminInviteStateService.requestSent() && !adminInviteStateService.gotError()) {
+        @if (userInviteStateService.requestSent() && !userInviteStateService.gotError()) {
             <p class="loading">Processing...</p>
         }
 
-        @if (!adminInviteStateService.requestSent() && adminInviteStateService.gotError()) {
+        @if (!userInviteStateService.requestSent() && userInviteStateService.gotError()) {
             <p class="error" style="word-break: break-all; line-height: normal;">
-                {{ adminInviteStateService.gotError() ? adminInviteStateService.backendErrorMsg() : ''}}
+                {{ userInviteStateService.gotError() ? userInviteStateService.backendErrorMsg() : ''}}
             </p>
         }
     </form>

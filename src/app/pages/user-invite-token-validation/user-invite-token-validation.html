@@ -1,6 +1,6 @@
 <section class="admin-signup">
-    @if (!adminInviteStateService.shouldShowForm()) {
-        @if (!adminInviteStateService.gotError()) {
+    @if (!userInviteStateService.shouldShowForm()) {
+        @if (!userInviteStateService.gotError()) {
             <app-loading-spinner></app-loading-spinner>
         } @else {
             <app-user-invite-error-handler></app-user-invite-error-handler>

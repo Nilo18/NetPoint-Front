@@ -8,9 +8,9 @@
         </svg>
     </div>
     <h3 class="error-state__title">Something went wrong</h3>
-    <p class="error-state__message">{{ adminInviteStateService.backendErrorMsg() }}</p>
+    <p class="error-state__message">{{ userInviteStateService.backendErrorMsg() }}</p>
     <button class="error-state__retry btn btn-outline-primary"
-    (click)="adminInviteStateService.validateToken()">
+    (click)="userInviteStateService.validateToken()">
         Try again
     </button>
 </div>

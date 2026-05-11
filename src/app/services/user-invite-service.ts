@@ -37,7 +37,7 @@ export class UserInviteService {
     }
   }
 
-  async completeRegistration(token: string, credentials: AdminRegistrationCredentials) {
+  async completeRegistration(token: string, credentials: UserRegistrationCredentials) {
     try {
       const res = await firstValueFrom(this.http.post<AuthResponse>(
         `${this.baseUrl}/complete?token=${token}`, credentials
