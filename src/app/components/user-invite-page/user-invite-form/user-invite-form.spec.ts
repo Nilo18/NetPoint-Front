@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminInviteErrorHandler } from './admin-invite-error-handler';
+import { UserInviteForm } from './user-invite-form';
 
-describe('AdminInviteErrorHandler', () => {
-  let component: AdminInviteErrorHandler;
-  let fixture: ComponentFixture<AdminInviteErrorHandler>;
+describe('UserInviteForm', () => {
+  let component: UserInviteForm;
+  let fixture: ComponentFixture<UserInviteForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminInviteErrorHandler]
+      imports: [UserInviteForm]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AdminInviteErrorHandler);
+    fixture = TestBed.createComponent(UserInviteForm);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

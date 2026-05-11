@@ -4,12 +4,12 @@ import { BackendUrlHolderService } from './backend-url-holder-service';
 import { firstValueFrom } from 'rxjs';
 import { AuthResponse } from './auth-service';
 
-export interface AdminInviteEndpointResponse {
+export interface UserInviteEndpointResponse {
   status: number,
   message: string
 }
 
-export interface AdminRegistrationCredentials {
+export interface UserRegistrationCredentials {
   name: string,
   email: string,
   password: string,
@@ -19,7 +19,7 @@ export interface AdminRegistrationCredentials {
 @Injectable({
   providedIn: 'root',
 })
-export class AdminInviteService {
+export class UserInviteService {
   private http = inject(HttpClient)
   private baseUrlHolder = inject(BackendUrlHolderService)
   private baseUrl = `${this.baseUrlHolder.getBaseUrl()}/api/invitations`
@@ -27,7 +27,7 @@ export class AdminInviteService {
   async verifyInvitation(token: string) {
     try {
       const res = await firstValueFrom(
-        this.http.get<AdminInviteEndpointResponse>(`${this.baseUrl}/validate?token=${token}`)
+        this.http.get<UserInviteEndpointResponse>(`${this.baseUrl}/validate?token=${token}`)
       )
       console.log('The response is: ', res)
       return res

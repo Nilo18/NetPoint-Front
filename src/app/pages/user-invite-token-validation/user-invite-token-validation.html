@@ -3,9 +3,9 @@
         @if (!adminInviteStateService.gotError()) {
             <app-loading-spinner></app-loading-spinner>
         } @else {
-            <app-admin-invite-error-handler></app-admin-invite-error-handler>
+            <app-user-invite-error-handler></app-user-invite-error-handler>
         }
     } @else {
-        <app-admin-invite-form></app-admin-invite-form>
+        <app-user-invite-form></app-user-invite-form>
     }
 </section>

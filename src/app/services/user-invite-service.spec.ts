@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminInviteService } from './admin-invite-service';
+import { UserInviteService } from './user-invite-service';
 
-describe('AdminInviteService', () => {
-  let service: AdminInviteService;
+describe('UserInviteService', () => {
+  let service: UserInviteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminInviteService);
+    service = TestBed.inject(UserInviteService);
   });
 
   it('should be created', () => {

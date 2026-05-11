@@ -6,7 +6,7 @@ import { ExpenseCalculator } from './pages/expense-calculator/expense-calculator
 import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
 import { NotFoundPage } from './pages/not-found-page/not-found-page';
 import { Settings } from './pages/settings/settings';
-import { AdminInviteTokenValidation } from './pages/admin-invite-token-validation/admin-invite-token-validation';
+import { UserInviteTokenValidation } from './pages/user-invite-token-validation/user-invite-token-validation';
 
 export const routes: Routes = [
     {path: "", component: Home},
@@ -15,6 +15,6 @@ export const routes: Routes = [
     {path: "expenses", component: ExpenseCalculator},
     {path: "admin", component: AdminDashboard},
     {path: "settings", component: Settings},
-    {path: "setup-account", component: AdminInviteTokenValidation},
+    {path: "setup-account", component: UserInviteTokenValidation},
     {path: "**", component: NotFoundPage}
 ];

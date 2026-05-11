@@ -1,10 +1,10 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { AdminInviteService } from './admin-invite-service';
+import { UserInviteService } from './user-invite-service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AdminInviteStateManagementService {
+export class UserInviteStateManagementService {
   private _gotError: WritableSignal<boolean> = signal(false)
   readonly gotError = this._gotError.asReadonly()
   private _backendErrorMsg: WritableSignal<string> = signal('')
@@ -17,7 +17,7 @@ export class AdminInviteStateManagementService {
   readonly successfulResMsg = this._successfulResMsg.asReadonly()
   private _requestSent: WritableSignal<boolean> = signal(false)
   readonly requestSent = this._requestSent.asReadonly()
-  private adminInviteService = inject(AdminInviteService)
+  private userInviteService = inject(UserInviteService)
 
   setGotError(value: boolean): void {
     this._gotError.set(value);
@@ -54,7 +54,7 @@ export class AdminInviteStateManagementService {
     this.setBackendErrorMsg('')
 
     try {
-      const res = await this.adminInviteService.verifyInvitation(this.invitationToken()) 
+      const res = await this.userInviteService.verifyInvitation(this.invitationToken()) 
       // if (res.status === 200) {
       this.setSuccessfulResMsg(res.message)
 
