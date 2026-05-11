@@ -16,14 +16,14 @@ export class SettingsAddUserModal {
   private fb = inject(FormBuilder)
   private settingsService = inject(SettingsPageService)
   private formValidator = inject(FormValidatorService)
-  adminInviteForm!: FormGroup
-  cashierAdditionForm!: FormGroup
+  userInviteForm!: FormGroup
+  // cashierAdditionForm!: FormGroup
   role: WritableSignal<string> = signal('ADMIN')
   decodedToken!: any
 
   constructor() {
     effect(() => {
-      this.cashierAdditionForm?.patchValue({ role: this.role() })
+      this.userInviteForm?.patchValue({ role: this.role() })
     })
   }
 
@@ -33,25 +33,11 @@ export class SettingsAddUserModal {
     if (token) {
       this.decodedToken = jwtDecode(token)
 
-      // if (this.role() === 'ADMIN') {
-        this.adminInviteForm = this.fb.group({
-          email: ['', [Validators.required, Validators.email]],
-          role: [this.role(), [Validators.required]],
-          companyId: [this.decodedToken.companyId, [Validators.required]]
-        })
-      // } else if (this.role() === 'CASHIER') {
-        console.log('The role is: ', this.role())
-          this.cashierAdditionForm = this.fb.group({
-            name: ['', [Validators.required]],
-            email: ['', [Validators.required, Validators.email]],
-            role: [this.role(), [Validators.required]],
-            pin: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-            companyId: [this.decodedToken.companyId, [Validators.required]]
-          })
-      // } else {
-      //     console.log('Invalid role.')
-      //     return
-      // }
+      this.userInviteForm = this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        role: [this.role(), [Validators.required]],
+        companyId: [this.decodedToken.companyId, [Validators.required]]
+      })
     }
   }
 
@@ -61,37 +47,15 @@ export class SettingsAddUserModal {
     console.log('The role is: ', this.role())
   }
 
-  inviteAdmin() {
-    if (this.adminInviteForm.invalid) {
-      this.adminInviteForm.markAllAsTouched()
-      console.log('Invalid form.')
+  inviteUser() {
+    if (this.userInviteForm.invalid) {
+      this.userInviteForm.markAllAsTouched()
+      console.log('Invalid form: ', this.userInviteForm.value)
       return
     }
 
-    console.log(this.adminInviteForm.value)
-    this.settingsService.inviteAdmin(this.adminInviteForm.value)
-  }
-
-  addCashier() {
-    if (this.cashierAdditionForm.invalid) {
-      this.cashierAdditionForm.markAllAsTouched()
-      console.log('Invalid form.')
-      return
-    }
-
-    console.log(this.cashierAdditionForm.value)
-    this.settingsService.addCashier(this.cashierAdditionForm.value)
-    this.modal.close()
-  }
-
-  onSubmit() {
-    if (this.role() === 'ADMIN') {
-      this.inviteAdmin()
-    } else {
-      // Cashier addition logic will go here
-      console.log(this.role())
-      this.addCashier()
-    }
+    console.log(this.userInviteForm.value)
+    this.settingsService.inviteAdmin(this.userInviteForm.value)
   }
 
   getError(field: string, form: FormGroup) {

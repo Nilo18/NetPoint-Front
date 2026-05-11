@@ -26,6 +26,11 @@ export class UserPagination {
   }
 
   async onPageClick(page: number) {
+    if (this.settingsService.currentPage() === page) {
+      console.log('Already on the selected page.')
+      return
+    }
+
     this.settingsService.setIsLoading(true)
     console.log('isLoading value is: ', this.settingsService.isLoading())
     console.log('clicked page:', page, typeof page)
