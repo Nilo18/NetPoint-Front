@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { FormValidatorService } from '../../services/form-validator-service';
 import { AuthBanner } from '../../components/auth-banner/auth-banner';
 import { CashierLoginForm } from '../../components/cashier-login-form/cashier-login-form';
-import { AdminLoginFirstStageForm } from '../../components/admin-login-first-stage-form/admin-login-first-stage-form';
-import { AdminLoginSecondStageForm } from '../../components/admin-login-second-stage-form/admin-login-second-stage-form';
+import { AdminLoginFirstStageForm } from '../../components/login-components/admin-login-first-stage-form/admin-login-first-stage-form';
+import { AdminLoginSecondStageForm } from '../../components/login-components/admin-login-second-stage-form/admin-login-second-stage-form';
 import { LoginStateManagementService } from '../../services/login-state-management-service';
 
 @Component({

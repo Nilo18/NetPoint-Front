@@ -6,23 +6,23 @@
                     <img src="/assets/netpoint-logo.png" alt="Logo">
                 </div>
                 <h4>Log In To Your Business Account</h4>
-                @if (!checkboxValues.cashier()) {
+                <!-- @if (!checkboxValues.cashier()) { -->
                     @if (!loginStateService.showLoginNextStep()) {
                         <p>Step 1 of 2: Personal Credentials</p>
                     } @else {
                         <p>Step 2 of 2: Verification</p>
                     }   
-                }
+                <!-- } -->
             </div>
-            @if (checkboxValues.cashier()) {
-                <app-cashier-login-form></app-cashier-login-form>
-            } @else {
+            <!-- @if (checkboxValues.cashier()) { -->
+                <!-- <app-cashier-login-form></app-cashier-login-form> -->
+            <!-- } @else { -->
                 @if (!loginStateService.showLoginNextStep()) {
                     <app-admin-login-first-stage-form></app-admin-login-first-stage-form>
                 } @else {
                     <app-admin-login-second-stage-form></app-admin-login-second-stage-form>
                 }
-            }
+            <!-- } -->
             <div class="login__options">
                 <div class="login__option" (click)="setCheckboxValue('owner')">
                     <input type="checkbox" class="login__option--checkbox"

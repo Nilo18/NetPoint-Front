@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';
-import { FormValidatorService } from '../../services/form-validator-service';
-import { LoginStateManagementService } from '../../services/login-state-management-service';
+import { FormValidatorService } from '../../../services/form-validator-service';
+import { LoginStateManagementService } from '../../../services/login-state-management-service';
 
 @Component({
   selector: 'app-admin-login-second-stage-form',

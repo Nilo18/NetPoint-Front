@@ -1,8 +1,8 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormValidatorService } from '../../services/form-validator-service';
-import { LoginStateManagementService } from '../../services/login-state-management-service';
-import { AuthService } from '../../services/auth-service';
+import { FormValidatorService } from '../../../services/form-validator-service';
+import { LoginStateManagementService } from '../../../services/login-state-management-service';
+import { AuthService } from '../../../services/auth-service';
 
 @Component({
   selector: 'app-admin-login-first-stage-form',
@@ -17,6 +17,12 @@ export class AdminLoginFirstStageForm {
   // showNextStep: WritableSignal<boolean> = signal(false)
   public loginStateService = inject(LoginStateManagementService)
   public authService = inject(AuthService)
+
+  constructor() {
+    effect(() => {
+      this.loginForm?.patchValue({ role: this.loginStateService.role() })
+    })
+  }
   
   ngOnInit() {
     // console.log(this.bannerFeatures)
@@ -25,7 +31,7 @@ export class AdminLoginFirstStageForm {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      // role: ['', [Validators.required]]
+      role: [this.loginStateService.role(), [Validators.required]]
     })
 
     const saved = this.loginStateService.loginStageOneData()
@@ -53,6 +59,8 @@ export class AdminLoginFirstStageForm {
       return
     }
 
+    console.log(this.loginForm.value)
+    // return
     if (!this.loginStateService.showLoginNextStep()) {
       // this.loginStateService.setGotBackendLoginError(false)
       // this.loginStateService.setBackendLoginErrorMsg('')
