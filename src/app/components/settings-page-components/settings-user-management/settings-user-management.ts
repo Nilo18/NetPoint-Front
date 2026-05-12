@@ -6,10 +6,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
 import { UserPagination } from '../user-pagination/user-pagination';
 import { UserDeletionErrorDisplayModal } from '../user-deletion-error-display-modal/user-deletion-error-display-modal';
+import { SettingsRolePermissions } from '../settings-role-permissions/settings-role-permissions';
 
 @Component({
   selector: 'app-settings-user-management',
-  imports: [UserPagination],
+  imports: [UserPagination, SettingsRolePermissions],
   templateUrl: './settings-user-management.html',
   styleUrl: './settings-user-management.scss',
 })

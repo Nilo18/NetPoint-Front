@@ -1,3 +1,5 @@
+@use '../../../../styles/mixins.scss' as *;
+
 .settings-sidebar {
     position: fixed;
     left: 0;
@@ -9,4 +11,22 @@
     width: 256px;
     background-color: white;
     padding: 1rem;
+    // @include FlexContainerColumn;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &__section {
+        background-color: transparent;
+        border: none;
+        height: 2.25rem;
+        @include FlexContainer;
+        justify-content: start;
+        gap: 0.75rem;
+
+        // &--icon-holder {
+            // width: 20px;
+            // height: 20px;
+        // }
+    }
 }

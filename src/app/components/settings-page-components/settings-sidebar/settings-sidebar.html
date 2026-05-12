@@ -1,3 +1,8 @@
 <aside class="settings-sidebar">
-    <p>settings-sidebar works!</p>
+    @for (section of sidebarSections; track section.id) {
+        <button class="settings-sidebar__section">
+            <span [innerHTML]="section.icon" class="settings-sidebar__section--icon-holder"></span>
+            <span>{{ section.heading }}</span>
+        </button>
+    }
 </aside>

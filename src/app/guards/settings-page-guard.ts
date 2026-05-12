@@ -4,5 +4,6 @@ import { TokenService } from '../services/token-service';
 import { jwtDecode } from 'jwt-decode';
 
 export const settingsPageGuard: CanActivateFn = (route, state) => {
+  
   return true;
 };
