@@ -14,7 +14,7 @@ import { LoginStateManagementService } from '../../services/login-state-manageme
   imports: [
     ReactiveFormsModule, 
     AuthBanner, FormsModule, 
-    CashierLoginForm, AdminLoginFirstStageForm,
+    AdminLoginFirstStageForm,
     AdminLoginSecondStageForm
   ],
   templateUrl: './login.html',

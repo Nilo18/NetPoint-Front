@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface SignupData {
   name: string
@@ -33,6 +34,7 @@ export class AuthService {
   private baseUrlHolder = inject(BackendUrlHolderService)
   private http = inject(HttpClient)
   private baseUrl = this.baseUrlHolder.getBaseUrl()
+  private router = inject(Router)
 
   async signup(value: SignupData) {
     try {
@@ -65,5 +67,10 @@ export class AuthService {
       console.log('Failed to signup: ', error)
       throw error      
     }
+  }
+
+  logout() {
+    localStorage.removeItem('net_token')
+    this.router.navigate(['/'])
   }
 }

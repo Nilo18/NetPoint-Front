@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { LoginStateManagementService } from '../../../services/login-state-management-service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-admin-login-second-stage-form',
@@ -54,7 +55,12 @@ export class AdminLoginSecondStageForm {
         console.log(this.loginFormStageTwo.value)
         const res = await this.authService.login2fa(this.loginFormStageTwo.value)
         localStorage.setItem('net_token', res)
-        this.router.navigate(['/admin'])
+        const decodedToken: any = jwtDecode(res)
+        if (decodedToken.role === 'OWNER' || decodedToken.role === 'ADMIN') {
+          this.router.navigate(['/admin'])
+        } else {
+          this.router.navigate(['/expenses'])
+        }
       } catch (error: any) {
         console.log(error)
         console.log('error.error from the second stage component: ', error.error)
