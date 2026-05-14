@@ -1,4 +1,5 @@
 @use '../../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables.scss' as *;
 
 .settings-sidebar {
     position: fixed;
@@ -23,10 +24,28 @@
         @include FlexContainer;
         justify-content: start;
         gap: 0.75rem;
+        border-radius: 8px;
+        padding: 8px 12px;
+        transition: 0.05s ease-in-out;
 
         // &--icon-holder {
             // width: 20px;
             // height: 20px;
         // }
     }
+
+    &__section:hover {
+        background-color: #F2F2F2;
+    }
+}
+
+
+.active-section {
+    background-color: $primary-color;
+    color: white;
+}
+
+.active-section:hover {
+    background-color: $primary-color;
+    color: white;
 }
