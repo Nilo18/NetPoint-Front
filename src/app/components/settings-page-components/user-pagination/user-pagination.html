@@ -11,8 +11,7 @@
             <p>currentPage === page</p>
           } -->
 
-            <li class="page-item" (click)="onPageClick(page)" 
-            >
+            <li class="page-item" (click)="onPageClick(page)">
                 <a class="page-link" [class.selected-page]="settingsService.currentPage() === page">{{ page }}</a>
             </li>
         }

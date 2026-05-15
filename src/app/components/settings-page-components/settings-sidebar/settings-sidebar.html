@@ -1,6 +1,7 @@
 <aside class="settings-sidebar">
     @for (section of sidebarSections; track section.id) {
-        <button class="settings-sidebar__section" [class.active-section]="section.isActive">
+        <button class="settings-sidebar__section" [class.active-section]="section.isActive"
+        [routerLink]="section.link" (click)="setSectionIsActive(section, true)">
             <span [innerHTML]="section.icon" class="settings-sidebar__section--icon-holder"></span>
             <span>{{ section.heading }}</span>
         </button>

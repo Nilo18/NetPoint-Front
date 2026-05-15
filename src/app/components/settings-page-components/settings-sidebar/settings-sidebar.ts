@@ -5,22 +5,26 @@ import { SettingsNotifications } from '../settings-notifications/settings-notifi
 import { SettingsSecurity } from '../settings-security/settings-security';
 import { SettingsAppearance } from '../settings-appearance/settings-appearance';
 import { SettingsBilling } from '../settings-billing/settings-billing';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 
 interface SidebarSection {
+  id: number,
   heading: string,
-  component: Type<any>
+  icon: SafeHtml,
+  link: string,
+  isActive: boolean
 }
 
 @Component({
   selector: 'app-settings-sidebar',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './settings-sidebar.html',
   styleUrl: './settings-sidebar.scss',
 })
 export class SettingsSidebar {
   private sanitizer = inject(DomSanitizer)
-  sidebarSections = [
+  sidebarSections: SidebarSection[] = [
     {
       id: 1,
       heading: 'User Management',
@@ -32,7 +36,8 @@ export class SettingsSidebar {
         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
         </svg>`
       ),
-      component: SettingsUserManagement,
+      // component: SettingsUserManagement,
+      link: '/settings',
       isActive: true
     },
     {
@@ -51,7 +56,8 @@ export class SettingsSidebar {
       <path d="M10 10h4"></path><path d="M10 14h4"></path><path d="M10 18h4"></path>
       </svg>`
       ),
-      component: BusinessInfo,
+      // component: BusinessInfo,
+      link: '/settings/business-info',
       isActive: false
     },
     {
@@ -68,7 +74,8 @@ export class SettingsSidebar {
       18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>
       </svg>`
       ),
-      component: SettingsNotifications,
+      // component: SettingsNotifications,
+      link: '/settings/notifications',
       isActive: false
     },
     {
@@ -83,7 +90,9 @@ export class SettingsSidebar {
       <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
       </svg>`
       ),
-      component: SettingsSecurity
+      // component: SettingsSecurity
+      link: '/settings/security',
+      isActive: false
     },
     {
       id: 5,
@@ -101,7 +110,8 @@ export class SettingsSidebar {
       1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
       </svg>`
       ),
-      component: SettingsAppearance,
+      // component: SettingsAppearance,
+      link: '/settings/appearance',
       isActive: false
     },
     {
@@ -117,8 +127,19 @@ export class SettingsSidebar {
       <line x1="2" x2="22" y1="10" y2="10"></line>
       </svg>`
       ),
-      component: SettingsBilling,
+      // component: SettingsBilling,
+      link: '/settings/billing',
       isActive: false
     }
   ]
+
+  setSectionIsActive(section: SidebarSection, value: boolean) {
+    const otherActiveSection = this.sidebarSections.find(sec => sec.isActive === true)
+
+    if (otherActiveSection) {
+      otherActiveSection.isActive = false
+    }
+
+    section.isActive = value
+  }
 }
