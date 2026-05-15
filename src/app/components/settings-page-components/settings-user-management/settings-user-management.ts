@@ -21,7 +21,6 @@ export class SettingsUserManagement {
   decodedToken!: any
   userList: Signal<User[]> = this.settingsService.userList
   decodedTokenCompanyId = signal<number | null>(null)
-  // isLoading = signal(true); // or wire it to your actual data fetch
 
   constructor() {
     // Example: flip it off once users are loaded
@@ -40,12 +39,7 @@ export class SettingsUserManagement {
       this.decodedToken = jwtDecode(token)
       console.log(this.decodedToken)
       const companyId = Number(this.decodedToken.companyId)
-      const res = await this.settingsService.getUserlist(companyId, 1, 10)
-
-      // if (res) {
-      //   this.settingsService.setIsLoading(false);
-      // }
-
+      const res = await this.settingsService.getUserlist(companyId, 1, 10) 
       this.decodedTokenCompanyId.set(companyId)
       // this.userList = res.userList
       this.cdr.detectChanges()

@@ -47,6 +47,10 @@ export class SettingsPageService {
   readonly currentPage = this._currentPage.asReadonly()
   private _isLoading = signal(true);
   readonly isLoading = this._isLoading.asReadonly()
+  private _gotBackendError = signal(false)
+  readonly gotBackendError = this._gotBackendError.asReadonly()
+  private _backendErrMsg = signal('')
+  readonly backendErrMsg = this._backendErrMsg.asReadonly()
 
   setIsLoading(val: boolean) {
     this._isLoading.set(val)
@@ -75,8 +79,11 @@ export class SettingsPageService {
       this._totalPages.set(res.totalPages)
       console.log(res)
       return res
-    } catch (error) {
+    } catch (error: any) {
       console.log("Couldn't get user list: ", error)
+      this.setIsLoading(false)
+      this._gotBackendError.set(true)
+      this._backendErrMsg.set(error.error.error)
       throw error
     }
   }

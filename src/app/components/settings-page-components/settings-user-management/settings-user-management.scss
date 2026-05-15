@@ -51,6 +51,18 @@
             }
         }
 
+       &--error-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ef4444;
+
+            svg {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
         &--text {
             font-size: 0.875rem;
             font-weight: 500;
