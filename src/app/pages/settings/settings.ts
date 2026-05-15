@@ -8,7 +8,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
-  imports: [SettingsHeader, SettingsUserManagement, /*SettingsRolePermissions,*/ SettingsSidebar, RouterOutlet],
+  imports: [SettingsHeader, /*SettingsRolePermissions,*/ SettingsSidebar, RouterOutlet],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
 })

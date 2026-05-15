@@ -4,7 +4,7 @@ import { SettingsSidebar } from '../settings-sidebar/settings-sidebar';
 
 @Component({
   selector: 'app-business-info',
-  imports: [SettingsHeader, SettingsSidebar],
+  imports: [],
   templateUrl: './business-info.html',
   styleUrl: './business-info.scss',
 })
