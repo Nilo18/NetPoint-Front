@@ -36,7 +36,6 @@ export class SettingsSidebar {
         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
         </svg>`
       ),
-      // component: SettingsUserManagement,
       link: '/settings',
       isActive: true
     },
@@ -56,7 +55,6 @@ export class SettingsSidebar {
       <path d="M10 10h4"></path><path d="M10 14h4"></path><path d="M10 18h4"></path>
       </svg>`
       ),
-      // component: BusinessInfo,
       link: '/settings/business-info',
       isActive: false
     },
@@ -74,26 +72,25 @@ export class SettingsSidebar {
       18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>
       </svg>`
       ),
-      // component: SettingsNotifications,
       link: '/settings/notifications',
       isActive: false
     },
-    {
-      id: 4,
-      heading: 'Security',
-      icon: this.sanitizer.bypassSecurityTrustHtml(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="lucide lucide-lock h-5 w-5"
-      data-fg-dvfy500="223.44:249.19782:/src/app/pages/Settings.tsx:761:19:30011:28:e:Icon"
-      data-fgid-dvfy500=":rhh:"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-      </svg>`
-      ),
-      // component: SettingsSecurity
-      link: '/settings/security',
-      isActive: false
-    },
+    // {
+    //   id: 4,
+    //   heading: 'Security',
+    //   icon: this.sanitizer.bypassSecurityTrustHtml(
+    //   `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+    //   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    //   class="lucide lucide-lock h-5 w-5"
+    //   data-fg-dvfy500="223.44:249.19782:/src/app/pages/Settings.tsx:761:19:30011:28:e:Icon"
+    //   data-fgid-dvfy500=":rhh:"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+    //   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    //   </svg>`
+    //   ),
+    //   // component: SettingsSecurity
+    //   link: '/settings/security',
+    //   isActive: false
+    // },
     {
       id: 5,
       heading: 'Apperance',
@@ -110,7 +107,6 @@ export class SettingsSidebar {
       1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
       </svg>`
       ),
-      // component: SettingsAppearance,
       link: '/settings/appearance',
       isActive: false
     },
@@ -127,7 +123,6 @@ export class SettingsSidebar {
       <line x1="2" x2="22" y1="10" y2="10"></line>
       </svg>`
       ),
-      // component: SettingsBilling,
       link: '/settings/billing',
       isActive: false
     }

@@ -1,1 +1,90 @@
-<p>settings-billing works!</p>
+<div class="billing">
+
+  <!-- Current Plan -->
+  <div class="billing__card">
+    <h2 class="billing__title">Current Plan</h2>
+    <p class="billing__subtitle">Manage your subscription and billing</p>
+
+    <div class="billing__plan">
+      <div class="billing__plan--header">
+        <div>
+          <h3 class="billing__plan--name">Professional Plan</h3>
+          <p class="billing__plan--tagline">For growing businesses</p>
+        </div>
+        <div class="billing__plan--price">
+          <span class="billing__plan--amount">$49</span>
+          <span class="billing__plan--period">/month</span>
+        </div>
+      </div>
+
+      <ul class="billing__plan--features">
+        <li>Unlimited products</li>
+        <li>Up to 10 team members</li>
+        <li>Advanced analytics</li>
+        <li>Priority support</li>
+      </ul>
+
+      <div class="billing__plan--actions">
+        <button class="billing__btn billing__btn--outline">Change Plan</button>
+        <button class="billing__btn billing__btn--danger">Cancel Subscription</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Method -->
+  <div class="billing__card">
+    <h2 class="billing__title">Payment Method</h2>
+    <p class="billing__subtitle">Manage your payment information</p>
+
+    <div class="billing__payment">
+      <div class="billing__payment--left">
+        <div class="billing__visa">VISA</div>
+        <div class="billing__payment--info">
+          <span class="billing__payment--number">•••• •••• •••• 4242</span>
+          <span class="billing__payment--expiry">Expires 12/26</span>
+        </div>
+      </div>
+      <button class="billing__btn billing__btn--outline billing__btn--sm">Update</button>
+    </div>
+  </div>
+
+  <!-- Billing History -->
+  <div class="billing__card">
+    <h2 class="billing__title">Billing History</h2>
+    <p class="billing__subtitle">View and download past invoices</p>
+
+    <div class="billing__history">
+      <div class="billing__invoice">
+        <div class="billing__invoice--info">
+          <span class="billing__invoice--date">Apr 1, 2026</span>
+          <span class="billing__invoice--amount">$49.00</span>
+        </div>
+        <div class="billing__invoice--actions">
+          <span class="billing__badge">Paid</span>
+          <button class="billing__btn--link">Download</button>
+        </div>
+      </div>
+      <div class="billing__invoice">
+        <div class="billing__invoice--info">
+          <span class="billing__invoice--date">Mar 1, 2026</span>
+          <span class="billing__invoice--amount">$49.00</span>
+        </div>
+        <div class="billing__invoice--actions">
+          <span class="billing__badge">Paid</span>
+          <button class="billing__btn--link">Download</button>
+        </div>
+      </div>
+      <div class="billing__invoice">
+        <div class="billing__invoice--info">
+          <span class="billing__invoice--date">Feb 1, 2026</span>
+          <span class="billing__invoice--amount">$49.00</span>
+        </div>
+        <div class="billing__invoice--actions">
+          <span class="billing__badge">Paid</span>
+          <button class="billing__btn--link">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

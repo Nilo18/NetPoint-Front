@@ -1,1 +1,63 @@
-<p>settings-appearance works!</p>
+<div class="appearance">
+
+  <div class="appearance__card">
+    <h2 class="appearance__title">Theme Preferences</h2>
+    <p class="appearance__subtitle">Customize the look and feel of your dashboard</p>
+
+    <div class="appearance__field">
+      <label for="color-theme">Color Theme</label>
+      <select id="color-theme">
+        <option selected>Light</option>
+        <option>Dark</option>
+        <option>System</option>
+      </select>
+    </div>
+
+    <div class="appearance__field">
+      <label>Accent Color</label>
+      <div class="appearance__colors">
+        <button class="appearance__color appearance__color--active" style="background: #4F46E5;" aria-label="Indigo"></button>
+        <button class="appearance__color" style="background: #10B981;" aria-label="Green"></button>
+        <button class="appearance__color" style="background: #F59E0B;" aria-label="Amber"></button>
+        <button class="appearance__color" style="background: #EF4444;" aria-label="Red"></button>
+        <button class="appearance__color" style="background: #8B5CF6;" aria-label="Purple"></button>
+      </div>
+    </div>
+
+    <div class="appearance__toggle-row">
+      <div class="appearance__toggle-text">
+        <span class="appearance__toggle-heading">Compact Mode</span>
+        <span class="appearance__toggle-description">Reduce spacing for more content</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" />
+        <span class="toggle__track"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="appearance__card">
+    <h2 class="appearance__title">Display Settings</h2>
+    <p class="appearance__subtitle">Configure dashboard display preferences</p>
+
+    <div class="appearance__field">
+      <label for="currency">Currency</label>
+      <select id="currency">
+        <option selected>USD ($)</option>
+        <option>EUR (€)</option>
+        <option>GBP (£)</option>
+        <option>GEL (₾)</option>
+      </select>
+    </div>
+
+    <div class="appearance__field">
+      <label for="date-format">Date Format</label>
+      <select id="date-format">
+        <option selected>MM/DD/YYYY</option>
+        <option>DD/MM/YYYY</option>
+        <option>YYYY-MM-DD</option>
+      </select>
+    </div>
+  </div>
+
+</div>
