@@ -1,0 +1,23 @@
+<div class="modal-content verification-modal">
+    <div class="modal-header verification-modal__header">
+        <h5 class="modal-title">Business Info Modification Verification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.close()">
+        </button>
+    </div>
+    <div class="modal-body verification-modal__body">
+        <form [formGroup]="verificationForm" (click)="onSubmit()">
+            <label for="verification">Verification Code</label>
+            <input type="text" placeholder="Enter the code here..." formControlName="otpCode" 
+            class="form-control">
+            <p class="error">
+                {{ getError('code', verificationForm) }}
+            </p>
+            <div class="verification-modal__body--btn-section">
+                <button type="button" class="btn btn-primary verification-modal__submit-btn">Verify</button>
+            </div>
+        </form>
+    </div>
+    <!-- <div class="modal-footer"> -->
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+    <!-- </div> -->
+</div>

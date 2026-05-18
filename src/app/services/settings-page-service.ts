@@ -32,6 +32,23 @@ export interface CashierCredentials {
   companyId: number
 }
 
+export interface CompanyDTO {
+  id: number,
+  name: string,
+  email: string,
+  industry: string
+}
+
+export interface CompanyUpdateRequestResponse {
+  status: number,
+  tempToken: string
+}
+
+export interface CompanyUpdateCredentials {
+  tempToken: string
+  verificationCode: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -132,11 +149,36 @@ export class SettingsPageService {
   async getCompanyById(companyId: number) {
     try {
       console.log('Sending getCompanyId() request to: ', `${this.baseUrl}/settings/company/${companyId}`)
-      const res = await firstValueFrom(this.http.get<any>(`${this.baseUrl}/settings/company/${companyId}`))
+      const res = await firstValueFrom(this.http.get<CompanyDTO>(`${this.baseUrl}/settings/company/${companyId}`))
       console.log(res)
       return res
     } catch (error) {
       console.log("Couldn't get company by id: ", error)
+      throw error
+    }
+  }
+
+  async sendCompanyBusinessInfoUpdateRequest(newInfo: CompanyDTO) {
+    try {
+      const res = await firstValueFrom(this.http.
+        post<CompanyUpdateRequestResponse>(`${this.baseUrl}/settings/company/verify`, newInfo))
+      console.log('Received company update response: ', res)
+      return res
+    } catch (error) {
+      console.log("Couldn't update company: ", error)
+      throw error
+    }
+  }
+
+  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: CompanyUpdateCredentials) {
+    try {
+      console.log('Sending: ', {verificationInfo, newInfo })
+      const res = await firstValueFrom(this.http.put<CompanyDTO>(`${this.baseUrl}/settings/company`, 
+        {verificationInfo, newInfo }))
+      console.log('Received company update response: ', res)
+      return res
+    } catch (error) {
+      console.log("Couldn't update company: ", error)
       throw error
     }
   }

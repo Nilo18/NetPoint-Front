@@ -1,0 +1,16 @@
+@use '../../../../styles/variables.scss' as *;
+@use '../../../../styles/mixins.scss' as *;
+
+.verification-modal {
+    &__body {
+        &--btn-section {
+            width: 100%;
+            @include FlexContainer;
+            justify-content: end;
+        }
+    }
+}
+
+.verification-modal__submit-btn {
+    background-color: $primary-color;
+}

@@ -1,4 +1,5 @@
 @use '../../../../styles/variables.scss' as *;
+@use '../../../../styles/mixins.scss' as *;
 
 .business-form {
     background: #ffffff;
@@ -64,25 +65,31 @@
         cursor: pointer;
     }
 
-    .save-btn {
-        margin-top: 1.5rem;
-        background: $primary-color;
-        color: #ffffff;
-        border: none;
-        border-radius: 8px;
-        padding: 0 20px;
-        height: 38px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.15s, transform 0.1s;
+    &__lower-section {
+        width: 100%;
+        @include FlexContainer;
+        justify-content: start;
 
-        &:hover {
-            background: $primary-color-hover;
-        }
+        &--save-btn {
+            margin-top: 1.5rem;
+            background: $primary-color;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            height: 38px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
 
-        &:active {
-            transform: scale(0.98);
+            &:hover {
+                background: $primary-color-hover;
+            }
+
+            &:active {
+                transform: scale(0.98);
+            }
         }
     }
 }
