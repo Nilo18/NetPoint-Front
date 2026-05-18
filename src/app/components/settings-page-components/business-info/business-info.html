@@ -2,30 +2,35 @@
   <h2 class="business-form__form-title">Business Information</h2>
   <p class="business-form__form-subtitle">Update your business details and company information</p>
 
-  <form class="form__body">
+  <form class="form__body" [formGroup]="businessForm">
     <div class="business-form__name-and-industry">
         <div class="form__field-container">
             <label for="biz-name">Business Name</label>
-            <input id="biz-name" type="text" value="Demo Store" class="form-control">
+            <input id="biz-name" type="text" value="Demo Store" class="form-control" formControlName="name">
         </div>
         <div class="form__field-container">
             <label for="industry">Industry</label>
-            <select id="industry" class="form-select">
-                <option value="" disabled selected></option>
-                <option>Retail</option>
-                <option>Technology</option>
-                <option>Healthcare</option>
-                <option>Finance</option>
-                <option>Education</option>
-                <option>Other</option>
+            <select id="industry" class="form-select" formControlName="industry">
+              <!-- <option value="" disabled selected hidden class="signup__hidden-select">
+                  Select your industry
+              </option> -->
+              <option value="Retail">Retail</option>
+              <option value="Restaurant">Restaurant & Food Service</option>
+              <option value="Grocery">Grocery & Supermarket</option>
+              <option value="Fashion">Fashion & Apparel</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Pharmacy">Pharmacy & Healthcare</option>
+              <option value="Salon">Salon & Beauty</option>
+              <option value="Other">Other</option>
             </select>
         </div>
     </div>
     <div class="form__field-container full">
       <label for="biz-email">Business Email</label>
-      <input id="biz-email" type="email" value="nikalongurashvili@gmail.com" class="form-control"/>
+      <input id="biz-email" type="email" value="nikalongurashvili@gmail.com" class="form-control"
+      formControlName="email"/>
     </div>
-</form>
+  </form>
 
   <button class="save-btn">Save Changes</button>
 </div>

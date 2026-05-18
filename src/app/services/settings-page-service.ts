@@ -128,4 +128,16 @@ export class SettingsPageService {
       throw error
     }
   }
+
+  async getCompanyById(companyId: number) {
+    try {
+      console.log('Sending getCompanyId() request to: ', `${this.baseUrl}/settings/company/${companyId}`)
+      const res = await firstValueFrom(this.http.get<any>(`${this.baseUrl}/settings/company/${companyId}`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get company by id: ", error)
+      throw error
+    }
+  }
 }

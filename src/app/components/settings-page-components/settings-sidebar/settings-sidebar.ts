@@ -6,14 +6,14 @@ import { SettingsSecurity } from '../settings-security/settings-security';
 import { SettingsAppearance } from '../settings-appearance/settings-appearance';
 import { SettingsBilling } from '../settings-billing/settings-billing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 interface SidebarSection {
   id: number,
   heading: string,
   icon: SafeHtml,
   link: string,
-  isActive: boolean
+  // isActive: boolean
 }
 
 @Component({
@@ -24,6 +24,7 @@ interface SidebarSection {
 })
 export class SettingsSidebar {
   private sanitizer = inject(DomSanitizer)
+  public router = inject(Router)
   sidebarSections: SidebarSection[] = [
     {
       id: 1,
@@ -37,7 +38,7 @@ export class SettingsSidebar {
         </svg>`
       ),
       link: '/settings',
-      isActive: true
+      // isActive: true
     },
     {
       id: 2,
@@ -56,7 +57,7 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/business-info',
-      isActive: false
+      // isActive: false
     },
     {
       id: 3,
@@ -73,7 +74,7 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/notifications',
-      isActive: false
+      // isActive: false
     },
     // {
     //   id: 4,
@@ -108,7 +109,7 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/appearance',
-      isActive: false
+      // isActive: false
     },
     {
       id: 6,
@@ -124,17 +125,17 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/billing',
-      isActive: false
+      // isActive: false
     }
   ]
 
-  setSectionIsActive(section: SidebarSection, value: boolean) {
-    const otherActiveSection = this.sidebarSections.find(sec => sec.isActive === true)
+  // setSectionIsActive(section: SidebarSection, value: boolean) {
+  //   const otherActiveSection = this.sidebarSections.find(sec => sec.isActive === true)
 
-    if (otherActiveSection) {
-      otherActiveSection.isActive = false
-    }
+  //   if (otherActiveSection) {
+  //     otherActiveSection.isActive = false
+  //   }
 
-    section.isActive = value
-  }
+  //   section.isActive = value
+  // }
 }
