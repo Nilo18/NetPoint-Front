@@ -9,6 +9,7 @@ import { FormValidatorService } from '../../../services/form-validator-service';
 import { Subject, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsBusinessInfoValidatorModal } from '../settings-business-info-validator-modal/settings-business-info-validator-modal';
+import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 
 @Component({
   selector: 'app-business-info',
@@ -36,6 +37,7 @@ export class BusinessInfo {
   }
 
   async ngOnInit() {
+    console.log('Backend error message on business-info section is: ', this.errMsg())
     this.businessForm = this.fb.group({
       id: [-1 , Validators.required],
       name: ['', Validators.required],
@@ -50,19 +52,24 @@ export class BusinessInfo {
       return
     }
 
-    const res = await this.settingsService.getCompanyById(this.decodedToken.companyId)
+    try {
+      const res = await this.settingsService.getCompanyById(this.decodedToken.companyId)
 
-    this.oldValue.id = res.id
-    this.oldValue.name = res.name
-    this.oldValue.email = res.email
-    this.oldValue.industry = res.industry
+      this.oldValue.id = res.id
+      this.oldValue.name = res.name
+      this.oldValue.email = res.email
+      this.oldValue.industry = res.industry
 
-    this.businessForm.patchValue({
-      id: res.id,
-      name: res.name,
-      email: res.email,
-      industry: res.industry
-    })
+      this.businessForm.patchValue({
+        id: res.id,
+        name: res.name,
+        email: res.email,
+        industry: res.industry
+      })
+    } catch (error: any) {
+      this.gotBackendError.set(true)
+      this.errMsg.set(error.error.error)
+    }
   }
 
   getError(field: string, form: FormGroup) {

@@ -7,10 +7,11 @@ import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-us
 import { UserPagination } from '../user-pagination/user-pagination';
 import { UserDeletionErrorDisplayModal } from '../user-deletion-error-display-modal/user-deletion-error-display-modal';
 import { SettingsRolePermissions } from '../settings-role-permissions/settings-role-permissions';
+import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 
 @Component({
   selector: 'app-settings-user-management',
-  imports: [UserPagination, SettingsRolePermissions],
+  imports: [UserPagination, SettingsRolePermissions, BackendErrorOverlay],
   templateUrl: './settings-user-management.html',
   styleUrl: './settings-user-management.scss',
 })
