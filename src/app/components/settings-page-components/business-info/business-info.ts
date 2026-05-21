@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { SettingsHeader } from '../settings-header/settings-header';
 import { SettingsSidebar } from '../settings-sidebar/settings-sidebar';
 import { SettingsPageService } from '../../../services/settings-page-service';
@@ -25,6 +25,9 @@ export class BusinessInfo {
   decodedToken!: DecodedToken | null
   businessForm!: FormGroup
   formValueChanged: boolean = false
+  gotBackendError: WritableSignal<boolean> = signal(false)
+  errMsg: WritableSignal<string> = signal('')
+  requestSent: WritableSignal<boolean> = signal(false)
   oldValue = {
     id: -1,
     name: '', 
@@ -70,6 +73,11 @@ export class BusinessInfo {
     // console.log('Comparing: ', this.businessForm.value)
     // console.log('To the old value', this.oldValue)
 
+    if (this.requestSent() === true) {
+      console.log('Request already sent')
+      return
+    }
+
     if (JSON.stringify(this.businessForm.value) === JSON.stringify(this.oldValue)) {
       console.log('Form value has not changed, avoiding redundant request')
       return
@@ -81,14 +89,21 @@ export class BusinessInfo {
       return
     }
 
+    this.requestSent.set(true)
+    this.gotBackendError.set(false)
+    this.errMsg.set('')
+
     console.log(this.businessForm.value)
     try {
       const res = await this.settingsService.sendCompanyBusinessInfoUpdateRequest(this.businessForm.value)
       if (res) {
         this.openVerificationModal(res.tempToken)
+        this.requestSent.set(false)
       }
-    } catch (error) {
-      
+    } catch (error: any) {
+      this.requestSent.set(false)
+      this.gotBackendError.set(true)
+      this.errMsg.set(error.error.error)
     }
   }
 

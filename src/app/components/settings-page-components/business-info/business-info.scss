@@ -5,7 +5,7 @@
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    padding: 2rem 2.25rem;
+    padding: 2rem 2.25rem 0.5rem 2.25rem;
 //   max-width: 860px;
     width: 894.4px;
 
@@ -68,10 +68,14 @@
     &__lower-section {
         width: 100%;
         @include FlexContainer;
+        flex-direction: column;
+        align-items: start;
         justify-content: start;
+        // height: 51px;
 
         &--save-btn {
             margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
             background: $primary-color;
             color: #ffffff;
             border: none;

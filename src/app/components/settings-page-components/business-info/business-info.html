@@ -35,6 +35,13 @@
     </div>
     <div class="business-form__lower-section">
       <button class="business-form__lower-section--save-btn" type="submit">Save Changes</button>
+      <!-- @if (requestSent() && !gotBackendError()) { -->
+      <p class="loading">{{ requestSent() && !gotBackendError() ? 'Processing...' : ''}}</p>
+      <!-- } -->
+
+      <!-- @if (!requestSent() && gotBackendError()) { -->
+      <p class="error">{{ !requestSent() && gotBackendError() ? errMsg() : ''}}</p>
+      <!-- } -->
     </div>
   </form>
 </div>

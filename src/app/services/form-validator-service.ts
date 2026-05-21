@@ -44,6 +44,13 @@ export class FormValidatorService {
       return `${label} must be at least ${min} characters long`
     }
 
+    if (control.hasError('maxlength')) {
+      const max = control.getError('maxlength').requiredLength
+      console.log(control.getError('maxlength'))
+      console.log('value of max is: ', max)
+      return `${label} must be at most ${max} characters long`
+    }
+
     if (field === 'pin' && control.hasError('pattern')) return 'Pin must be 6 digits and a number'
 
     if (field === 'phone_number' && control.hasError('pattern')) return 'Please enter a valid phone number'

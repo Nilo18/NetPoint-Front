@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <div class="modal-header__icon">
+    <i class="ti ti-clock-pause"></i>
+  </div>
+  <button class="modal-header__close" (click)="modal.dismiss()" aria-label="Close">
+    <i class="ti ti-x"></i>
+  </button>
+</div>
+
+<div class="modal-body">
+  <h5 class="modal-body__title">Too many attempts</h5>
+  <p class="modal-body__description">
+    You've made too many requests in a short period. Please wait before trying again.
+  </p>
+
+  <div class="countdown">
+    <span class="countdown__label">Try again in</span>
+    <span class="countdown__value" [class.countdown__value--done]="secondsLeft === 0">
+      {{ secondsLeft === 0 ? 'Now' : secondsLeft + 's' }}
+    </span>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="dismiss-btn" (click)="modal.dismiss()">OK, got it</button>
+</div>

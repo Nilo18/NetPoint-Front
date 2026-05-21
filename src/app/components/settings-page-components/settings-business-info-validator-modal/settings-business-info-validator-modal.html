@@ -8,11 +8,18 @@
         <form [formGroup]="verificationForm" (click)="onSubmit()">
             <label for="verification">Verification Code</label>
             <input type="text" placeholder="Enter the code here..." formControlName="otpCode" 
-            class="form-control">
+            class="form-control verification-modal__otp-input">
             <p class="error">
-                {{ getError('code', verificationForm) }}
+                {{ getError('otpCode', verificationForm) }}
             </p>
             <div class="verification-modal__body--btn-section">
+                @if (requestSent() && !gotBackendError()) {
+                    <p class="verification-modal__msg loading">Processing...</p>
+                }
+
+                @if (!requestSent() && gotBackendError()) {
+                    <p class="verification-modal__msg error">{{ errMsg() }}</p>
+                }
                 <button type="button" class="btn btn-primary verification-modal__submit-btn">Verify</button>
             </div>
         </form>

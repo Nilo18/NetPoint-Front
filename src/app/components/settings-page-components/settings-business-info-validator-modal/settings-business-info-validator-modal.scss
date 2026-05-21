@@ -7,10 +7,20 @@
             width: 100%;
             @include FlexContainer;
             justify-content: end;
+            // justify-content: stretch;
         }
+    }
+
+    &__otp-input {
+        margin-bottom: 15px;
+    }
+
+    &__msg {
+        margin-right: auto;    
+    }
+
+    &__submit-btn {
+        background-color: $primary-color;
     }
 }
 
-.verification-modal__submit-btn {
-    background-color: $primary-color;
-}

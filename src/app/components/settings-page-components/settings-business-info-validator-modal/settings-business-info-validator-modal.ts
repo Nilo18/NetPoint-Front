@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
@@ -18,6 +18,9 @@ export class SettingsBusinessInfoValidatorModal {
   tempToken!: string
   companyInfo!: CompanyDTO
   verificationForm!: FormGroup
+  gotBackendError: WritableSignal<boolean> = signal(false)
+  errMsg: WritableSignal<string> = signal('')
+  requestSent: WritableSignal<boolean> = signal(false)
 
   ngOnInit() {
     console.log('Received companyInfo as: ', this.companyInfo)
@@ -44,17 +47,25 @@ export class SettingsBusinessInfoValidatorModal {
       return
     }
 
+    this.requestSent.set(true)
+    this.gotBackendError.set(false)
+    this.errMsg.set('')
+
     try {
       const res = await this.settingsService.updateCompanyBusinessInfo(this.companyInfo, this.verificationForm.value) 
 
       if (res) {
+        this.requestSent.set(false)
         window.location.reload()
         // setTimeout(() => {
         //   this.modal.close()
         // }, 2000)
       }
-    } catch (error) {
-      
+    } catch (error: any) {
+      // console.log(error.error.error)
+      this.requestSent.set(false)
+      this.gotBackendError.set(true)
+      this.errMsg.set(error.error.error)
     }
   }
 }
