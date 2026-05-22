@@ -55,6 +55,16 @@ export class SettingsUserManagement {
     try {
       await this.settingsService.deleteUser(userId)
       this.userList.update(users => users.filter(user => user.id !== userId))
+      if (this.userList().length === 0) {
+        const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
+        if (res) {
+          this.userList.set(res.userList)
+          // this.settingsService.setIsLoading(false)
+          // this.gotSearchError.set(false)
+          // this.backendErrMsg.set('')
+          // return
+        }
+      }
       this.settingsService.setIsLoading(false)
     } catch (error: any) {
       const modalRef = this.modalService.open(UserDeletionErrorDisplayModal, {
