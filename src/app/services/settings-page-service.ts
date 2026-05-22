@@ -56,18 +56,8 @@ export class SettingsPageService {
   private urlHolderService = inject(BackendUrlHolderService)
   private http = inject(HttpClient)
   private baseUrl = this.urlHolderService.getBaseUrl()
-  private users = signal<User[]>([])
-  readonly userList = this.users.asReadonly()
-  private _totalPages = signal<number>(1)
-  readonly totalPages = this._totalPages.asReadonly()
-  private _currentPage = signal<number>(1)
-  readonly currentPage = this._currentPage.asReadonly()
   private _isLoading = signal(true);
   readonly isLoading = this._isLoading.asReadonly()
-  private _gotBackendError = signal(false)
-  readonly gotBackendError = this._gotBackendError.asReadonly()
-  private _backendErrMsg = signal('')
-  readonly backendErrMsg = this._backendErrMsg.asReadonly()
 
   setIsLoading(val: boolean) {
     this._isLoading.set(val)
@@ -80,27 +70,15 @@ export class SettingsPageService {
       return
     }
 
-    if (page > this._totalPages()) {
-      console.log('The suggested page exceeds the total amount of pages.')
-      this.setIsLoading(false)  
-      return
-    }
-
     try {
       const res = await firstValueFrom(
         this.http.get<GetUserListResponse>(`${this.baseUrl}/settings/company-users/${id}?page=${page - 1}&size=${size}`)
       )
-      this.users.set(res.userList)
-      this._currentPage.set(res.currentPage + 1)
-      console.log('The currentPage is: ', this._currentPage())
-      this._totalPages.set(res.totalPages)
       console.log(res)
       return res
-    } catch (error: any) {
+    } catch (error) {
       console.log("Couldn't get user list: ", error)
       this.setIsLoading(false)
-      this._gotBackendError.set(true)
-      this._backendErrMsg.set(error.error.error)
       throw error
     }
   }
@@ -118,26 +96,25 @@ export class SettingsPageService {
     }
   }
 
-  async addCashier(credentials: CashierCredentials) {
-    try {
-      const res = await firstValueFrom(
-        this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
-      )
-      this.users.set(res.userList)
-      this._currentPage.set(res.currentPage + 1)
-      this._totalPages.set(res.totalPages)
-      console.log(res)
-      return res
-    } catch (error) {
-      console.log("Couldn't add the cashier: ", error)
-      throw error
-    }
-  }
+  // async addCashier(credentials: CashierCredentials) {
+  //   try {
+  //     const res = await firstValueFrom(
+  //       this.http.post<any>(`${this.baseUrl}/settings/add-cashier`, credentials)
+  //     )
+  //     this.users.set(res.userList)
+  //     this._currentPage.set(res.currentPage + 1)
+  //     this._totalPages.set(res.totalPages)
+  //     console.log(res)
+  //     return res
+  //   } catch (error) {
+  //     console.log("Couldn't add the cashier: ", error)
+  //     throw error
+  //   }
+  // }
 
   async deleteUser(userId: number) {
     try {
       const res = await firstValueFrom(this.http.delete<any>(`${this.baseUrl}/settings/users/${userId}`))
-      this.users.update(list => list.filter(user => user.id !== userId))
       console.log(res)
       return res
     } catch (error) {
@@ -181,5 +158,14 @@ export class SettingsPageService {
       console.log("Couldn't update company: ", error)
       throw error
     }
+  }
+
+  async searchUsers(searchTerm: string) {
+    console.log('Search term is: ', searchTerm)
+    const users = await firstValueFrom(
+      this.http.get<User[]>(`${this.baseUrl}/settings/search?searchTerm=${searchTerm}`)
+    )
+    console.log('The returned user list is: ', users)
+    return users
   }
 }

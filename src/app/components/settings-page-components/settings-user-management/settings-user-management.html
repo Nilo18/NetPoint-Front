@@ -14,7 +14,7 @@
         </div>
     }
 
-    @if (settingsService.gotBackendError()) {
+    @if (gotBackendError()) {
         <!-- <div class="loader">
             <div class="loader__error-icon">
                 <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
@@ -23,29 +23,38 @@
                     <line x1="34" y1="16" x2="16" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                 </svg>
             </div>
-            <p class="error">{{ settingsService.backendErrMsg() }}</p>
+            <p class="error">{{ backendErrMsg() }}</p>
         </div> -->
-        <app-backend-error-overlay [errorMsg]="settingsService.backendErrMsg()"></app-backend-error-overlay>
+        <app-backend-error-overlay [errorMsg]="backendErrMsg()"></app-backend-error-overlay>
     }
 
     <!-- <p>{{isLoading()}}</p> -->
     <!-- <p>Loader is NOT running</p> -->
     <div class="settingsmanagement__header">
-        <div class="settingsmanagement__header--text">
-            <h4>User Management</h4>
-            <p>Manage team members and their access levels</p>
+        <div class="settingsmanagement__header--upper-section">
+            <div class="settingsmanagement__header--text">
+                <h4>User Management</h4>
+                <p>Manage team members and their access levels</p>
+            </div>
+            <button class="settingsmanagement__header--btn" (click)="open($event)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="lucide lucide-user-plus h-4 w-4 mr-2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" x2="19" y1="8" y2="14"></line>
+                    <line x1="22" x2="16" y1="11" y2="11"></line>
+                </svg>
+                Add User
+            </button>
         </div>
-        <button class="settingsmanagement__header--btn" (click)="open($event)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" class="lucide lucide-user-plus h-4 w-4 mr-2">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <line x1="19" x2="19" y1="8" y2="14"></line>
-                <line x1="22" x2="16" y1="11" y2="11"></line>
-            </svg>
-            Add User
-        </button>
+        <div class="settingsmanagement__header--lower-section">
+            <div class="search-bar">
+                <i class="ti ti-search search-bar__icon">a</i>
+                <input type="text" class="form-control" placeholder="Search users by name or email..."
+                (keyup.enter)="searchUser(input.value)" (input)="searchUser(input.value)" #input>
+            </div>
+        </div>
     </div>
     <div class="settingsmanagement__body">
         <table class="table table-hover">
@@ -59,37 +68,64 @@
                 </tr>
             </thead>
             <tbody>
-                @for (user of userList(); track user.id; let i = $index) {
+                @if (gotSearchError()) {
                     <tr>
-                        <th scope="row">{{ i + 1}}</th>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>
-                            <button class="settingsmanagement__body--deletebtn" (click)="deleteUser(user.id)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-trash2 lucide-trash-2 h-4 w-4">
-                                    <path d="M3 6h18">                                 
-                                    </path>
-                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6">
-                                    </path>
-                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2">
-                                    </path>
-                                    <line x1="10" x2="10" y1="11" y2="17">
-                                    </line>
-                                    <line x1="14" x2="14" y1="11" y2="17">
-                                    </line>
-                                </svg>
-                            </button>
+                        <td colspan="5">
+                            <div class="settingsmanagement__body--search-error" role="status">
+                                <div class="settingsmanagement__body--search-error-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-circle-alert">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" x2="12" y1="8" y2="12"></line>
+                                        <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="settingsmanagement__body--search-error-title">No matching users found</p>
+                                    <p class="settingsmanagement__body--search-error-message">{{ backendErrMsg() }}</p>
+                                </div>
+                            </div>
                         </td>
                     </tr>
+                } @else {
+                    @for (user of userList(); track user.id; let i = $index) {
+                        <tr>
+                            <th scope="row">{{ i + 1}}</th>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>
+                                <button class="settingsmanagement__body--deletebtn" (click)="deleteUser(user.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-trash2 lucide-trash-2 h-4 w-4">
+                                        <path d="M3 6h18">                                 
+                                        </path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6">
+                                        </path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2">
+                                        </path>
+                                        <line x1="10" x2="10" y1="11" y2="17">
+                                        </line>
+                                        <line x1="14" x2="14" y1="11" y2="17">
+                                        </line>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
         @if (decodedTokenCompanyId()) {
-            <app-user-pagination [companyId]="decodedTokenCompanyId()!"></app-user-pagination>
+            <app-user-pagination
+                [companyId]="decodedTokenCompanyId()!"
+                (usersLoaded)="setUsers($event)"
+                (backendError)="showBackendError($event)"
+            ></app-user-pagination>
         }
     </div>
 </section>

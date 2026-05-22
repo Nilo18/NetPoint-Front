@@ -90,8 +90,41 @@
     &__header {
         width: 100%;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        // align-items: center;
+        // justify-content: space-between;
+
+        &--upper-section {
+            width: 100%;
+            position: relative;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &--lower-section {
+            width: 100%;
+
+            .search-bar {
+                position: relative;
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                i {
+                    position: absolute;
+                    right: 12px;
+                    font-size: 16px;
+                    color: #9ca3af;
+                    pointer-events: none;
+                }
+
+                input {
+                    width: 100%;
+                }
+            }
+        }
 
         &--text {
             h4 {
@@ -179,6 +212,48 @@
 
         &--deletebtn:hover {
             background-color: #FFEBEB;
+        }
+
+        &--search-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            min-height: 7rem;
+            padding: 1.5rem;
+            color: #991b1b;
+            background-color: #fef2f2;
+            border-top: 1px solid #fecaca;
+            text-align: left;
+        }
+
+        &--search-error-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #dc2626;
+            background-color: #fee2e2;
+
+            svg {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+        }
+
+        &--search-error-title {
+            margin: 0 0 0.25rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+        }
+
+        &--search-error-message {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #7f1d1d;
         }
     }
 }
