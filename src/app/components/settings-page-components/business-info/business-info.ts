@@ -29,6 +29,7 @@ export class BusinessInfo {
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
   requestSent: WritableSignal<boolean> = signal(false)
+  isLoading: WritableSignal<boolean> = signal(true)
   oldValue = {
     id: -1,
     name: '', 
@@ -54,6 +55,8 @@ export class BusinessInfo {
 
     try {
       const res = await this.settingsService.getCompanyById(this.decodedToken.companyId)
+
+      this.isLoading.set(false)
 
       this.oldValue.id = res.id
       this.oldValue.name = res.name

@@ -97,3 +97,49 @@
         }
     }
 }
+
+@keyframes skeleton-shimmer {
+    0%   { background-position: -800px 0; }
+    100% { background-position:  800px 0; }
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        #e5e7eb 25%,
+        #f3f4f6 50%,
+        #e5e7eb 75%
+    );
+    background-size: 1600px 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+    border-radius: 6px;
+
+    &--label {
+        height: 13px;
+        width: 110px;
+        margin-bottom: 6px;
+    }
+
+    &--input {
+        height: 38px;
+        width: 100%;
+        margin-bottom: 1.25rem;
+    }
+
+    &--btn {
+        height: 38px;
+        width: 120px;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+    }
+}
+
+.business-form__skeleton {
+    padding-bottom: 4rem;
+
+    &__name-and-industry {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+    }
+}
