@@ -36,6 +36,7 @@ export class SettingsBusinessInfoValidatorModal {
   }
 
   async onSubmit() {
+    console.log('I run')
     if (this.verificationForm.invalid) {
       this.verificationForm.markAllAsTouched()
       console.log('Invalid form.')

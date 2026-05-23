@@ -5,7 +5,7 @@
         </button>
     </div>
     <div class="modal-body verification-modal__body">
-        <form [formGroup]="verificationForm" (click)="onSubmit()">
+        <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
             <label for="verification">Verification Code</label>
             <input type="text" placeholder="Enter the code here..." formControlName="otpCode" 
             class="form-control verification-modal__otp-input">
@@ -20,7 +20,7 @@
                 @if (!requestSent() && gotBackendError()) {
                     <p class="verification-modal__msg error">{{ errMsg() }}</p>
                 }
-                <button type="button" class="btn btn-primary verification-modal__submit-btn">Verify</button>
+                <button type="submit" class="btn btn-primary verification-modal__submit-btn">Verify</button>
             </div>
         </form>
     </div>
