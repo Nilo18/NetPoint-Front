@@ -135,6 +135,17 @@ export class SettingsPageService {
     }
   }
 
+  async deleteCompany(companyId: number) {
+    try {
+      const res = await firstValueFrom(this.http.delete<any>(`${this.baseUrl}/settings/company/${companyId}`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't delete company: ", error)
+      throw error
+    }
+  }
+
   async sendCompanyBusinessInfoUpdateRequest(newInfo: CompanyDTO) {
     try {
       const res = await firstValueFrom(this.http.

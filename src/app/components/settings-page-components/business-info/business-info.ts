@@ -10,6 +10,7 @@ import { Subject, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsBusinessInfoValidatorModal } from '../settings-business-info-validator-modal/settings-business-info-validator-modal';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-business-info',
@@ -23,12 +24,16 @@ export class BusinessInfo {
   private formValidator = inject(FormValidatorService)
   private modalService = inject(NgbModal)
   private fb = inject(FormBuilder)
+  private router = inject(Router)
   decodedToken!: DecodedToken | null
   businessForm!: FormGroup
   formValueChanged: boolean = false
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
   requestSent: WritableSignal<boolean> = signal(false)
+  deleteRequestSent: WritableSignal<boolean> = signal(false)
+  deleteErrMsg: WritableSignal<string> = signal('')
+  deleteSuccessMsg: WritableSignal<string> = signal('')
   isLoading: WritableSignal<boolean> = signal(true)
   oldValue = {
     id: -1,
@@ -128,5 +133,35 @@ export class BusinessInfo {
     modalRef.componentInstance.companyInfo = this.businessForm.value
 
     return modalRef
+  }
+
+  async deleteBusinessAccount() {
+    if (!this.decodedToken) {
+      this.deleteErrMsg.set('Unable to identify the current business account.')
+      return
+    }
+
+    const confirmed = window.confirm(
+      'Delete this business account? This action cannot be undone.'
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    this.deleteRequestSent.set(true)
+    this.deleteErrMsg.set('')
+    this.deleteSuccessMsg.set('')
+
+    try {
+      await this.settingsService.deleteCompany(this.decodedToken.companyId)
+      this.deleteSuccessMsg.set('Business account deleted.')
+      this.tokenService.clearToken()
+      await this.router.navigate(['/'])
+    } catch (error: any) {
+      this.deleteErrMsg.set(error.error.error)
+    } finally {
+      this.deleteRequestSent.set(false)
+    }
   }
 }

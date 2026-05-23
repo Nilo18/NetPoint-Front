@@ -96,6 +96,81 @@
             }
         }
     }
+
+    &__danger-zone {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #fecaca;
+
+        &--content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background-color: #fef2f2;
+        }
+
+        &--text {
+            h3 {
+                margin: 0 0 0.25rem;
+                font-size: 16px;
+                font-weight: 600;
+                color: #991b1b;
+            }
+
+            p {
+                margin: 0;
+                font-size: 14px;
+                color: #7f1d1d;
+            }
+        }
+
+        &--delete-btn {
+            height: 38px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #dc2626;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+
+            &:hover:not(:disabled) {
+                background-color: #b91c1c;
+            }
+
+            &:active:not(:disabled) {
+                transform: scale(0.98);
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.65;
+            }
+        }
+
+        &--error,
+        &--success {
+            margin: 0.75rem 0 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        &--error {
+            color: #dc2626;
+        }
+
+        &--success {
+            color: #15803d;
+        }
+    }
 }
 
 @keyframes skeleton-shimmer {
