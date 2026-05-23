@@ -14,6 +14,7 @@ import { SettingsNotifications } from './components/settings-page-components/set
 import { SettingsSecurity } from './components/settings-page-components/settings-security/settings-security';
 import { SettingsAppearance } from './components/settings-page-components/settings-appearance/settings-appearance';
 import { SettingsBilling } from './components/settings-page-components/settings-billing/settings-billing';
+import { SettingsPersonalInfo } from './components/settings-page-components/settings-personal-info/settings-personal-info';
 
 export const routes: Routes = [
     {path: "", component: Home},
@@ -24,6 +25,7 @@ export const routes: Routes = [
     {path: "settings", component: Settings,
         children: [
             { path: "", component: SettingsUserManagement },
+            { path: "personal-info", component: SettingsPersonalInfo },
             { path: "business-info", component: BusinessInfo },
             { path: "notifications", component: SettingsNotifications },
             { path: "security", component: SettingsSecurity },

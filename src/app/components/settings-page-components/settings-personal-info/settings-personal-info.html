@@ -1,0 +1,45 @@
+<section class="personal-info">
+  <header class="personal-info__header">
+    <h4>Personal Information</h4>
+    <p>Update your personal account details</p>
+  </header>
+
+  <div class="personal-info__profile">
+    <div class="personal-info__avatar" aria-hidden="true">N</div>
+    <div class="personal-info__identity">
+      <p class="personal-info__name">nikalongurashvili</p>
+      <p class="personal-info__role">Owner</p>
+    </div>
+  </div>
+
+  <form class="personal-info__form">
+    <div class="personal-info__row personal-info__row--two-columns">
+      <div class="personal-info__field form__field-container">
+        <label for="personal-full-name">Full Name</label>
+        <input id="personal-full-name" class="form-control" type="text" placeholder="Your full name">
+      </div>
+
+      <div class="personal-info__field form__field-container">
+        <label for="personal-role">Role</label>
+        <input id="personal-role" class="form-control" type="text" value="Owner" readonly>
+      </div>
+    </div>
+
+    <div class="personal-info__field form__field-container">
+      <label for="personal-email">Email Address</label>
+      <input id="personal-email" class="form-control" type="email" value="nikalongurashvili@gmail.com">
+    </div>
+
+    <!-- <div class="personal-info__field">
+      <label for="personal-phone">Phone Number</label>
+      <input id="personal-phone" class="form-control" type="tel" placeholder="+1 (555) 000-0000">
+    </div>
+
+    <div class="personal-info__field">
+      <label for="personal-member-since">Member Since</label>
+      <input id="personal-member-since" class="form-control" type="text" value="May 23, 2026" readonly>
+    </div> -->
+
+    <button class="personal-info__save-btn" type="submit">Save Changes</button>
+  </form>
+</section>
