@@ -190,4 +190,26 @@ export class SettingsPageService {
     console.log('The returned user list is: ', users)
     return users
   }
+
+  async verifyPersonalInfoUpdateRequest(newInfo: User) {
+    try {
+      const res = await firstValueFrom(this.http.post(`${this.baseUrl}/settings/account/verify`, newInfo))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't verify personal info update request: ", error)
+      throw error
+    }
+  }
+
+  async updatePersonalInfo(newInfo: User) {
+    try {
+      const res = await firstValueFrom(this.http.put<User>(`${this.baseUrl}/settings/account`, newInfo))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't update personal info: ", error)
+      throw error
+    }
+  }
 }
