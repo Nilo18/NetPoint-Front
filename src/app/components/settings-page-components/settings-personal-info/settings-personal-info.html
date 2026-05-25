@@ -12,33 +12,26 @@
     </div>
   </div>
 
-  <form class="personal-info__form">
+  <form class="personal-info__form" [formGroup]="userInfoForm">
     <div class="personal-info__row personal-info__row--two-columns">
       <div class="personal-info__field form__field-container">
         <label for="personal-full-name">Full Name</label>
-        <input id="personal-full-name" class="form-control" type="text" placeholder="Your full name">
+        <input id="personal-full-name" class="form-control" type="text" placeholder="Your full name"
+        formControlName="name">
       </div>
 
       <div class="personal-info__field form__field-container">
         <label for="personal-role">Role</label>
-        <input id="personal-role" class="form-control" type="text" value="Owner" readonly>
+        <input id="personal-role" class="form-control" type="text"  readonly formControlName="role">
+        <!-- <p>{{ userInfoForm.get('role')?.value }}</p> -->
       </div>
     </div>
 
     <div class="personal-info__field form__field-container">
       <label for="personal-email">Email Address</label>
-      <input id="personal-email" class="form-control" type="email" value="nikalongurashvili@gmail.com">
+      <input id="personal-email" class="form-control" type="email" value="nikalongurashvili@gmail.com"
+      formControlName="email">
     </div>
-
-    <!-- <div class="personal-info__field">
-      <label for="personal-phone">Phone Number</label>
-      <input id="personal-phone" class="form-control" type="tel" placeholder="+1 (555) 000-0000">
-    </div>
-
-    <div class="personal-info__field">
-      <label for="personal-member-since">Member Since</label>
-      <input id="personal-member-since" class="form-control" type="text" value="May 23, 2026" readonly>
-    </div> -->
 
     <button class="personal-info__save-btn" type="submit">Save Changes</button>
   </form>

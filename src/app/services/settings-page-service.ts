@@ -112,6 +112,17 @@ export class SettingsPageService {
   //   }
   // }
 
+  async getUserInfo() {
+    try {
+      const res = await firstValueFrom(this.http.get<User>(`${this.baseUrl}/settings/account`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get user info: ", error)
+      throw error
+    }
+  }
+
   async deleteUser(userId: number) {
     try {
       const res = await firstValueFrom(this.http.delete<any>(`${this.baseUrl}/settings/users/${userId}`))
