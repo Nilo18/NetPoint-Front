@@ -5,10 +5,15 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <form class="form__body" [formGroup]="verificationForm">
+            <div class="form__field-container">
+                <label for="code">Verification Code</label>
+                <input type="text" class="form-control" placeholder="Enter the code here..." formControlName="otpCode">
+            </div>
+        </form>
     </div>
     <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </div>

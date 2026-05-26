@@ -44,7 +44,7 @@ export interface CompanyUpdateRequestResponse {
   tempToken: string
 }
 
-export interface CompanyUpdateCredentials {
+export interface VerificationCredentials {
   tempToken: string
   verificationCode: string
 }
@@ -169,7 +169,7 @@ export class SettingsPageService {
     }
   }
 
-  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: CompanyUpdateCredentials) {
+  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: VerificationCredentials) {
     try {
       console.log('Sending: ', {verificationInfo, newInfo })
       const res = await firstValueFrom(this.http.put<CompanyDTO>(`${this.baseUrl}/settings/company`, 
@@ -202,7 +202,7 @@ export class SettingsPageService {
     }
   }
 
-  async updatePersonalInfo(newInfo: User) {
+  async updatePersonalInfo(newInfo: User, verificationInfo: VerificationCredentials) {
     try {
       const res = await firstValueFrom(this.http.put<User>(`${this.baseUrl}/settings/account`, newInfo))
       console.log(res)
