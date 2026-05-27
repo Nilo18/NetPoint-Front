@@ -4,38 +4,67 @@
     <p>Update your personal account details</p>
   </header>
 
-  <div class="personal-info__profile">
-    <div class="personal-info__avatar" aria-hidden="true">N</div>
-    <div class="personal-info__identity">
-      <p class="personal-info__name">nikalongurashvili</p>
-      <p class="personal-info__role">Owner</p>
-    </div>
-  </div>
-
-  <form class="personal-info__form" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
-    <div class="personal-info__row personal-info__row--two-columns">
-      <div class="personal-info__field form__field-container">
-        <label for="personal-full-name">Full Name</label>
-        <input id="personal-full-name" class="form-control" type="text" placeholder="Your full name"
-        formControlName="name">
-        <p class="error">{{ getError('name', userInfoForm) }}</p>
+  @if (isLoading()) {
+    <p class="loading">Loading...</p>
+  } @else {
+    <div class="personal-info__profile">
+      <div class="personal-info__avatar" aria-hidden="true">
+        {{ userInfo.name.charAt(0).toUpperCase() }}
       </div>
-
-      <div class="personal-info__field form__field-container">
-        <label for="personal-role">Role</label>
-        <input id="personal-role" class="form-control" type="text"  readonly formControlName="role">
-        <p class="error">{{ getError('role', userInfoForm) }}</p>
-        <!-- <p>{{ userInfoForm.get('role')?.value }}</p> -->
+      <div class="personal-info__identity">
+        <p class="personal-info__name">{{ userInfo.name }}</p>
+        <p class="personal-info__role">{{ userInfo.role }}</p>
       </div>
     </div>
 
-    <div class="personal-info__field form__field-container">
-      <label for="personal-email">Email Address</label>
-      <input id="personal-email" class="form-control" type="email" value="nikalongurashvili@gmail.com"
-      formControlName="email">
-      <p class="error">{{ getError('email', userInfoForm) }}</p>
-    </div>
+    <form class="personal-info__form" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
+      <div class="personal-info__row personal-info__row--two-columns">
+        <div class="personal-info__field form__field-container">
+          <label for="personal-full-name">Full Name</label>
+          <input
+            id="personal-full-name"
+            class="form-control"
+            type="text"
+            placeholder="Your full name"
+            formControlName="name">
+          <p class="error">{{ getError('name', userInfoForm) }}</p>
+        </div>
 
-    <button class="personal-info__save-btn" type="submit">Save Changes</button>
-  </form>
+        <div class="personal-info__field form__field-container">
+          <label for="personal-role">Role</label>
+          <input id="personal-role" class="form-control" type="text" readonly formControlName="role">
+          <p class="error">{{ getError('role', userInfoForm) }}</p>
+        </div>
+      </div>
+
+      <div class="personal-info__field form__field-container">
+        <label for="personal-email">Email Address</label>
+        <input id="personal-email" class="form-control" type="email" formControlName="email">
+        <p class="error">{{ getError('email', userInfoForm) }}</p>
+      </div>
+
+      <div class="personal-info__field form__field-container">
+        <label for="personal-new-password">New Password (Optional)</label>
+        <input
+          id="personal-new-password"
+          class="form-control"
+          type="password"
+          formControlName="newPassword"
+          placeholder="Enter a new password">
+        <p class="error">{{ getError('newPassword', userInfoForm) }}</p>
+      </div>
+
+      <div class="personal-info__lower-section">
+        <button
+          class="personal-info__save-btn"
+          type="submit"
+          [disabled]="requestSent() && !gotBackendError()"
+          [class.disabledBtn]="requestSent() && !gotBackendError()">
+          Save Changes
+        </button>
+        <p class="loading">{{ requestSent() && !gotBackendError() ? 'Processing...' : '' }}</p>
+        <p class="error">{{ !requestSent() && gotBackendError() ? errMsg() : '' }}</p>
+      </div>
+    </form>
+  }
 </section>

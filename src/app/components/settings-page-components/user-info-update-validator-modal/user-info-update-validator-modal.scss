@@ -1,0 +1,24 @@
+@use '../../../../styles/variables.scss' as *;
+@use '../../../../styles/mixins.scss' as *;
+
+.verification-modal {
+    &__body {
+        &--btn-section {
+            width: 100%;
+            @include FlexContainer;
+            justify-content: end;
+        }
+    }
+
+    &__otp-input {
+        margin-bottom: 15px;
+    }
+
+    &__msg {
+        margin-right: auto;
+    }
+
+    &__submit-btn {
+        background-color: $primary-color;
+    }
+}

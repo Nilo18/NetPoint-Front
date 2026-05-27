@@ -39,7 +39,7 @@ export interface CompanyDTO {
   industry: string
 }
 
-export interface CompanyUpdateRequestResponse {
+export interface CredentialsUpdateRequestResponse {
   status: number,
   tempToken: string
 }
@@ -160,7 +160,7 @@ export class SettingsPageService {
   async sendCompanyBusinessInfoUpdateRequest(newInfo: CompanyDTO) {
     try {
       const res = await firstValueFrom(this.http.
-        post<CompanyUpdateRequestResponse>(`${this.baseUrl}/settings/company/verify`, newInfo))
+        post<CredentialsUpdateRequestResponse>(`${this.baseUrl}/settings/company/verify`, newInfo))
       console.log('Received company update response: ', res)
       return res
     } catch (error) {
@@ -193,7 +193,8 @@ export class SettingsPageService {
 
   async verifyPersonalInfoUpdateRequest(newInfo: User) {
     try {
-      const res = await firstValueFrom(this.http.post(`${this.baseUrl}/settings/account/verify`, newInfo))
+      const res = await firstValueFrom(this.http.post<CredentialsUpdateRequestResponse>
+        (`${this.baseUrl}/settings/account/verify`, newInfo))
       console.log(res)
       return res
     } catch (error) {
@@ -204,7 +205,9 @@ export class SettingsPageService {
 
   async updatePersonalInfo(newInfo: User, verificationInfo: VerificationCredentials) {
     try {
-      const res = await firstValueFrom(this.http.put<User>(`${this.baseUrl}/settings/account`, newInfo))
+      console.log('Sending: ', {newInfo, verificationInfo})
+      const res = await firstValueFrom(this.http.put<User>(`${this.baseUrl}/settings/account`,
+        {newInfo, verificationInfo}))
       console.log(res)
       return res
     } catch (error) {

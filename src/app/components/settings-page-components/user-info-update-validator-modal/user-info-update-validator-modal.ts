@@ -2,7 +2,8 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
-import { CompanyDTO, SettingsPageService, User } from '../../../services/settings-page-service';
+import { SettingsPageService, User } from '../../../services/settings-page-service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-info-update-validator-modal',
@@ -17,6 +18,7 @@ export class UserInfoUpdateValidatorModal {
   private settingsService = inject(SettingsPageService)
   tempToken!: string
   userInfo!: User
+  newPassword!: string
   verificationForm!: FormGroup
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
@@ -31,16 +33,20 @@ export class UserInfoUpdateValidatorModal {
     })
   }
 
+  getError(field: string, form: FormGroup) {
+    return this.formValidator.getError(field, form)
+  }
+
   async onSubmit() {
     console.log('I run')
     if (this.verificationForm.invalid) {
       this.verificationForm.markAllAsTouched()
-      console.log('Invalid form.')
+      console.log('Invalid form: ', this.verificationForm.value)
       return
     }
 
     if (!this.userInfo) {
-      console.log('Company info missing: ', this.userInfo)
+      console.log('User info missing: ', this.userInfo)
       return
     }
 
@@ -49,7 +55,9 @@ export class UserInfoUpdateValidatorModal {
     this.errMsg.set('')
 
     try {
-      const res = await this.settingsService.updatePersonalInfo(this.userInfo, this.verificationForm.value) 
+      const res = await this.settingsService.updatePersonalInfo(
+        this.userInfo, this.verificationForm.value
+      ) 
 
       if (res) {
         this.requestSent.set(false)
@@ -58,11 +66,19 @@ export class UserInfoUpdateValidatorModal {
         //   this.modal.close()
         // }, 2000)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       // console.log(error.error.error)
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(error.error.error)
+      this.errMsg.set(this.getBackendErrorMessage(error))
     }
+  }
+
+  private getBackendErrorMessage(error: unknown) {
+    if (error instanceof HttpErrorResponse && typeof error.error?.error === 'string') {
+      return error.error.error
+    }
+
+    return 'Something went wrong. Please try again.'
   }
 }

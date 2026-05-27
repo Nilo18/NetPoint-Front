@@ -37,6 +37,14 @@ export class FormValidatorService {
       console.log("returning 'Invalid email address.'")
       return 'Invalid email address.'
     }
+
+    if (control.hasError('minlength') && field === 'newPassword') {
+      const min = control.getError('minlength').requiredLength
+      console.log(control.getError('minlength'))
+      console.log('value of min is: ', min)
+      return `Password must be at least ${min} characters long`
+    }
+
     if (control.hasError('minlength')) {
       const min = control.getError('minlength').requiredLength
       console.log(control.getError('minlength'))
