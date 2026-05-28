@@ -1,0 +1,200 @@
+// Product Schema Component — BEM
+
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.product-schema {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px 28px 20px;
+  max-width: 900px;
+  width: 100%;
+  box-sizing: border-box;
+
+  // ── Header ────────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  // ── Add Button ────────────────────────────────────────────────────────────
+
+  &__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      background-color: #4338ca;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+    }
+
+    &:active {
+      background-color: #3730a3;
+    }
+  }
+
+  &__add-btn-icon {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    margin-top: -1px;
+  }
+
+  // ── List ──────────────────────────────────────────────────────────────────
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  // ── Row ───────────────────────────────────────────────────────────────────
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  // ── Drag handle ───────────────────────────────────────────────────────────
+
+  &__drag-handle {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 2px 4px;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  // 6-dot 2×3 grip via box-shadow (no SVG needed)
+  &__drag-dots {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #9ca3af;
+    margin-bottom: 12px; // compensate for box-shadow height
+    box-shadow:
+      6px 0    0 #9ca3af,
+      0   6px  0 #9ca3af,
+      6px 6px  0 #9ca3af,
+      0   12px 0 #9ca3af,
+      6px 12px 0 #9ca3af;
+  }
+
+  // ── Attribute info ────────────────────────────────────────────────────────
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.4;
+  }
+
+  &__type-label {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  // ── Badges ────────────────────────────────────────────────────────────────
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 4px 12px;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    &--type {
+      background: #1f2937;
+      color: #ffffff;
+    }
+
+    &--default {
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+  }
+
+  // ── Hint ──────────────────────────────────────────────────────────────────
+
+  &__hint {
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    padding: 6px 0 4px;
+  }
+}

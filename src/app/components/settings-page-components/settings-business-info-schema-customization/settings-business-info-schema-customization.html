@@ -1,0 +1,34 @@
+<div class="product-schema">
+  <div class="product-schema__header">
+    <div class="product-schema__heading">
+      <h2 class="product-schema__title">Product Schema</h2>
+      <p class="product-schema__subtitle">Define custom attributes for your product catalog</p>
+    </div>
+    <button class="product-schema__add-btn" (click)="addAttribute()">
+      <span class="product-schema__add-btn-icon">+</span>
+      <span>Add Attribute</span>
+    </button>
+  </div>
+
+  <div class="product-schema__list">
+    @for (attr of attributes; track attr.name) {
+      <div class="product-schema__row">
+        <div class="product-schema__drag-handle">
+          <span class="product-schema__drag-dots"></span>
+        </div>
+        <div class="product-schema__info">
+          <span class="product-schema__name">{{ attr.name }}</span>
+          <span class="product-schema__type-label">{{ attr.typeLabel }}</span>
+        </div>
+        <div class="product-schema__badges">
+          <span class="product-schema__badge product-schema__badge--type">{{ attr.type }}</span>
+          <span class="product-schema__badge product-schema__badge--default">Default</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (attributes.length > 0) {
+    <p class="product-schema__hint">Add custom attributes above to extend the schema (You can add up to 10 attributes)</p>
+  }
+</div>

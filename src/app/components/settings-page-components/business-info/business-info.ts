@@ -11,10 +11,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsBusinessInfoValidatorModal } from '../settings-business-info-validator-modal/settings-business-info-validator-modal';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { Router } from '@angular/router';
+import { SettingsBusinessInfoSchemaCustomization } from '../settings-business-info-schema-customization/settings-business-info-schema-customization';
 
 @Component({
   selector: 'app-business-info',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SettingsBusinessInfoSchemaCustomization],
   templateUrl: './business-info.html',
   styleUrl: './business-info.scss',
 })

@@ -1,4 +1,4 @@
-<div class="business-form">
+<section class="business-form">
   <h2 class="business-form__form-title">Business Information</h2>
   <p class="business-form__form-subtitle">Update your business details and company information</p>
 
@@ -54,30 +54,30 @@
         <p class="error">{{ !requestSent() && gotBackendError() ? errMsg() : '' }}</p>
       </div>
     </form>
-
-    <section class="business-form__danger-zone" aria-labelledby="danger-zone-title">
-      <div class="business-form__danger-zone--content">
-        <div class="business-form__danger-zone--text">
-          <h3 id="danger-zone-title">Danger Zone</h3>
-          <p>Delete this business account and remove access for everyone connected to it.</p>
-        </div>
-        <button
-          class="business-form__danger-zone--delete-btn"
-          type="button"
-          [disabled]="deleteRequestSent()"
-          [class.disabledBtn]="deleteRequestSent()"
-          (click)="deleteBusinessAccount()">
-          {{ deleteRequestSent() ? 'Deleting...' : 'Delete Business Account' }}
-        </button>
-      </div>
-
-      @if (deleteErrMsg()) {
-        <p class="business-form__danger-zone--error">{{ deleteErrMsg() }}</p>
-      }
-
-      @if (deleteSuccessMsg()) {
-        <p class="business-form__danger-zone--success">{{ deleteSuccessMsg() }}</p>
-      }
-    </section>
   }
-</div>
+</section>
+<app-settings-business-info-schema-customization></app-settings-business-info-schema-customization>
+<section class="business-form__danger-zone" aria-labelledby="danger-zone-title">
+    <div class="business-form__danger-zone--content">
+      <div class="business-form__danger-zone--text">
+        <h3 id="danger-zone-title">Danger Zone</h3>
+        <p>Delete this business account and remove access for everyone connected to it.</p>
+      </div>
+      <button
+        class="business-form__danger-zone--delete-btn"
+        type="button"
+        [disabled]="deleteRequestSent()"
+        [class.disabledBtn]="deleteRequestSent()"
+        (click)="deleteBusinessAccount()">
+        {{ deleteRequestSent() ? 'Deleting...' : 'Delete Business Account' }}
+      </button>
+    </div>
+
+    @if (deleteErrMsg()) {
+      <p class="business-form__danger-zone--error">{{ deleteErrMsg() }}</p>
+    }
+
+    @if (deleteSuccessMsg()) {
+      <p class="business-form__danger-zone--success">{{ deleteSuccessMsg() }}</p>
+    }
+</section>
