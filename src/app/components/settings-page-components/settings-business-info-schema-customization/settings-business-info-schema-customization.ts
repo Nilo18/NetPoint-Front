@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CustomAttribute,
+  SettingsSchemaCustomizerModal,
+} from '../settings-schema-customizer-modal/settings-schema-customizer-modal';
 
 interface Attribute {
   name: string;
@@ -11,15 +16,31 @@ interface Attribute {
   imports: [],
   templateUrl: './settings-business-info-schema-customization.html',
   styleUrl: './settings-business-info-schema-customization.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsBusinessInfoSchemaCustomization {
-  attributes: Attribute[] = [
+  private modal = inject(NgbModal);
+
+  attributes = signal<Attribute[]>([
     { name: 'Name', typeLabel: 'Text field', type: 'Text' },
     { name: 'Price', typeLabel: 'Number field', type: 'Number' },
-  ];
+  ]);
  
-  addAttribute(): void {
-    // Hook up your dialog / form logic here
-    console.log('Add Attribute clicked');
+  open(): void {
+    console.log('open() is running')
+    const modalRef = this.modal.open(SettingsSchemaCustomizerModal, {
+      centered: true,
+    });
+    console.log('open() after creating modalRef')
+    // modalRef.closed.subscribe((attribute: CustomAttribute) => {
+    //   this.attributes.update((attributes) => [
+    //     ...attributes,
+    //     {
+    //       name: attribute.name,
+    //       type: attribute.type,
+    //       typeLabel: `${attribute.type} field`,
+    //     },
+    //   ]);
+    // });
   }
 }

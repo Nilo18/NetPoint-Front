@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 
 export interface User {
   id: number,
@@ -47,6 +47,19 @@ export interface CredentialsUpdateRequestResponse {
 export interface VerificationCredentials {
   tempToken: string
   verificationCode: string
+}
+
+export enum AttributeType {
+  String = 'string',
+  Number = 'number',
+  Date = 'Date',
+  Boolean = 'boolean'
+}
+
+export interface ProductAttribute {
+  id?: number
+  attributeName: string,
+  attributeType: AttributeType
 }
 
 @Injectable({
@@ -212,6 +225,17 @@ export class SettingsPageService {
       return res
     } catch (error) {
       console.log("Couldn't update personal info: ", error)
+      throw error
+    }
+  }
+
+  async addProductAttribute(productAttribute: ProductAttribute) {
+    try {
+      const res = await firstValueFrom(this.http.post(`${this.baseUrl}/api/products/attributes`, productAttribute))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't add product attribute: ", error)
       throw error
     }
   }

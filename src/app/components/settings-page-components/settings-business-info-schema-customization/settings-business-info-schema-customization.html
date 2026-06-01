@@ -4,14 +4,14 @@
       <h2 class="product-schema__title">Product Schema</h2>
       <p class="product-schema__subtitle">Define custom attributes for your product catalog</p>
     </div>
-    <button class="product-schema__add-btn" (click)="addAttribute()">
+    <button class="product-schema__add-btn" (click)="open()">
       <span class="product-schema__add-btn-icon">+</span>
       <span>Add Attribute</span>
     </button>
   </div>
 
   <div class="product-schema__list">
-    @for (attr of attributes; track attr.name) {
+    @for (attr of attributes(); track attr.name) {
       <div class="product-schema__row">
         <div class="product-schema__drag-handle">
           <span class="product-schema__drag-dots"></span>
@@ -28,7 +28,7 @@
     }
   </div>
 
-  @if (attributes.length > 0) {
+  @if (attributes().length > 0) {
     <p class="product-schema__hint">Add custom attributes above to extend the schema (You can add up to 10 attributes)</p>
   }
 </div>

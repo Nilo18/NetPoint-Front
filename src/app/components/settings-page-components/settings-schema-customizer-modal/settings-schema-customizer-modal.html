@@ -1,0 +1,52 @@
+<section class="schema-customizer-modal" aria-labelledby="schema-customizer-modal-title">
+  <button
+    type="button"
+    class="schema-customizer-modal__close"
+    aria-label="Close"
+    (click)="modal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <header class="schema-customizer-modal__header">
+    <h2 id="schema-customizer-modal-title">Add Custom Attribute</h2>
+    <p>Create a new custom field for your products</p>
+  </header>
+
+  <form class="schema-customizer-modal__form" [formGroup]="attributeForm" (ngSubmit)="addAttribute()">
+    <label class="schema-customizer-modal__field">
+      <span>Attribute Name</span>
+      <input
+        type="text"
+        formControlName="attributeName"
+        placeholder="e.g., Size, Color, Expiry Date"
+        autocomplete="off"
+      />
+    </label>
+
+    <label class="schema-customizer-modal__field">
+      <span>Field Type</span>
+      <div class="schema-customizer-modal__select-wrap">
+        <select formControlName="attributeType" aria-label="Field Type">
+          @for (fieldType of fieldTypes; track fieldType) {
+            <option [value]="fieldType">{{ fieldType }}</option>
+          }
+        </select>
+      </div>
+    </label>
+
+    <div class="schema-customizer-modal__actions">
+      @if (requestSent() && !gotBackendError()) {
+        <p class="schema-customizer-modal__msg loading">Processing...</p>
+      }
+
+      @if (!requestSent() && gotBackendError()) {
+        <p class="schema-customizer-modal__msg error">{{ errMsg() }}</p>
+      }
+
+      <button type="submit" class="schema-customizer-modal__submit" [disabled]="requestSent()">
+        Add Attribute
+      </button>
+    </div>
+  </form>
+</section>
