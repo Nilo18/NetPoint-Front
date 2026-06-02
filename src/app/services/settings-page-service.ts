@@ -60,6 +60,7 @@ export interface ProductAttribute {
   id?: number
   attributeName: string,
   attributeType: AttributeType
+  isDefault: boolean
 }
 
 @Injectable({
@@ -236,6 +237,28 @@ export class SettingsPageService {
       return res
     } catch (error) {
       console.log("Couldn't add product attribute: ", error)
+      throw error
+    }
+  }
+
+  async getProductAttributes() {
+    try {
+      const res = await firstValueFrom(this.http.get<ProductAttribute[]>(`${this.baseUrl}/api/products/attributes`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't add product attributes: ", error)
+      throw error
+    }
+  }
+
+  async getAllProducts() {
+    try {
+      const res = await firstValueFrom(this.http.get(`${this.baseUrl}/api/products`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't add product attributes: ", error)
       throw error
     }
   }

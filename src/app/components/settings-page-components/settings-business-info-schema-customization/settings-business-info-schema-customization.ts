@@ -4,6 +4,7 @@ import {
   CustomAttribute,
   SettingsSchemaCustomizerModal,
 } from '../settings-schema-customizer-modal/settings-schema-customizer-modal';
+import { ProductAttribute, SettingsPageService } from '../../../services/settings-page-service';
 
 interface Attribute {
   name: string;
@@ -20,12 +21,14 @@ interface Attribute {
 })
 export class SettingsBusinessInfoSchemaCustomization {
   private modal = inject(NgbModal);
-
-  attributes = signal<Attribute[]>([
-    { name: 'Name', typeLabel: 'Text field', type: 'Text' },
-    { name: 'Price', typeLabel: 'Number field', type: 'Number' },
-  ]);
+  private settingsService = inject(SettingsPageService)
+  attributes = signal<ProductAttribute[]>([]);
  
+  async ngOnInit() {
+    const res = await this.settingsService.getProductAttributes()
+    this.attributes.set(res)
+  }
+
   open(): void {
     console.log('open() is running')
     const modalRef = this.modal.open(SettingsSchemaCustomizerModal, {
