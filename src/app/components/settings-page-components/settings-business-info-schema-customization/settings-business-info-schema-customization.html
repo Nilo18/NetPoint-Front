@@ -10,32 +10,54 @@
     </button>
   </div>
 
-  <div class="product-schema__list">
-    @for (attr of attributes(); track attr.id) {
-      <div class="product-schema__row">
-        <div class="product-schema__drag-handle">
-          <span class="product-schema__drag-dots"></span>
+  @if (isLoading()) {
+    <div class="product-schema__list" aria-label="Loading product attributes">
+      @for (_ of [1, 2, 3]; track _) {
+        <div class="product-schema__row product-schema__row--loading">
+          <div class="product-schema__skeleton product-schema__skeleton--handle"></div>
+          <div class="product-schema__info">
+            <div class="product-schema__skeleton product-schema__skeleton--name"></div>
+            <div class="product-schema__skeleton product-schema__skeleton--type-label"></div>
+          </div>
+          <div class="product-schema__skeleton product-schema__skeleton--badge"></div>
         </div>
-        <div class="product-schema__info">
-          <span class="product-schema__name">{{ attr.attributeName }}</span>
-          <!-- <span class="product-schema__type-label">{{ attr.typeLabel }}</span> -->
+      }
+    </div>
+  } @else if (gotBackendError()) {
+    <app-backend-error-overlay [errorMsg]="backendErrMsg()"></app-backend-error-overlay>
+  } @else {
+    <div class="product-schema__list">
+      @for (attr of attributes(); track attr.id) {
+        <div class="product-schema__row">
+          <div class="product-schema__drag-handle">
+            <span class="product-schema__drag-dots"></span>
+          </div>
+          <div class="product-schema__info">
+            <span class="product-schema__name">{{ attr.attributeName }}</span>
+            <!-- <span class="product-schema__type-label">{{ attr.typeLabel }}</span> -->
+          </div>
+          <div class="product-schema__badges">
+            <span class="product-schema__badge product-schema__badge--type">{{ attr.attributeType }}</span>
+            @if (attr.isDefault) {
+              <span class="product-schema__badge product-schema__badge--default">Default</span>
+            }
+            @if (!attr.isDefault) {
+              <button
+                class="product-schema__remove-btn"
+                type="button"
+                aria-label="Remove attribute"
+                [disabled]="deletingAttributeId() === attr.id"
+                (click)="deleteAttribute(attr.id)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            }
+          </div>
         </div>
-        <div class="product-schema__badges">
-          <span class="product-schema__badge product-schema__badge--type">{{ attr.attributeType }}</span>
-          @if (attr.isDefault) {
-            <span class="product-schema__badge product-schema__badge--default">Default</span>
-          }
-          @if (!attr.isDefault) {
-            <button class="product-schema__remove-btn" type="button" aria-label="Remove attribute">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          }
-        </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
 
-  <!-- @if (attributes().length > 0) { -->
-    <p class="product-schema__hint">Add custom attributes above to extend the schema (You can have up to 10 attributes)</p>
-  <!-- } -->
+    <!-- @if (attributes().length > 0) { -->
+      <p class="product-schema__hint">Add custom attributes above to extend the schema (You can have up to 10 attributes)</p>
+    <!-- } -->
+  }
 </div>

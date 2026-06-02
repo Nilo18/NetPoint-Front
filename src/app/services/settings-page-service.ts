@@ -262,4 +262,15 @@ export class SettingsPageService {
       throw error
     }
   }
+
+  async deleteProductAttributes(id: number) {
+    try {
+      const res = await firstValueFrom(this.http.delete(`${this.baseUrl}/api/products/attributes/${id}`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't delete product attributes: ", error)
+      throw error      
+    }
+  }
 }

@@ -3,15 +3,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsPageService } from '../../../services/settings-page-service';
 
 @Component({
-  selector: 'app-user-deletion-error-display-modal',
+  selector: 'app-delete-request-error-display-modal',
   imports: [],
-  templateUrl: './user-deletion-error-display-modal.html',
-  styleUrl: './user-deletion-error-display-modal.scss',
+  templateUrl: './delete-request-error-display-modal.html',
+  styleUrl: './delete-request-error-display-modal.scss',
 })
-export class UserDeletionErrorDisplayModal {
+export class DeleteRequestErrorDisplayModal {
   public modal = inject(NgbActiveModal);
   private settingsService = inject(SettingsPageService)
-  errMsg: string = ''
+  errTitle!: string
+  errMsg!: string
 
   closeModal() {
     this.settingsService.setIsLoading(false)

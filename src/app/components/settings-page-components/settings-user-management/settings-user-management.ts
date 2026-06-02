@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
 import { UserPagination } from '../user-pagination/user-pagination';
-import { UserDeletionErrorDisplayModal } from '../user-deletion-error-display-modal/user-deletion-error-display-modal';
+import { DeleteRequestErrorDisplayModal } from '../delete-request-error-display-modal/delete-request-error-display-modal';
 import { SettingsRolePermissions } from '../settings-role-permissions/settings-role-permissions';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 
@@ -67,7 +67,7 @@ export class SettingsUserManagement {
       }
       this.settingsService.setIsLoading(false)
     } catch (error: any) {
-      const modalRef = this.modalService.open(UserDeletionErrorDisplayModal, {
+      const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
         centered: true
       })
 
