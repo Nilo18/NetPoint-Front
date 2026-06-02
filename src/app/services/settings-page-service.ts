@@ -273,4 +273,15 @@ export class SettingsPageService {
       throw error      
     }
   }
+
+  async updateProductAttribute(attribute: ProductAttribute) {
+    try {
+      const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/products/attributes`, attribute))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't update product attributes: ", error)
+      throw error
+    }
+  }
 }

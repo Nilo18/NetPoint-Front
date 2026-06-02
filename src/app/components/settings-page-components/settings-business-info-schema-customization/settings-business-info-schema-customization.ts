@@ -65,6 +65,14 @@ export class SettingsBusinessInfoSchemaCustomization {
     // });
   }
 
+  openWithAttribute(attribute: ProductAttribute): void {
+    const modalRef = this.modal.open(SettingsSchemaCustomizerModal, {
+      centered: true,
+    });
+
+    modalRef.componentInstance.setDefaultAttribute(attribute);
+  }
+
   async deleteAttribute(id: number | undefined) {
     if (!id) {
       console.log('Undefined id')

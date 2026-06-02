@@ -103,6 +103,7 @@
 
     &:hover,
     &:focus-within {
+      .product-schema__edit-btn,
       .product-schema__remove-btn {
         opacity: 1;
         pointer-events: auto;
@@ -228,6 +229,7 @@
     }
   }
 
+  &__edit-btn,
   &__remove-btn {
     display: inline-flex;
     align-items: center;
@@ -251,7 +253,6 @@
       transform 0.15s ease;
 
     &:hover {
-      color: #dc2626;
       transform: scale(1.08);
     }
 
@@ -261,6 +262,26 @@
       transform: scale(1);
       outline: 3px solid rgba(220, 38, 38, 0.2);
       outline-offset: 2px;
+    }
+  }
+
+  &__edit-btn {
+    font-size: 16px;
+
+    &:hover {
+      color: #4f46e5;
+    }
+
+    &:focus-visible {
+      outline-color: rgba(79, 70, 229, 0.2);
+    }
+  }
+
+  &__remove-btn {
+    font-size: 24px;
+
+    &:hover {
+      color: #dc2626;
     }
 
     &:disabled {

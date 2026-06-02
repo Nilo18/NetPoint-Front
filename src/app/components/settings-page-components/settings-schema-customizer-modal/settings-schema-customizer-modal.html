@@ -13,7 +13,7 @@
     <p>Create a new custom field for your products</p>
   </header>
 
-  <form class="schema-customizer-modal__form" [formGroup]="attributeForm" (ngSubmit)="addAttribute()">
+  <form class="schema-customizer-modal__form" [formGroup]="attributeForm" (ngSubmit)="onSubmit()">
     <label class="schema-customizer-modal__field">
       <span>Attribute Name</span>
       <input
@@ -45,7 +45,7 @@
       }
 
       <button type="submit" class="schema-customizer-modal__submit" [disabled]="requestSent()">
-        Add Attribute
+        {{!defaultAttribute ? 'Add Attribute' : 'Update Attribute'}}
       </button>
     </div>
   </form>

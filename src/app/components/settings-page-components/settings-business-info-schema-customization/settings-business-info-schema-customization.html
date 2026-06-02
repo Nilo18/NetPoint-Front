@@ -43,6 +43,13 @@
             }
             @if (!attr.isDefault) {
               <button
+                class="product-schema__edit-btn"
+                type="button"
+                aria-label="Customize attribute"
+                (click)="openWithAttribute(attr)">
+                <span aria-hidden="true">&#9998;</span>
+              </button>
+              <button
                 class="product-schema__remove-btn"
                 type="button"
                 aria-label="Remove attribute"
