@@ -6,10 +6,11 @@
     <p class="billing__subtitle">Manage your subscription and billing</p>
 
     <div class="billing__plan">
+      @if (paymentPlan()) {
       <div class="billing__plan--header">
         <div>
-          <h3 class="billing__plan--name">Professional Plan</h3>
-          <p class="billing__plan--tagline">For growing businesses</p>
+          <h3 class="billing__plan--name">{{ paymentPlan()?.planName }}</h3>
+          <p class="billing__plan--tagline">{{ paymentPlan()?.planPurpose }}</p>
         </div>
         <div class="billing__plan--price">
           <span class="billing__plan--amount">$49</span>
@@ -18,7 +19,9 @@
       </div>
 
       <ul class="billing__plan--features">
-        <li>Unlimited products</li>
+        <!-- @for (rule of paymentPlan.planRules; track rule) {
+          <li>{{ rule }}/li>
+        } -->
         <li>Up to 10 team members</li>
         <li>Advanced analytics</li>
         <li>Priority support</li>
@@ -28,6 +31,7 @@
         <button class="billing__btn billing__btn--outline">Change Plan</button>
         <button class="billing__btn billing__btn--danger">Cancel Subscription</button>
       </div>
+    }
     </div>
   </div>
 

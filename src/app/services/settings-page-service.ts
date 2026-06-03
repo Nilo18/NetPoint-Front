@@ -63,6 +63,14 @@ export interface ProductAttribute {
   isDefault: boolean
 }
 
+export interface PaymentPlan {
+  id: number,
+  planName: string,
+  planPurpose: string,
+  costPerMonth: number,
+  planRules: String[]
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -282,6 +290,17 @@ export class SettingsPageService {
     } catch (error) {
       console.log("Couldn't update product attributes: ", error)
       throw error
+    }
+  }
+
+  async getPaymentPlan() {
+    try {
+      const res = await firstValueFrom(this.http.get<PaymentPlan>(`${this.baseUrl}/api/payment-plan`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't update product attributes: ", error)
+      throw error      
     }
   }
 }
