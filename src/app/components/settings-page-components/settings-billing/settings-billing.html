@@ -13,23 +13,25 @@
           <p class="billing__plan--tagline">{{ paymentPlan()?.planPurpose }}</p>
         </div>
         <div class="billing__plan--price">
-          <span class="billing__plan--amount">$49</span>
+          <span class="billing__plan--amount">${{ paymentPlan()?.costPerMonth }}</span>
           <span class="billing__plan--period">/month</span>
         </div>
       </div>
 
       <ul class="billing__plan--features">
-        <!-- @for (rule of paymentPlan.planRules; track rule) {
-          <li>{{ rule }}/li>
-        } -->
-        <li>Up to 10 team members</li>
+        @for (rule of paymentPlan()?.planRules; track rule) {
+          <li>{{ rule }}</li>
+        }
+        <!-- <li>Up to 10 team members</li>
         <li>Advanced analytics</li>
-        <li>Priority support</li>
+        <li>Priority support</li> -->
       </ul>
 
       <div class="billing__plan--actions">
-        <button class="billing__btn billing__btn--outline">Change Plan</button>
-        <button class="billing__btn billing__btn--danger">Cancel Subscription</button>
+        <button class="billing__btn billing__btn--outline">{{isFreeTier ? 'Upgrade' : 'Change Plan' }}</button>
+        @if (!isFreeTier) {
+          <button class="billing__btn billing__btn--danger">Cancel Subscription</button>
+        }
       </div>
     }
     </div>

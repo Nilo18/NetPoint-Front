@@ -16,4 +16,9 @@ export class SettingsBilling {
     this.paymentPlan.set(res)
     console.log(`Assigned paymentPlan: `, this.paymentPlan)
   }
+
+  get isFreeTier() {
+    const stdPlanName = this.paymentPlan()?.planName.trim().toLowerCase()
+    return stdPlanName === 'starter plan'
+  }
 }
