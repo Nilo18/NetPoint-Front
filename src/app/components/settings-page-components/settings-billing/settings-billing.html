@@ -28,9 +28,10 @@
       </ul>
 
       <div class="billing__plan--actions">
-        <button class="billing__btn billing__btn--outline" (click)="openPlanChangerModal()">{{isFreeTier ? 'Upgrade' : 'Change Plan' }}</button>
+        <button class="billing__btn billing__btn--outline"
+        (click)="openPlanChangerModal()">{{isFreeTier ? 'Upgrade' : 'Change Plan' }}</button>
         @if (!isFreeTier) {
-          <button class="billing__btn billing__btn--danger">Cancel Subscription</button>
+          <button class="billing__btn billing__btn--danger" (click)="cancelSubscription()">Cancel Subscription</button>
         }
       </div>
     }

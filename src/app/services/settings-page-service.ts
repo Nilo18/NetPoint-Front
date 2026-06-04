@@ -315,4 +315,15 @@ export class SettingsPageService {
       throw error      
     }
   }
+
+  async cancelSubscription() {
+    try {
+      const res = await firstValueFrom(this.http.delete(`${this.baseUrl}/api/payment-plan`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't cancel subscription: ", error)
+      throw error      
+    }
+  }
 }

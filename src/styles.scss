@@ -35,6 +35,17 @@ body {
     }
 }
 
+.modal-dialog:has(app-confirm-action-modal) {
+    max-width: min(640px, calc(100vw - 32px));
+}
+
+.modal-content:has(app-confirm-action-modal) {
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+    overflow: visible;
+}
+
 // app-root, app-settings {
 //     display: flex;
 //     flex-direction: column;

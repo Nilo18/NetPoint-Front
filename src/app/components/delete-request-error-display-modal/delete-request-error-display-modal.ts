@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SettingsPageService } from '../../../services/settings-page-service';
+import { SettingsPageService } from '../../services/settings-page-service';
 
 @Component({
   selector: 'app-delete-request-error-display-modal',

@@ -6,7 +6,7 @@ import {
 } from '../settings-schema-customizer-modal/settings-schema-customizer-modal';
 import { ProductAttribute, SettingsPageService } from '../../../services/settings-page-service';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
-import { DeleteRequestErrorDisplayModal } from '../delete-request-error-display-modal/delete-request-error-display-modal';
+import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 
 interface Attribute {
   name: string;

@@ -1,0 +1,24 @@
+<section class="confirm-action-modal" aria-labelledby="confirm-action-modal-title">
+  <button
+    class="confirm-action-modal__close"
+    type="button"
+    aria-label="Close"
+    (click)="modal.dismiss()"
+  >
+    &times;
+  </button>
+
+  <header class="confirm-action-modal__header">
+    <h2 id="confirm-action-modal-title">{{ title }}</h2>
+    <p>{{ description }}</p>
+  </header>
+
+  <div class="confirm-action-modal__actions">
+    <button class="confirm-action-modal__cancel" type="button" (click)="modal.dismiss()">
+      Cancel
+    </button>
+    <button class="confirm-action-modal__confirm" type="button" (click)="confirm()">
+      Confirm
+    </button>
+  </div>
+</section>
