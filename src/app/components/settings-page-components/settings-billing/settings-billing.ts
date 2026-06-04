@@ -1,14 +1,18 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentPlan, SettingsPageService } from '../../../services/settings-page-service';
+import { SettingsBillingPlanChangerModal } from '../settings-billing-plan-changer-modal/settings-billing-plan-changer-modal';
 
 @Component({
   selector: 'app-settings-billing',
   imports: [],
   templateUrl: './settings-billing.html',
   styleUrl: './settings-billing.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsBilling {
   private settingsService = inject(SettingsPageService)
+  private modalService = inject(NgbModal)
   paymentPlan: WritableSignal<PaymentPlan | null> = signal(null)
 
   async ngOnInit() {
@@ -20,5 +24,16 @@ export class SettingsBilling {
   get isFreeTier() {
     const stdPlanName = this.paymentPlan()?.planName.trim().toLowerCase()
     return stdPlanName === 'starter plan'
+  }
+
+  openPlanChangerModal(): void {
+    const modalRef = this.modalService.open(SettingsBillingPlanChangerModal, {
+      centered: true,
+      backdrop: true,
+      // size: 'xl',
+      windowClass: 'billing-plan-modal-window',
+    })
+
+    modalRef.componentInstance.selectedPlan = this.paymentPlan()?.planName
   }
 }

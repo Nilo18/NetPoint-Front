@@ -1,0 +1,49 @@
+<section class="plan-modal" aria-labelledby="plan-modal-title">
+  <button class="plan-modal__close" type="button" aria-label="Close" (click)="modal.dismiss()">
+    &times;
+  </button>
+
+  <header class="plan-modal__header">
+    <h2 id="plan-modal-title">Choose a Plan</h2>
+    <p>Select the plan that best fits your business needs</p>
+  </header>
+
+  <div class="plan-modal__grid">
+    @for (plan of plans; track plan.name) {
+      <article
+        class="plan-card"
+        [class.plan-card--selected]="isSelected(plan.name)"
+        (click)="selectPlan(plan.name)"
+      >
+        @if (plan.badge) {
+          <span class="plan-card__badge">{{ plan.badge }}</span>
+        }
+
+        <div class="plan-card__content">
+          <h3>{{ plan.label }}</h3>
+          <p class="plan-card__description">{{ plan.description }}</p>
+
+          <p class="plan-card__price">
+            <span>${{ plan.price }}</span>
+            <small>/mo</small>
+          </p>
+
+          <ul class="plan-card__features">
+            @for (feature of plan.features; track feature) {
+              <li>{{ feature }}</li>
+            }
+          </ul>
+        </div>
+
+        <button
+          class="plan-card__action"
+          [class.plan-card__action--selected]="isSelected(plan.name)"
+          type="button"
+          (click)="selectPlan(plan.name); $event.stopPropagation()"
+        >
+          {{ determinePlanButtonText(plan.name) }}
+        </button>
+      </article>
+    }
+  </div>
+</section>

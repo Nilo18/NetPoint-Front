@@ -303,4 +303,16 @@ export class SettingsPageService {
       throw error      
     }
   }
+
+  async changePaymentPlan(newPlanName: string) {
+    try {
+      console.log(`Sending `, {newPlanName})
+      const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/payment-plan`, {newPlanName}))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't change payment plan: ", error)
+      throw error      
+    }
+  }
 }
