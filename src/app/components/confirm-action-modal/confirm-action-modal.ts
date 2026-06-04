@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -10,11 +10,27 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ConfirmActionModal {
   protected readonly modal = inject(NgbActiveModal);
+  protected readonly isLoading = signal(false);
 
   title = '';
   description = '';
+  confirmAction?: () => Promise<void>;
 
-  confirm(): void {
-    this.modal.close(true);
+  async confirm(): Promise<void> {
+    if (!this.confirmAction) {
+      this.modal.close(true);
+      return;
+    }
+
+    this.isLoading.set(true);
+
+    try {
+      await this.confirmAction();
+      this.modal.close(true);
+    } catch {
+      // The caller owns the error display; keep this modal open so the user can retry or cancel.
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

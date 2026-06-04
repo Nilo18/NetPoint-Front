@@ -1,4 +1,7 @@
 <div class="billing">
+  @if (gotBackendError()) {
+    <app-backend-error-overlay [errorMsg]="backendErrMsg()"></app-backend-error-overlay>
+  }
 
   <!-- Current Plan -->
   <div class="billing__card">
@@ -6,6 +9,22 @@
     <p class="billing__subtitle">Manage your subscription and billing</p>
 
     <div class="billing__plan">
+      @if (settingsService.isLoading()) {
+        <div class="billing__plan-skeleton" aria-label="Loading payment plan">
+          <div class="billing__skeleton-plan">
+            <div>
+              <div class="billing__skeleton-line billing__skeleton-line--title"></div>
+              <div class="billing__skeleton-line"></div>
+            </div>
+            <div class="billing__skeleton-price"></div>
+          </div>
+          <div class="billing__skeleton-list">
+            <div class="billing__skeleton-line"></div>
+            <div class="billing__skeleton-line"></div>
+            <div class="billing__skeleton-line billing__skeleton-line--medium"></div>
+          </div>
+        </div>
+      }
       @if (paymentPlan()) {
       <div class="billing__plan--header">
         <div>

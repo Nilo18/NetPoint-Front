@@ -1,5 +1,11 @@
 <section class="plan-modal" aria-labelledby="plan-modal-title">
-  <button class="plan-modal__close" type="button" aria-label="Close" (click)="modal.dismiss()">
+  <button
+    class="plan-modal__close"
+    type="button"
+    aria-label="Close"
+    [disabled]="requestSent()"
+    (click)="modal.dismiss()"
+  >
     &times;
   </button>
 
@@ -8,11 +14,16 @@
     <p>Select the plan that best fits your business needs</p>
   </header>
 
+  @if (backendErrMsg()) {
+    <p class="plan-modal__error">{{ backendErrMsg() }}</p>
+  }
+
   <div class="plan-modal__grid">
     @for (plan of plans; track plan.name) {
       <article
         class="plan-card"
         [class.plan-card--selected]="isSelected(plan.name)"
+        [class.plan-card--disabled]="requestSent()"
         (click)="selectPlan(plan.name)"
       >
         @if (plan.badge) {
@@ -39,8 +50,12 @@
           class="plan-card__action"
           [class.plan-card__action--selected]="isSelected(plan.name)"
           type="button"
+          [disabled]="requestSent() || isSelected(plan.name)"
           (click)="selectPlan(plan.name); $event.stopPropagation()"
         >
+          @if (pendingPlan() === plan.name) {
+            <span class="plan-card__spinner" aria-hidden="true"></span>
+          }
           {{ determinePlanButtonText(plan.name) }}
         </button>
       </article>

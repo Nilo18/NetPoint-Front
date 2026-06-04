@@ -23,6 +23,9 @@ export class SettingsBillingPlanChangerModal {
   protected readonly modal = inject(NgbActiveModal);
   selectedPlan = 'Starter Plan';
   private settingsService = inject(SettingsPageService)
+  protected readonly requestSent = signal(false);
+  protected readonly pendingPlan = signal('');
+  protected readonly backendErrMsg = signal('');
   private readonly planOrder: Record<string, number> = {
     'Starter Plan': 0,
     'Professional Plan': 1,
@@ -73,14 +76,24 @@ export class SettingsBillingPlanChangerModal {
   ];
 
   async selectPlan(planName: string) {
+    if (this.requestSent() || this.isSelected(planName)) {
+      return;
+    }
+
+    this.requestSent.set(true);
+    this.pendingPlan.set(planName);
+    this.backendErrMsg.set('');
+
     try {
       const res = await this.settingsService.changePaymentPlan(planName)
       if (res) {
-        // this.selectedPlan.set(planName); 
         window.location.reload()
       }
-    } catch (error) {
-      
+    } catch (error: any) {
+      this.backendErrMsg.set(error.error?.error ?? 'Could not change your plan. Please try again.')
+    } finally {
+      this.requestSent.set(false);
+      this.pendingPlan.set('');
     }
   }
 
@@ -89,6 +102,10 @@ export class SettingsBillingPlanChangerModal {
   }
 
   determinePlanButtonText(planName: string): string {
+    if (this.pendingPlan() === planName) {
+      return 'Changing...';
+    }
+
     if (this.isSelected(planName)) {
       return 'Current Plan';
     }

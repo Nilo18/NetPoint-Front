@@ -307,7 +307,9 @@ export class SettingsPageService {
   async changePaymentPlan(newPlanName: string) {
     try {
       console.log(`Sending `, {newPlanName})
-      const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/payment-plan`, {newPlanName}))
+      const res = await firstValueFrom(
+        this.http.put(`${this.baseUrl}/api/payment-plan`, {newPlanName}, { responseType: 'text' })
+      )
       console.log(res)
       return res
     } catch (error) {
@@ -318,7 +320,9 @@ export class SettingsPageService {
 
   async cancelSubscription() {
     try {
-      const res = await firstValueFrom(this.http.delete(`${this.baseUrl}/api/payment-plan`))
+      const res = await firstValueFrom(
+        this.http.delete(`${this.baseUrl}/api/payment-plan`, { responseType: 'text' })
+      )
       console.log(res)
       return res
     } catch (error) {

@@ -4,23 +4,37 @@ import { PaymentPlan, SettingsPageService } from '../../../services/settings-pag
 import { SettingsBillingPlanChangerModal } from '../settings-billing-plan-changer-modal/settings-billing-plan-changer-modal';
 import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-modal';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
+import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 
 @Component({
   selector: 'app-settings-billing',
-  imports: [],
+  imports: [BackendErrorOverlay],
   templateUrl: './settings-billing.html',
   styleUrl: './settings-billing.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsBilling {
-  private settingsService = inject(SettingsPageService)
+  public settingsService = inject(SettingsPageService)
   private modalService = inject(NgbModal)
   paymentPlan: WritableSignal<PaymentPlan | null> = signal(null)
+  gotBackendError = signal(false)
+  backendErrMsg = signal('')
 
   async ngOnInit() {
-    const res = await this.settingsService.getPaymentPlan()
-    this.paymentPlan.set(res)
-    console.log(`Assigned paymentPlan: `, this.paymentPlan)
+    this.settingsService.setIsLoading(true)
+
+    try {
+      const res = await this.settingsService.getPaymentPlan()
+      this.paymentPlan.set(res)
+      this.gotBackendError.set(false)
+      this.backendErrMsg.set('')
+      console.log(`Assigned paymentPlan: `, this.paymentPlan)
+    } catch (error: any) {
+      this.gotBackendError.set(true)
+      this.backendErrMsg.set(error.error?.error ?? 'Could not load billing information.')
+    } finally {
+      this.settingsService.setIsLoading(false)
+    }
   }
 
   get isFreeTier() {
@@ -46,23 +60,21 @@ export class SettingsBilling {
 
     modalRef.componentInstance.title = 'Cancel Subscription Confirmation'
     modalRef.componentInstance.description = 'Are you sure you want to cancel your subscription?'
-
-    modalRef.result.then(async (confirmed) => {
-      if (confirmed) {
-        try {
-          const res = await this.settingsService.cancelSubscription()
-          if (res) {
-            window.location.reload()
-          }
-        } catch (error: any) {
-          const errorModalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
-            centered: true
-          })
-
-          errorModalRef.componentInstance.errTitle = 'Something went wrong while cancelling your subscription'
-          errorModalRef.componentInstance.errMsg = error.error.error
+    modalRef.componentInstance.confirmAction = async () => {
+      try {
+        const res = await this.settingsService.cancelSubscription()
+        if (res) {
+          window.location.reload()
         }
+      } catch (error: any) {
+        const errorModalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
+          centered: true
+        })
+
+        errorModalRef.componentInstance.errTitle = 'Something went wrong while cancelling your subscription'
+        errorModalRef.componentInstance.errMsg = error.error?.error ?? 'Please try again later.'
+        throw error
       }
-    })
+    }
   }
 }
