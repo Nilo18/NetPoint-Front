@@ -1,0 +1,44 @@
+<section class="dashboard-stats" aria-label="Admin dashboard statistics">
+  @for (stat of stats(); track stat.title) {
+    <article class="dashboard-stats__card">
+      <div class="dashboard-stats__header">
+        <h2 class="dashboard-stats__title">{{ stat.title }}</h2>
+
+        @switch (stat.icon) {
+          @case ('currency') {
+            <span class="dashboard-stats__icon" aria-hidden="true">$</span>
+          }
+          @case ('trend') {
+            <svg class="dashboard-stats__icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 17L10 11L14 15L20 9" />
+              <path d="M15 9H20V14" />
+            </svg>
+          }
+          @case ('box') {
+            <svg class="dashboard-stats__icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z" />
+              <path d="M12 12L20 7.5" />
+              <path d="M12 12V21" />
+              <path d="M12 12L4 7.5" />
+              <path d="M8 5.25L16 9.75" />
+            </svg>
+          }
+          @case ('alert') {
+            <svg class="dashboard-stats__icon dashboard-stats__icon--warning" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 3L22 20H2L12 3Z" />
+              <path d="M12 9V14" />
+              <path d="M12 17H12.01" />
+            </svg>
+          }
+        }
+      </div>
+
+      <p class="dashboard-stats__value dashboard-stats__value--{{ stat.tone }}">
+        {{ stat.value }}
+      </p>
+      <p class="dashboard-stats__detail dashboard-stats__detail--{{ stat.detailTone }}">
+        {{ stat.detail }}
+      </p>
+    </article>
+  }
+</section>
