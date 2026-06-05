@@ -19,9 +19,11 @@ export class SettingsBilling {
   paymentPlan: WritableSignal<PaymentPlan | null> = signal(null)
   gotBackendError = signal(false)
   backendErrMsg = signal('')
+  currentYear: number = new Date().getFullYear()
 
   async ngOnInit() {
     this.settingsService.setIsLoading(true)
+    // this.currentYear = 
 
     try {
       const res = await this.settingsService.getPaymentPlan()

@@ -6,7 +6,8 @@ export interface DecodedToken {
   companyId: number,
   name: string,
   email: string,
-  industry: string
+  industry: string,
+  role: string
 }
 
 @Injectable({

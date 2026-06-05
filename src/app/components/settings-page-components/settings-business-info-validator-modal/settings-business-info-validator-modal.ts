@@ -2,7 +2,8 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
-import { CompanyDTO, SettingsPageService } from '../../../services/settings-page-service';
+import { SettingsPageService } from '../../../services/settings-page-service';
+import { CompanyDTO } from '../../../services/company-service';
 
 @Component({
   selector: 'app-settings-business-info-validator-modal',

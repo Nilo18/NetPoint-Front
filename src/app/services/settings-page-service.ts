@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { HttpClient } from '@angular/common/http';
 import { first, firstValueFrom } from 'rxjs';
+import { CompanyDTO } from './company-service';
 
 export interface User {
   id: number,
@@ -30,13 +31,6 @@ export interface CashierCredentials {
   role: string,
   pin: string,
   companyId: number
-}
-
-export interface CompanyDTO {
-  id: number,
-  name: string,
-  email: string,
-  industry: string
 }
 
 export interface CredentialsUpdateRequestResponse {
