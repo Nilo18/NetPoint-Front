@@ -1,5 +1,31 @@
 .admin-dashboard {
+  display: grid;
+  gap: 30px;
   min-height: calc(100vh - 100px);
   padding: 28px 0;
   background: #f6f7f9;
+}
+
+.admin-dashboard__charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  padding: 0 30px;
+}
+
+@media (max-width: 1180px) {
+  .admin-dashboard__charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-dashboard {
+    gap: 18px;
+  }
+
+  .admin-dashboard__charts {
+    gap: 18px;
+    padding-inline: 18px;
+  }
 }

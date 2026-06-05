@@ -1,0 +1,67 @@
+.chart-card {
+  min-width: 0;
+  padding: 28px 30px 30px;
+  border: 1px solid #dedede;
+  border-radius: 17px;
+  background: #ffffff;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.chart-card__title {
+  margin: 0 0 24px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chart-card__canvas {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bar-chart {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.bar-chart__grid {
+  stroke: #d1d5db;
+  stroke-dasharray: 4 5;
+  stroke-width: 1.2;
+}
+
+.bar-chart__axis {
+  stroke: #7b7f87;
+  stroke-width: 1.4;
+}
+
+.bar-chart__bar {
+  fill: #18b987;
+}
+
+.bar-chart__label {
+  fill: #555f6d;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.bar-chart__label--y {
+  text-anchor: end;
+}
+
+.bar-chart__label--x {
+  text-anchor: middle;
+}
+
+@media (max-width: 640px) {
+  .chart-card {
+    padding: 24px 18px;
+  }
+
+  .chart-card__title {
+    font-size: 18px;
+  }
+}

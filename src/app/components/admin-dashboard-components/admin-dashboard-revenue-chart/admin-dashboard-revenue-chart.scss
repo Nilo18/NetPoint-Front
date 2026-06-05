@@ -1,0 +1,91 @@
+.chart-card {
+  min-width: 0;
+  padding: 28px 30px 30px;
+  border: 1px solid #dedede;
+  border-radius: 17px;
+  background: #ffffff;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.chart-card__title {
+  margin: 0 0 24px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chart-card__canvas {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.trend-chart {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.trend-chart__grid {
+  stroke: #d1d5db;
+  stroke-dasharray: 4 5;
+  stroke-width: 1.2;
+}
+
+.trend-chart__axis {
+  stroke: #7b7f87;
+  stroke-width: 1.4;
+}
+
+.trend-chart__label {
+  fill: #555f6d;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.trend-chart__label--y {
+  text-anchor: end;
+}
+
+.trend-chart__label--x {
+  text-anchor: middle;
+}
+
+.trend-chart__line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trend-chart__line--revenue {
+  stroke: #4f46f8;
+}
+
+.trend-chart__line--profit {
+  stroke: #10b981;
+}
+
+.trend-chart__marker {
+  fill: #ffffff;
+  stroke-width: 3;
+}
+
+.trend-chart__marker--revenue {
+  stroke: #4f46f8;
+}
+
+.trend-chart__marker--profit {
+  stroke: #10b981;
+}
+
+@media (max-width: 640px) {
+  .chart-card {
+    padding: 24px 18px;
+  }
+
+  .chart-card__title {
+    font-size: 18px;
+  }
+}

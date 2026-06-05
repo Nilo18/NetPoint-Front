@@ -1,6 +1,11 @@
 <app-admin-dashboard-header></app-admin-dashboard-header>
 <main class="admin-dashboard">
   <app-admin-dashboard-stats></app-admin-dashboard-stats>
+
+  <section class="admin-dashboard__charts" aria-label="Admin dashboard charts">
+    <app-admin-dashboard-revenue-chart></app-admin-dashboard-revenue-chart>
+    <app-admin-dashboard-product-performance-chart></app-admin-dashboard-product-performance-chart>
+  </section>
 </main>
 <!-- <button (click)="navToSettings()">Settings</button>
 <button (click)="logout()">Log Out</button> -->
