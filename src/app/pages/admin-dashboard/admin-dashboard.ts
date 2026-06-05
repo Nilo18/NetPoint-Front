@@ -6,6 +6,7 @@ from '../../components/admin-dashboard-components/admin-dashboard-header/admin-d
 import { AdminDashboardStats } from '../../components/admin-dashboard-components/admin-dashboard-stats/admin-dashboard-stats';
 import { AdminDashboardRevenueChart } from '../../components/admin-dashboard-components/admin-dashboard-revenue-chart/admin-dashboard-revenue-chart';
 import { AdminDashboardProductPerformanceChart } from '../../components/admin-dashboard-components/admin-dashboard-product-performance-chart/admin-dashboard-product-performance-chart';
+import { AdminDashboardInventoryManagement } from '../../components/admin-dashboard-components/admin-dashboard-inventory-management/admin-dashboard-inventory-management';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -14,6 +15,7 @@ import { AdminDashboardProductPerformanceChart } from '../../components/admin-da
     AdminDashboardStats,
     AdminDashboardRevenueChart,
     AdminDashboardProductPerformanceChart,
+    AdminDashboardInventoryManagement,
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',

@@ -13,6 +13,12 @@
   padding: 0 30px;
 }
 
+app-admin-dashboard-inventory-management {
+  display: block;
+  min-width: 0;
+  padding: 0 30px;
+}
+
 @media (max-width: 1180px) {
   .admin-dashboard__charts {
     grid-template-columns: 1fr;
@@ -26,6 +32,10 @@
 
   .admin-dashboard__charts {
     gap: 18px;
+    padding-inline: 18px;
+  }
+
+  app-admin-dashboard-inventory-management {
     padding-inline: 18px;
   }
 }

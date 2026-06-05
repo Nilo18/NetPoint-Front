@@ -1,0 +1,54 @@
+<section class="inventory-management" aria-labelledby="inventory-management-title">
+  <header class="inventory-management__header">
+    <div>
+      <h2 id="inventory-management-title" class="inventory-management__title">Inventory Management</h2>
+      <p class="inventory-management__subtitle">Manage your product catalog and stock levels</p>
+    </div>
+
+    <button class="inventory-management__add-button btn" type="button">
+      <svg class="inventory-management__add-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M12 5V19" />
+        <path d="M5 12H19" />
+      </svg>
+      <span>Add Product</span>
+    </button>
+  </header>
+
+  <div class="inventory-management__table-wrap table-responsive">
+    <table class="inventory-management__table table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Wholesale</th>
+          <th scope="col">Retail</th>
+          <th scope="col">Margin</th>
+          <th scope="col">Profitability</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.name) {
+          <tr>
+            <th scope="row">{{ product.name }}</th>
+            <td>
+              <span class="inventory-management__stock" [class.inventory-management__stock--low]="product.stock < 50">
+                {{ product.stock }}
+              </span>
+            </td>
+            <td class="inventory-management__wholesale">{{ product.wholesalePrice }}</td>
+            <td class="inventory-management__retail">{{ product.retailPrice }}</td>
+            <td class="inventory-management__margin">{{ product.margin }}</td>
+            <td>
+              <span
+                class="inventory-management__profitability"
+                [class.inventory-management__profitability--high]="product.profitability === 'High'"
+              >
+                {{ product.profitability }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
