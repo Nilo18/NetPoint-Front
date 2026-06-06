@@ -31,6 +31,7 @@ export class FormValidatorService {
 
     if (control.hasError('required')) { 
       // field.charAt(0)
+      console.log(`Checking for: ${control} in ${form}`)
       return `${label} is required.`
     }
     if (control.hasError('email')) {

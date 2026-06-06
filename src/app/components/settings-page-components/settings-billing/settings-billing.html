@@ -62,16 +62,44 @@
     <h2 class="billing__title">Payment Method</h2>
     <p class="billing__subtitle">Manage your payment information</p>
 
-    <div class="billing__payment">
-      <div class="billing__payment--left">
-        <div class="billing__visa">VISA</div>
-        <div class="billing__payment--info">
-          <span class="billing__payment--number">•••• •••• •••• 4242</span>
-          <span class="billing__payment--expiry">Expires 12/26</span>
+    @if (paymentMethod.isLoading()) {
+      <div class="billing__payment billing__payment-skeleton" aria-label="Loading payment method">
+        <div class="billing__payment--left">
+          <div class="billing__skeleton-card"></div>
+          <div class="billing__payment--info billing__payment-skeleton--info">
+            <div class="billing__skeleton-line billing__skeleton-line--payment-number"></div>
+            <div class="billing__skeleton-line billing__skeleton-line--payment-expiry"></div>
+          </div>
         </div>
+        <div class="billing__skeleton-button"></div>
       </div>
-      <button class="billing__btn billing__btn--outline billing__btn--sm">Update</button>
-    </div>
+    } @else if (paymentMethod.error()) {
+      <div class="billing__payment-empty" role="status" aria-live="polite">
+        <div class="billing__payment-empty--icon" aria-hidden="true">
+          <span></span>
+        </div>
+        <div class="billing__payment-empty--content">
+          <h3 class="billing__payment-empty--title">No payment method on file</h3>
+          <p class="billing__payment-empty--description">
+            Add a secure payment method to keep subscriptions active and avoid billing interruptions.
+          </p>
+        </div>
+        <button class="billing__btn billing__btn--primary billing__btn--sm" (click)="openPaymentMethodModal()">
+          Add Payment Method
+        </button>
+      </div>
+    } @else {
+      <div class="billing__payment">
+        <div class="billing__payment--left">
+          <div class="billing__visa">VISA</div>
+          <div class="billing__payment--info">
+            <span class="billing__payment--number">•••• •••• •••• 4242</span>
+            <span class="billing__payment--expiry">Expires 12/26</span>
+          </div>
+        </div>
+        <button class="billing__btn billing__btn--outline billing__btn--sm">Update</button>
+      </div>
+    }
   </div>
 
   <!-- Billing History -->
@@ -112,5 +140,4 @@
       </div>
     </div>
   </div>
-
 </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource, signal, WritableSignal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentPlan, SettingsPageService } from '../../../services/settings-page-service';
 import { SettingsBillingPlanChangerModal } from '../settings-billing-plan-changer-modal/settings-billing-plan-changer-modal';
@@ -20,8 +20,12 @@ export class SettingsBilling {
   gotBackendError = signal(false)
   backendErrMsg = signal('')
   currentYear: number = new Date().getFullYear()
+  paymentMethod = resource({
+    loader: () => this.settingsService.getPaymentMethod()
+  })
 
   async ngOnInit() {
+    console.log(this.paymentMethod.value())
     this.settingsService.setIsLoading(true)
     // this.currentYear = 
 
@@ -53,6 +57,16 @@ export class SettingsBilling {
     })
 
     modalRef.componentInstance.selectedPlan = this.paymentPlan()?.planName
+  }
+
+  async openPaymentMethodModal() {
+    const { SettingsBillingAddPaymentMethodModal } = await import(
+      '../settings-billing-add-payment-method-modal/settings-billing-add-payment-method-modal'
+    )
+
+    this.modalService.open(SettingsBillingAddPaymentMethodModal, {
+      centered: true
+    })
   }
 
   cancelSubscription() {

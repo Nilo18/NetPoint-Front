@@ -65,6 +65,18 @@ export interface PaymentPlan {
   planRules: String[]
 }
 
+export interface PaymentMethod {
+  id: number,
+  mockPaymentMethodId: string,
+  cardBrand: string,
+  cardLast4: string,
+  cardExpMonth: number,
+  cardExpYear: number,
+  cardholderName: string,
+  isDefault: boolean,
+  status: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -322,6 +334,17 @@ export class SettingsPageService {
     } catch (error) {
       console.log("Couldn't cancel subscription: ", error)
       throw error      
+    }
+  }
+
+  async getPaymentMethod() {
+    try {
+      const res = await firstValueFrom(this.http.get<PaymentMethod>(`${this.baseUrl}/api/payment-method`))
+      console.log("Payment method is: ", res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get payment method: ", error)
+      throw error
     }
   }
 }

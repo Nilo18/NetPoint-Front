@@ -1,0 +1,150 @@
+:host {
+  display: block;
+}
+
+.modal-dialog:has(app-settings-billing-add-payment-method-modal) {
+  max-width: min(650px, calc(100vw - 24px));
+}
+
+.modal-content:has(app-settings-billing-add-payment-method-modal) {
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 22px 46px rgba(15, 23, 42, 0.24);
+  overflow: hidden;
+}
+
+.payment-method-modal {
+  position: relative;
+  width: 100%;
+  padding: 28px 30px 30px;
+  background: #ffffff;
+  border-radius: 10px;
+
+  &__close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: #333333;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__header {
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0 0 8px;
+      color: #111111;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      color: #73778a;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+  }
+
+  &__form {
+    gap: 18px;
+  }
+
+  &__field {
+    gap: 8px;
+
+    label {
+      color: #111111;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.15;
+      // background-color: red;
+
+      span {
+        color: #ef4444;
+        font-weight: 600;
+      }
+    }
+
+    input {
+      height: 46px;
+      border: 1px solid #f1f1f4;
+      border-radius: 9px;
+      color: #111827;
+      font-size: 17px;
+      padding: 0 16px;
+
+      &::placeholder {
+        color: #767b90;
+        opacity: 1;
+      }
+    }
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  &__security-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    margin: 8px 0 6px;
+    color: #73778a;
+    font-size: 16px;
+    line-height: 1.35;
+
+    span {
+      position: relative;
+      width: 15px;
+      height: 12px;
+      border: 1.8px solid currentColor;
+      border-radius: 3px;
+      flex: 0 0 auto;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 2px;
+        top: -8px;
+        width: 7px;
+        height: 8px;
+        border: 1.8px solid currentColor;
+        border-bottom: 0;
+        border-radius: 7px 7px 0 0;
+      }
+    }
+  }
+
+  &__submit {
+    height: 46px;
+    border: 0;
+    border-radius: 9px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .payment-method-modal {
+    padding: 26px 20px 24px;
+
+    &__row {
+      grid-template-columns: 1fr;
+    }
+  }
+}
