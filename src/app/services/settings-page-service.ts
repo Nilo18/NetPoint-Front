@@ -366,4 +366,15 @@ export class SettingsPageService {
       throw error
     }
   }
+
+  async updatePaymentMethod(paymentMethod: PaymentMethodCredentials) {
+    try {
+      const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/payment-method`, paymentMethod))
+      console.log(res)
+      return res      
+    } catch (error) {
+      console.log("Couldn't update payment method: ", error)
+      throw error      
+    }
+  }
 }

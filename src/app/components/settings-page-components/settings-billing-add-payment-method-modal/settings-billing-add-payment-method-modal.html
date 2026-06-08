@@ -9,7 +9,7 @@
   </button>
 
   <header class="payment-method-modal__header">
-    <h2 id="payment-method-modal-title">Add Payment Method</h2>
+    <h2 id="payment-method-modal-title">{{ passedPaymentMethod ? 'Update Payment Method' : 'Add Payment Method' }}</h2>
     <p>Enter your card details securely</p>
   </header>
 
@@ -99,7 +99,7 @@
     </p>
 
     <button class="form__submitbtn payment-method-modal__submit" type="submit">
-      Add Payment Method
+      {{passedPaymentMethod ? 'Update Payment Method' : 'Add Payment Method' }}
     </button>
   </form>
 </section>

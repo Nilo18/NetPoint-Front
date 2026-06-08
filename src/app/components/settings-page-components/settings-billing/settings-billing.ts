@@ -86,9 +86,12 @@ export class SettingsBilling {
       '../settings-billing-add-payment-method-modal/settings-billing-add-payment-method-modal'
     )
 
-    this.modalService.open(SettingsBillingAddPaymentMethodModal, {
+    console.log("cardholderName INSIDE SETTINGS-BILLING IS:: ", this.paymentMethod.value()?.cardholderName)
+    const modalRef = this.modalService.open(SettingsBillingAddPaymentMethodModal, {
       centered: true
     })
+
+    modalRef.componentInstance.passedPaymentMethod = this.paymentMethod.value()
   }
 
   cancelSubscription() {

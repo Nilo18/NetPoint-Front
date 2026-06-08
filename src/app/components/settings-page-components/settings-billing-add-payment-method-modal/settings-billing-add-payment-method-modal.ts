@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
-import { SettingsPageService } from '../../../services/settings-page-service';
+import { PaymentMethod, PaymentMethodCredentials, SettingsPageService } from '../../../services/settings-page-service';
 
 type NumericPaymentMethodControl = 'cardNumber' | 'expYear' | 'cvc';
 
@@ -17,6 +17,18 @@ export class SettingsBillingAddPaymentMethodModal {
   protected readonly modal = inject(NgbActiveModal);
   private formValidator = inject(FormValidatorService)
   private settingsService = inject(SettingsPageService)
+  passedPaymentMethod!: PaymentMethod
+
+  ngOnInit() {
+    if (this.passedPaymentMethod) {
+      this.paymentMethodForm.patchValue({
+        cardholderName: this.passedPaymentMethod.cardholderName || '',
+        expMonth: String(this.passedPaymentMethod.cardExpMonth) || '',
+        expYear: String(this.passedPaymentMethod.cardExpYear) || ''
+      });
+    }
+  }
+
   protected readonly paymentMethodForm = new FormGroup({
     cardholderName: new FormControl('', {
       nonNullable: true,
@@ -106,22 +118,60 @@ export class SettingsBillingAddPaymentMethodModal {
     }
   }
 
-  onSubmit() {
+  isFormValid() {
     if (this.paymentMethodForm.invalid) {
       this.paymentMethodForm.markAllAsTouched()
       console.log('Invalid form.')
-      return
+      return false
     }
+    return true
+  }
+
+  async addPaymentMethod() {
+    if (!this.isFormValid()) return
 
     console.log(this.paymentMethodForm.value)
     const raw = this.paymentMethodForm.getRawValue()
 
-    this.settingsService.addPaymentMethod(
+    const res = await this.settingsService.addPaymentMethod(
       {
         ...raw,
         expMonth: Number(raw.expMonth),
         expYear: Number(raw.expYear)
       }
     )
+
+    if (res) {
+      window.location.reload()
+    }
+  }
+
+  async updatePaymentMethod() {
+    if (!this.isFormValid()) return
+
+    console.log(this.paymentMethodForm.value)
+    const raw = this.paymentMethodForm.getRawValue()
+
+    const res = await this.settingsService.updatePaymentMethod(
+      {
+        ...raw,
+        expMonth: Number(raw.expMonth),
+        expYear: Number(raw.expYear)
+      }
+    )
+
+    if (res) {
+      window.location.reload()
+    }
+  }
+
+  onSubmit() {
+    let res
+    if (this.passedPaymentMethod) {
+      this.updatePaymentMethod()
+    } else {
+      this.addPaymentMethod()
+    }
+    
   }
 }
