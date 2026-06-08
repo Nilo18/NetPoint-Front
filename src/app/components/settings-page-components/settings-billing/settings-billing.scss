@@ -64,8 +64,8 @@ $green: #10B981;
   }
 
   &__skeleton-card {
-    width: 52px;
-    height: 34px;
+    width: 68px;
+    height: 38px;
     border-radius: 6px;
     flex: 0 0 auto;
   }
@@ -316,19 +316,64 @@ $green: #10B981;
     }
   }
 
-  &__visa {
-    background: #2563EB;
+  &__card-brand {
     color: #ffffff;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 800;
-    font-style: italic;
     border-radius: 6px;
-    width: 52px;
-    height: 34px;
+    width: 68px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    letter-spacing: 0.05em;
+    flex: 0 0 auto;
+    letter-spacing: 0;
+    line-height: 1;
+    overflow: hidden;
+    padding: 0 6px;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: normal;
+
+    &--visa {
+      background: #1434cb;
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    &--mastercard {
+      background: #111827;
+      padding: 0;
+    }
+
+    &--mastercard-mark {
+      display: grid;
+      grid-template-columns: 18px 18px;
+      align-items: center;
+
+      span {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+
+        &:first-child {
+          background: #eb001b;
+        }
+
+        &:last-child {
+          background: #f79e1b;
+          margin-left: -8px;
+          opacity: 0.92;
+        }
+      }
+    }
+
+    &--unknown {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      color: #4b5563;
+      font-size: 10px;
+    }
   }
 
   // Billing History

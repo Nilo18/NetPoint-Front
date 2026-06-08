@@ -89,12 +89,31 @@
         </button>
       </div>
     } @else {
+      @let brandDisplay = cardBrandDisplay();
       <div class="billing__payment">
         <div class="billing__payment--left">
-          <div class="billing__visa">VISA</div>
+          <div
+            [class]="'billing__card-brand billing__card-brand--' + brandDisplay.brand"
+            [attr.aria-label]="brandDisplay.ariaLabel"
+            [title]="brandDisplay.label"
+          >
+            @switch (brandDisplay.brand) {
+              @case ('mastercard') {
+                <span class="billing__card-brand--mastercard-mark" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                </span>
+              }
+              @default {
+                <span>{{ brandDisplay.label }}</span>
+              }
+            }
+          </div>
           <div class="billing__payment--info">
-            <span class="billing__payment--number">•••• •••• •••• 4242</span>
-            <span class="billing__payment--expiry">Expires 12/26</span>
+            <span class="billing__payment--number">•••• •••• •••• {{ paymentMethod.value()?.cardLast4 }}</span>
+            <span class="billing__payment--expiry">
+              Expires {{ paymentMethod.value()?.cardExpMonth }}/{{ formatExpiryYear(paymentMethod.value()?.cardExpYear) }}
+            </span>
           </div>
         </div>
         <button class="billing__btn billing__btn--outline billing__btn--sm">Update</button>

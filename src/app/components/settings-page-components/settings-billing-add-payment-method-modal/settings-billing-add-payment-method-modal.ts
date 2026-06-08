@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { SettingsPageService } from '../../../services/settings-page-service';
 
-type NumericPaymentMethodControl = 'cardNumber' | 'expiryYear' | 'cvc';
+type NumericPaymentMethodControl = 'cardNumber' | 'expYear' | 'cvc';
 
 @Component({
   selector: 'app-settings-billing-add-payment-method-modal',
@@ -26,13 +26,13 @@ export class SettingsBillingAddPaymentMethodModal {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(16), Validators.pattern(/^\d{1,16}$/)],
     }),
-    expiryMonth: new FormControl('', {
+    expMonth: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])$/)],
+      validators: [Validators.required, /*Validators.pattern(/^(0[1-9]|1[0-2])$/)*/],
     }),
-    expiryYear: new FormControl('', {
+    expYear: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(4), Validators.pattern(/^\d{1,4}$/)],
+      validators: [Validators.required, Validators.minLength(4), Validators.pattern(/^\d{1,4}$/)],
     }),
     cvc: new FormControl('', {
       nonNullable: true,
@@ -83,7 +83,27 @@ export class SettingsBillingAddPaymentMethodModal {
     }
 
     input.value = value;
-    this.paymentMethodForm.controls.expiryMonth.setValue(value);
+    this.paymentMethodForm.controls.expMonth.setValue(value);
+  }
+
+  protected normalizeMonthOnBlur(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '').slice(0, 2);
+
+    if (!digits) {
+      input.value = '';
+      return;
+    }
+
+    const month = Number(digits);
+
+    if (month < 1) {
+      input.value = '01';
+    } else if (month > 12) {
+      input.value = '12';
+    } else {
+      input.value = digits.padStart(2, '0');
+    }
   }
 
   onSubmit() {
@@ -94,5 +114,14 @@ export class SettingsBillingAddPaymentMethodModal {
     }
 
     console.log(this.paymentMethodForm.value)
+    const raw = this.paymentMethodForm.getRawValue()
+
+    this.settingsService.addPaymentMethod(
+      {
+        ...raw,
+        expMonth: Number(raw.expMonth),
+        expYear: Number(raw.expYear)
+      }
+    )
   }
 }

@@ -77,6 +77,14 @@ export interface PaymentMethod {
   status: string
 }
 
+export interface PaymentMethodCredentials {
+  cardNumber: string,
+  expMonth: number,
+  expYear: number,
+  cvc: string,
+  cardholderName: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -344,6 +352,17 @@ export class SettingsPageService {
       return res
     } catch (error) {
       console.log("Couldn't get payment method: ", error)
+      throw error
+    }
+  }
+
+  async addPaymentMethod(paymentMethod: PaymentMethodCredentials) {
+    try {
+      const res = await firstValueFrom(this.http.post(`${this.baseUrl}/api/payment-method`, paymentMethod))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't add payment method: ", error)
       throw error
     }
   }

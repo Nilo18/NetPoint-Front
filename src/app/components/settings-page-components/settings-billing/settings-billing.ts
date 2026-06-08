@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, resource, signal, WritableSignal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentPlan, SettingsPageService } from '../../../services/settings-page-service';
 import { SettingsBillingPlanChangerModal } from '../settings-billing-plan-changer-modal/settings-billing-plan-changer-modal';
 import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-modal';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
+
+type CardBrand = 'visa' | 'mastercard' | 'unknown';
+
+interface CardBrandDisplay {
+  brand: CardBrand;
+  label: string;
+  ariaLabel: string;
+}
 
 @Component({
   selector: 'app-settings-billing',
@@ -22,6 +30,20 @@ export class SettingsBilling {
   currentYear: number = new Date().getFullYear()
   paymentMethod = resource({
     loader: () => this.settingsService.getPaymentMethod()
+  })
+  cardBrandDisplay = computed<CardBrandDisplay>(() => {
+    const brand = this.normalizeCardBrand(this.paymentMethod.value()?.cardBrand)
+    const labelByBrand: Record<CardBrand, string> = {
+      visa: 'VISA',
+      mastercard: 'Mastercard',
+      unknown: 'Card',
+    }
+
+    return {
+      brand,
+      label: labelByBrand[brand],
+      ariaLabel: `${labelByBrand[brand]} card`,
+    }
   })
 
   async ngOnInit() {
@@ -91,6 +113,24 @@ export class SettingsBilling {
         errorModalRef.componentInstance.errMsg = error.error?.error ?? 'Please try again later.'
         throw error
       }
+    }
+  }
+
+  formatExpiryYear(year: number | undefined) {
+    // const monthString = String(month)
+    const yearString = String(year)
+    return yearString.substring(2, 4)   
+  }
+
+  private normalizeCardBrand(brand: string | undefined): CardBrand {
+    const normalizedBrand = brand?.trim().toLowerCase().replace(/[\s_-]/g, '')
+
+    switch (normalizedBrand) {
+      case 'visa':
+      case 'mastercard':
+        return normalizedBrand
+      default:
+        return 'unknown'
     }
   }
 }
