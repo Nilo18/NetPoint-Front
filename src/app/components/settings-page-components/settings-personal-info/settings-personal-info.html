@@ -5,7 +5,41 @@
   </header>
 
   @if (isLoading()) {
-    <p class="loading">Loading...</p>
+    <div class="personal-info__profile personal-info__profile-skeleton" aria-label="Loading personal information">
+      <div class="personal-info__skeleton personal-info__skeleton--avatar"></div>
+      <div class="personal-info__identity personal-info__profile-skeleton--identity">
+        <div class="personal-info__skeleton personal-info__skeleton--name"></div>
+        <div class="personal-info__skeleton personal-info__skeleton--role"></div>
+      </div>
+    </div>
+
+    <div class="personal-info__form personal-info__form-skeleton" aria-hidden="true">
+      <div class="personal-info__row personal-info__row--two-columns">
+        <div class="personal-info__field">
+          <div class="personal-info__skeleton personal-info__skeleton--label"></div>
+          <div class="personal-info__skeleton personal-info__skeleton--input"></div>
+        </div>
+
+        <div class="personal-info__field">
+          <div class="personal-info__skeleton personal-info__skeleton--label"></div>
+          <div class="personal-info__skeleton personal-info__skeleton--input"></div>
+        </div>
+      </div>
+
+      <div class="personal-info__field">
+        <div class="personal-info__skeleton personal-info__skeleton--label"></div>
+        <div class="personal-info__skeleton personal-info__skeleton--input"></div>
+      </div>
+
+      <div class="personal-info__field">
+        <div class="personal-info__skeleton personal-info__skeleton--label"></div>
+        <div class="personal-info__skeleton personal-info__skeleton--input"></div>
+      </div>
+
+      <div class="personal-info__skeleton personal-info__skeleton--button"></div>
+      <p class="loading">{{ requestSent() && !gotBackendError() ? 'Processing...' : '' }}</p>
+      <p class="error">{{ !requestSent() && gotBackendError() ? errMsg() : '' }}</p>
+    </div>
   } @else {
     <div class="personal-info__profile">
       <div class="personal-info__avatar" aria-hidden="true">
