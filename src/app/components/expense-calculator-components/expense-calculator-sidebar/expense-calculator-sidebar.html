@@ -1,0 +1,40 @@
+<aside class="sale-sidebar" aria-label="Current sale">
+  <header class="sale-sidebar__header">
+    <h2>Current Sale</h2>
+  </header>
+
+  <div class="sale-sidebar__cart" role="status" aria-live="polite">
+    No items in cart
+  </div>
+
+  <div class="sale-sidebar__summary">
+    <label class="sale-sidebar__discount">
+      <span class="visually-hidden">Discount percent</span>
+      <input type="number" min="0" max="100" placeholder="Discount %">
+      <button type="button" aria-label="Apply discount percent">%</button>
+    </label>
+
+    <div class="sale-sidebar__line">
+      <span>Subtotal</span>
+      <strong>$0.00</strong>
+    </div>
+
+    <div class="sale-sidebar__total">
+      <span>Total</span>
+      <strong>$0.00</strong>
+    </div>
+
+    <div class="sale-sidebar__actions">
+      <button type="button" class="sale-sidebar__action">
+        <span class="sale-sidebar__hold-icon" aria-hidden="true"></span>
+        Hold
+      </button>
+      <button type="button" class="sale-sidebar__action">
+        <span class="sale-sidebar__print-icon" aria-hidden="true"></span>
+        Print
+      </button>
+    </div>
+
+    <button type="button" class="sale-sidebar__complete">Complete Sale</button>
+  </div>
+</aside>

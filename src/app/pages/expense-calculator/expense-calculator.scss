@@ -1,0 +1,30 @@
+.expense-calculator-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-calculator {
+  background: #f9fafb;
+  width: 100%; /* Fixes 100vw overflow bugs */
+  min-height: calc(100vh - 72px); /* Fill screen minus your header height */
+  
+  /* 1. Change layout mode to Grid */
+  display: grid;
+  
+  /* 2. Left side takes remaining space, right side locks to sidebar width */
+  grid-template-columns: minmax(0, 1fr) 24rem; 
+
+  &__products {
+    padding: 30px;
+    width: 100%;
+  }
+}
+
+/* 3. Fix the responsive stack query */
+@media (max-width: 1120px) {
+  .expense-calculator {
+    grid-template-columns: 1fr; /* Correctly updates layout to single vertical stack */
+    height: auto;
+  }
+}
+

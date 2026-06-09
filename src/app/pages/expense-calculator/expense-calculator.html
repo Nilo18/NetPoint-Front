@@ -1,2 +1,11 @@
-<p>expense-calculator works!</p>
-<button (click)="authService.logout()">logout</button>
+<section class="expense-calculator-wrapper">
+    <app-admin-dashboard-header></app-admin-dashboard-header>
+    <main class="expense-calculator">
+            <!-- <p>Hello world</p> -->
+        <section class="expense-calculator__products">
+            <app-expense-calculator-product-list></app-expense-calculator-product-list>
+        </section>
+
+        <app-expense-calculator-sidebar></app-expense-calculator-sidebar>
+    </main>
+</section>
