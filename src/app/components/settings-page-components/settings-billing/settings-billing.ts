@@ -86,12 +86,13 @@ export class SettingsBilling {
       '../settings-billing-add-payment-method-modal/settings-billing-add-payment-method-modal'
     )
 
-    console.log("cardholderName INSIDE SETTINGS-BILLING IS:: ", this.paymentMethod.value()?.cardholderName)
+    // console.log("cardholderName INSIDE SETTINGS-BILLING IS:: ", this.paymentMethod.value()?.cardholderName)
     const modalRef = this.modalService.open(SettingsBillingAddPaymentMethodModal, {
       centered: true
     })
 
-    modalRef.componentInstance.passedPaymentMethod = this.paymentMethod.value()
+    modalRef.componentInstance.passedPaymentMethod = 
+      this.paymentMethod.hasValue() ? this.paymentMethod.value() : null
   }
 
   cancelSubscription() {
@@ -134,6 +135,32 @@ export class SettingsBilling {
         return normalizedBrand
       default:
         return 'unknown'
+    }
+  }
+
+  removePaymentMethod() {
+    const confirmModalRef = this.modalService.open(ConfirmActionModal, {
+      centered: true
+    })
+
+    confirmModalRef.componentInstance.title = 'Remove Payment Method Confirmation'
+    confirmModalRef.componentInstance.description = 'Are you sure you want to remove your payment method?'
+
+    confirmModalRef.componentInstance.confirmAction = async () => {
+      try {
+        const res = await this.settingsService.removePaymentMethod()
+
+        if (res) {
+          window.location.reload()
+        } 
+      } catch (error: any) {
+        const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
+          centered: true
+        })
+
+        modalRef.componentInstance.errTitle = 'Something went wrong while removing your payment method'
+        modalRef.componentInstance.errMsg = error.error.error
+      }
     }
   }
 }

@@ -377,4 +377,15 @@ export class SettingsPageService {
       throw error      
     }
   }
+
+  async removePaymentMethod() {
+    try {
+      const res = await firstValueFrom(this.http.delete(`${this.baseUrl}/api/payment-method`))
+      console.log(res)
+      return res      
+    } catch (error) {
+      console.log("Couldn't remove payment method: ", error)
+      throw error      
+    }
+  }
 }

@@ -1,3 +1,5 @@
+@use '../../../../styles/mixins.scss' as *;
+
 $primary-color: #4F46E5;
 $danger-color: #ef4444;
 $green: #10B981;
@@ -219,6 +221,11 @@ $green: #10B981;
       display: flex;
       flex-direction: column;
       gap: 3px;
+    }
+
+    &--actions {
+      @include FlexContainer;
+      gap: 0.5rem;
     }
 
     &--number {
@@ -456,6 +463,23 @@ $green: #10B981;
 
       &:hover {
         background: #fef2f2;
+      }
+    }
+
+    &--remove {
+      // background-color: transparent;
+      border: none;
+      width: 2rem;
+      padding: 0;
+      // height: 2rem;
+      // padding-right: 2rem;
+      @include FlexContainer;
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+        // justify-self: center;
+        // align-self: center;
       }
     }
 
