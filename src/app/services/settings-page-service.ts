@@ -322,7 +322,7 @@ export class SettingsPageService {
     try {
       console.log(`Sending `, {newPlanName})
       const res = await firstValueFrom(
-        this.http.put(`${this.baseUrl}/api/payment-plan`, {newPlanName}, { responseType: 'text' })
+        this.http.put(`${this.baseUrl}/api/payment-plan`, {newPlanName})
       )
       console.log(res)
       return res

@@ -14,7 +14,8 @@ $green: #10B981;
   &__skeleton-line,
   &__skeleton-price,
   &__skeleton-card,
-  &__skeleton-button {
+  &__skeleton-button,
+  &__skeleton-badge {
     border-radius: 999px;
     background: linear-gradient(90deg, #eef0f4 25%, #f8fafc 37%, #eef0f4 63%);
     background-size: 400% 100%;
@@ -47,6 +48,14 @@ $green: #10B981;
       width: 92px;
       height: 12px;
     }
+
+    &--history-date {
+      width: 122px;
+    }
+
+    &--history-amount {
+      width: 56px;
+    }
   }
 
   &__skeleton-plan {
@@ -76,6 +85,12 @@ $green: #10B981;
     width: 74px;
     height: 34px;
     border-radius: 8px;
+    flex: 0 0 auto;
+  }
+
+  &__skeleton-badge {
+    width: 52px;
+    height: 24px;
     flex: 0 0 auto;
   }
 
@@ -388,6 +403,59 @@ $green: #10B981;
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+
+  &__history-empty {
+    min-height: 278px;
+    border: 1px dashed #e5e7eb;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 2rem;
+    text-align: center;
+
+    &--icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        width: 36px;
+        height: 27px;
+        border: 3px solid currentColor;
+        border-radius: 5px;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 7px -3px auto;
+          border-top: 3px solid currentColor;
+        }
+      }
+    }
+
+    &--title {
+      margin: 0;
+      color: #111827;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    &--description {
+      margin: 0;
+      color: #6b7280;
+      font-size: 15px;
+      padding-top: 8px;
+    }
   }
 
   &__invoice {

@@ -90,6 +90,7 @@ export class SettingsBillingPlanChangerModal {
         window.location.reload()
       }
     } catch (error: any) {
+      console.log(error.error.error)
       this.backendErrMsg.set(error.error?.error ?? 'Could not change your plan. Please try again.')
     } finally {
       this.requestSent.set(false);

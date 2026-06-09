@@ -145,37 +145,75 @@
     <h2 class="billing__title">Billing History</h2>
     <p class="billing__subtitle">View and download past invoices</p>
 
-    <div class="billing__history">
-      <div class="billing__invoice">
-        <div class="billing__invoice--info">
-          <span class="billing__invoice--date">Apr 1, {{ currentYear }}</span>
-          <span class="billing__invoice--amount">$49.00</span>
+    @if (paymentMethod.isLoading()) {
+      <div class="billing__history billing__history-skeleton" aria-label="Loading billing history">
+        <div class="billing__invoice">
+          <div class="billing__invoice--info billing__history-skeleton--info">
+            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
+            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+          </div>
+          <div class="billing__skeleton-badge"></div>
         </div>
-        <div class="billing__invoice--actions">
-          <span class="billing__badge">Paid</span>
-          <!-- <button class="billing__btn--link">Download</button> -->
+        <div class="billing__invoice">
+          <div class="billing__invoice--info billing__history-skeleton--info">
+            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
+            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+          </div>
+          <div class="billing__skeleton-badge"></div>
         </div>
-      </div>
-      <div class="billing__invoice">
-        <div class="billing__invoice--info">
-          <span class="billing__invoice--date">Mar 1, {{ currentYear }}</span>
-          <span class="billing__invoice--amount">$49.00</span>
-        </div>
-        <div class="billing__invoice--actions">
-          <span class="billing__badge">Paid</span>
-          <!-- <button class="billing__btn--link">Download</button> -->
-        </div>
-      </div>
-      <div class="billing__invoice">
-        <div class="billing__invoice--info">
-          <span class="billing__invoice--date">Feb 1, {{ currentYear }}</span>
-          <span class="billing__invoice--amount">$49.00</span>
-        </div>
-        <div class="billing__invoice--actions">
-          <span class="billing__badge">Paid</span>
-          <!-- <button class="billing__btn--link">Download</button> -->
+        <div class="billing__invoice">
+          <div class="billing__invoice--info billing__history-skeleton--info">
+            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
+            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+          </div>
+          <div class="billing__skeleton-badge"></div>
         </div>
       </div>
-    </div>
+    } @else if (paymentMethod.error()) {
+      <div class="billing__history-empty" role="status" aria-live="polite">
+        <div class="billing__history-empty--icon" aria-hidden="true">
+          <span></span>
+        </div>
+        <div class="billing__history-empty--content">
+          <h3 class="billing__history-empty--title">No Billing History</h3>
+          <p class="billing__history-empty--description">
+            Add a payment method to start subscription billing
+          </p>
+        </div>
+      </div>
+    } @else {
+      <div class="billing__history">
+        <div class="billing__invoice">
+          <div class="billing__invoice--info">
+            <span class="billing__invoice--date">Apr 1, {{ currentYear }}</span>
+            <span class="billing__invoice--amount">$49.00</span>
+          </div>
+          <div class="billing__invoice--actions">
+            <span class="billing__badge">Paid</span>
+            <!-- <button class="billing__btn--link">Download</button> -->
+          </div>
+        </div>
+        <div class="billing__invoice">
+          <div class="billing__invoice--info">
+            <span class="billing__invoice--date">Mar 1, {{ currentYear }}</span>
+            <span class="billing__invoice--amount">$49.00</span>
+          </div>
+          <div class="billing__invoice--actions">
+            <span class="billing__badge">Paid</span>
+            <!-- <button class="billing__btn--link">Download</button> -->
+          </div>
+        </div>
+        <div class="billing__invoice">
+          <div class="billing__invoice--info">
+            <span class="billing__invoice--date">Feb 1, {{ currentYear }}</span>
+            <span class="billing__invoice--amount">$49.00</span>
+          </div>
+          <div class="billing__invoice--actions">
+            <span class="billing__badge">Paid</span>
+            <!-- <button class="billing__btn--link">Download</button> -->
+          </div>
+        </div>
+      </div>
+    }
   </div>
 </div>
