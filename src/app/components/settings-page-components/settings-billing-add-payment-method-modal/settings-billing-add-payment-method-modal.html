@@ -3,6 +3,7 @@
     class="payment-method-modal__close"
     type="button"
     aria-label="Close"
+    [disabled]="requestSent()"
     (click)="modal.dismiss()"
   >
     &times;
@@ -98,8 +99,20 @@
       Your payment information is encrypted and secure
     </p>
 
-    <button class="form__submitbtn payment-method-modal__submit" type="submit">
-      {{passedPaymentMethod ? 'Update Payment Method' : 'Add Payment Method' }}
+    <button
+      class="form__submitbtn payment-method-modal__submit"
+      type="submit"
+      [disabled]="requestSent()"
+    >
+      @if (requestSent()) {
+        <span class="payment-method-modal__spinner" aria-hidden="true"></span>
+      }
+      {{ requestSent() ? 'Saving...' : (passedPaymentMethod ? 'Update Payment Method' : 'Add Payment Method') }}
     </button>
   </form>
+  @if (backendErrMsg()) {
+    <p class="payment-method-modal__error" role="alert" aria-live="assertive">
+      {{ backendErrMsg() }}
+    </p>
+  }
 </section>

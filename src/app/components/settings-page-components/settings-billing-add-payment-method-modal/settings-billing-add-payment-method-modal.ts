@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
-import { PaymentMethod, PaymentMethodCredentials, SettingsPageService } from '../../../services/settings-page-service';
+import { PaymentMethod, SettingsPageService } from '../../../services/settings-page-service';
 
 type NumericPaymentMethodControl = 'cardNumber' | 'expYear' | 'cvc';
 
@@ -17,7 +18,9 @@ export class SettingsBillingAddPaymentMethodModal {
   protected readonly modal = inject(NgbActiveModal);
   private formValidator = inject(FormValidatorService)
   private settingsService = inject(SettingsPageService)
-  passedPaymentMethod!: PaymentMethod
+  passedPaymentMethod: PaymentMethod | null = null
+  protected readonly requestSent = signal(false)
+  protected readonly backendErrMsg = signal('')
 
   ngOnInit() {
     if (this.passedPaymentMethod) {
@@ -121,57 +124,65 @@ export class SettingsBillingAddPaymentMethodModal {
   isFormValid() {
     if (this.paymentMethodForm.invalid) {
       this.paymentMethodForm.markAllAsTouched()
-      console.log('Invalid form.')
       return false
     }
     return true
   }
 
-  async addPaymentMethod() {
-    if (!this.isFormValid()) return
-
-    console.log(this.paymentMethodForm.value)
+  private buildPaymentMethodPayload() {
     const raw = this.paymentMethodForm.getRawValue()
 
-    const res = await this.settingsService.addPaymentMethod(
-      {
-        ...raw,
-        expMonth: Number(raw.expMonth),
-        expYear: Number(raw.expYear)
-      }
-    )
-
-    if (res) {
-      window.location.reload()
+    return {
+      ...raw,
+      expMonth: Number(raw.expMonth),
+      expYear: Number(raw.expYear)
     }
   }
 
-  async updatePaymentMethod() {
-    if (!this.isFormValid()) return
+  private getBackendErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendError = error.error
 
-    console.log(this.paymentMethodForm.value)
-    const raw = this.paymentMethodForm.getRawValue()
-
-    const res = await this.settingsService.updatePaymentMethod(
-      {
-        ...raw,
-        expMonth: Number(raw.expMonth),
-        expYear: Number(raw.expYear)
+      if (typeof backendError === 'string') {
+        return backendError
       }
-    )
 
-    if (res) {
-      window.location.reload()
+      if (this.isBackendErrorBody(backendError)) {
+        return backendError.error
+      }
     }
+
+    return 'Could not save your payment method. Please try again.'
   }
 
-  onSubmit() {
-    let res
-    if (this.passedPaymentMethod) {
-      this.updatePaymentMethod()
-    } else {
-      this.addPaymentMethod()
+  private isBackendErrorBody(value: unknown): value is { error: string } {
+    return typeof value === 'object'
+      && value !== null
+      && 'error' in value
+      && typeof value.error === 'string'
+  }
+
+  async onSubmit() {
+    if (this.requestSent() || !this.isFormValid()) return
+
+    this.requestSent.set(true)
+    this.backendErrMsg.set('')
+    this.paymentMethodForm.disable()
+
+    try {
+      const payload = this.buildPaymentMethodPayload()
+      const res = this.passedPaymentMethod
+        ? await this.settingsService.updatePaymentMethod(payload)
+        : await this.settingsService.addPaymentMethod(payload)
+
+      if (res) {
+        window.location.reload()
+      }
+    } catch (error) {
+      this.backendErrMsg.set(this.getBackendErrorMessage(error))
+    } finally {
+      this.requestSent.set(false)
+      this.paymentMethodForm.enable()
     }
-    
   }
 }

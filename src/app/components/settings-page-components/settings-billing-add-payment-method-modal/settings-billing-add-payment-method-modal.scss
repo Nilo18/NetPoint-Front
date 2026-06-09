@@ -35,6 +35,11 @@
     font-size: 28px;
     line-height: 1;
     cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 
   &__header {
@@ -58,6 +63,19 @@
 
   &__form {
     gap: 18px;
+  }
+
+  &__error {
+    // margin: -6px 0 18px;
+    margin-top: 30px;
+    margin-bottom: 0;
+    padding: 10px 12px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #991b1b;
+    font-size: 14px;
+    line-height: 1.35;
   }
 
   &__field {
@@ -139,12 +157,36 @@
   }
 
   &__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 46px;
     border: 0;
     border-radius: 9px;
     font-size: 18px;
     font-weight: 700;
     line-height: 1;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.78;
+    }
+  }
+
+  &__spinner {
+    width: 17px;
+    height: 17px;
+    margin-right: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: payment-method-spinner 0.75s linear infinite;
+  }
+}
+
+@keyframes payment-method-spinner {
+  to {
+    transform: rotate(360deg);
   }
 }
 
