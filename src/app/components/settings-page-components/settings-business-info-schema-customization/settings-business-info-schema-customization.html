@@ -14,12 +14,12 @@
     <div class="product-schema__list" aria-label="Loading product attributes">
       @for (_ of [1, 2, 3]; track _) {
         <div class="product-schema__row product-schema__row--loading">
-          <div class="product-schema__skeleton product-schema__skeleton--handle"></div>
+          <div class="skeleton skeleton--handle"></div>
           <div class="product-schema__info">
-            <div class="product-schema__skeleton product-schema__skeleton--name"></div>
-            <div class="product-schema__skeleton product-schema__skeleton--type-label"></div>
+            <div class="skeleton skeleton--attr-name"></div>
+            <div class="skeleton skeleton--type-label"></div>
           </div>
-          <div class="product-schema__skeleton product-schema__skeleton--badge"></div>
+          <div class="skeleton skeleton--schema-badge"></div>
         </div>
       }
     </div>

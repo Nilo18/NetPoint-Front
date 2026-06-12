@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal, ViewEncapsulation }
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProductAttribute, SettingsPageService } from '../../../services/settings-page-service';
+import { ProductAttribute, ProductService } from '../../../services/product-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
 
 export interface CustomAttribute {
@@ -21,7 +21,7 @@ export interface CustomAttribute {
 export class SettingsSchemaCustomizerModal {
   public modal = inject(NgbActiveModal);
   private formBuilder = inject(FormBuilder);
-  private settingsService = inject(SettingsPageService)
+  private productService = inject(ProductService);
   private formValidator = inject(FormValidatorService)
 
   fieldTypes = ['TEXT', 'NUMBER', 'DATE', 'BOOLEAN'];
@@ -72,7 +72,7 @@ export class SettingsSchemaCustomizerModal {
 
     console.log(this.attributeForm.value)
     try {
-      const res = await this.settingsService.addProductAttribute(this.attributeForm.value) 
+      const res = await this.productService.addProductAttribute(this.attributeForm.value);
       if (res) {
         this.requestSent.set(false)
         window.location.reload()
@@ -117,7 +117,7 @@ export class SettingsSchemaCustomizerModal {
 
     console.log(this.attributeForm.value)
     try {
-      const res = await this.settingsService.updateProductAttribute(this.attributeForm.value) 
+      const res = await this.productService.updateProductAttribute(this.attributeForm.value);
       if (res) {
         this.requestSent.set(false)
         window.location.reload()

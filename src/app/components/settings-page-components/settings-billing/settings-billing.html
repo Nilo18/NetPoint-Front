@@ -13,15 +13,15 @@
         <div class="billing__plan-skeleton" aria-label="Loading payment plan">
           <div class="billing__skeleton-plan">
             <div>
-              <div class="billing__skeleton-line billing__skeleton-line--title"></div>
-              <div class="billing__skeleton-line"></div>
+              <div class="skeleton skeleton--line skeleton--line-title"></div>
+              <div class="skeleton skeleton--line"></div>
             </div>
-            <div class="billing__skeleton-price"></div>
+            <div class="skeleton skeleton--price"></div>
           </div>
           <div class="billing__skeleton-list">
-            <div class="billing__skeleton-line"></div>
-            <div class="billing__skeleton-line"></div>
-            <div class="billing__skeleton-line billing__skeleton-line--medium"></div>
+            <div class="skeleton skeleton--line"></div>
+            <div class="skeleton skeleton--line"></div>
+            <div class="skeleton skeleton--line skeleton--line-medium"></div>
           </div>
         </div>
       }
@@ -65,13 +65,13 @@
     @if (paymentMethod.isLoading()) {
       <div class="billing__payment billing__payment-skeleton" aria-label="Loading payment method">
         <div class="billing__payment--left">
-          <div class="billing__skeleton-card"></div>
+          <div class="skeleton skeleton--card"></div>
           <div class="billing__payment--info billing__payment-skeleton--info">
-            <div class="billing__skeleton-line billing__skeleton-line--payment-number"></div>
-            <div class="billing__skeleton-line billing__skeleton-line--payment-expiry"></div>
+            <div class="skeleton skeleton--line skeleton--line-payment-number"></div>
+            <div class="skeleton skeleton--line skeleton--line-payment-expiry"></div>
           </div>
         </div>
-        <div class="billing__skeleton-button"></div>
+        <div class="skeleton skeleton--action-btn"></div>
       </div>
     } @else if (paymentMethod.error()) {
       <div class="billing__payment-empty" role="status" aria-live="polite">
@@ -149,24 +149,24 @@
       <div class="billing__history billing__history-skeleton" aria-label="Loading billing history">
         <div class="billing__invoice">
           <div class="billing__invoice--info billing__history-skeleton--info">
-            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
-            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-date"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-amount"></div>
           </div>
-          <div class="billing__skeleton-badge"></div>
+          <div class="skeleton skeleton--badge"></div>
         </div>
         <div class="billing__invoice">
           <div class="billing__invoice--info billing__history-skeleton--info">
-            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
-            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-date"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-amount"></div>
           </div>
-          <div class="billing__skeleton-badge"></div>
+          <div class="skeleton skeleton--badge"></div>
         </div>
         <div class="billing__invoice">
           <div class="billing__invoice--info billing__history-skeleton--info">
-            <div class="billing__skeleton-line billing__skeleton-line--history-date"></div>
-            <div class="billing__skeleton-line billing__skeleton-line--history-amount"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-date"></div>
+            <div class="skeleton skeleton--line skeleton--line-history-amount"></div>
           </div>
-          <div class="billing__skeleton-badge"></div>
+          <div class="skeleton skeleton--badge"></div>
         </div>
       </div>
     } @else if (paymentMethod.error()) {

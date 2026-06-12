@@ -12,7 +12,7 @@
     <div class="admin-dashboard-header__store">
       <h1 class="admin-dashboard-header__title">NetPoint Admin Dashboard</h1>
       @if (companyInfo.isLoading()) {
-        <div class="admin-dashboard-header__subtitle-skeleton"></div>
+        <div class="skeleton skeleton--subtitle"></div>
       } @else if (companyInfo.error()) {
         <p>Store</p>
       } @else {
@@ -22,7 +22,7 @@
   </section>
 
   <nav class="admin-dashboard-header__actions" aria-label="Admin actions">
-    <button class="admin-dashboard-header__settings" type="button" aria-label="Settings" (click)="navToSettings()">
+    <a class="admin-dashboard-header__settings" type="button" aria-label="Settings" href="/settings">
       <svg
         class="admin-dashboard-header__settings-icon"
         aria-hidden="true"
@@ -46,7 +46,7 @@
         />
       </svg>
       <span>Settings</span>
-    </button>
+    </a>
 
     <div class="admin-dashboard-header__divider" aria-hidden="true"></div>
 

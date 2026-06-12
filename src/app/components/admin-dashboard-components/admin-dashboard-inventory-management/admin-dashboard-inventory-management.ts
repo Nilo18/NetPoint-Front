@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
 
 type Profitability = 'High' | 'Medium';
 
@@ -85,4 +87,11 @@ export class AdminDashboardInventoryManagement {
       profitability: 'Medium',
     },
   ]);
+  private modalService: NgbModal = inject(NgbModal);
+
+  openProductAdditionModal() {
+    this.modalService.open(AdminDashboardAddProductModal, {
+      centered: true
+    })
+  }
 }

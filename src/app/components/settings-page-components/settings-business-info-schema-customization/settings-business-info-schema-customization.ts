@@ -4,7 +4,7 @@ import {
   CustomAttribute,
   SettingsSchemaCustomizerModal,
 } from '../settings-schema-customizer-modal/settings-schema-customizer-modal';
-import { ProductAttribute, SettingsPageService } from '../../../services/settings-page-service';
+import { ProductAttribute, ProductService } from '../../../services/product-service';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 
@@ -23,7 +23,7 @@ interface Attribute {
 })
 export class SettingsBusinessInfoSchemaCustomization {
   private modal = inject(NgbModal);
-  private settingsService = inject(SettingsPageService)
+  private productService = inject(ProductService);
   attributes = signal<ProductAttribute[]>([]);
   isLoading = signal(true)
   gotBackendError = signal(false)
@@ -37,7 +37,7 @@ export class SettingsBusinessInfoSchemaCustomization {
     this.backendErrMsg.set('')
 
     try {
-      const res = await this.settingsService.getProductAttributes()
+      const res = await this.productService.getProductAttributes();
       this.attributes.set(res)
     } catch (error: unknown) {
       this.gotBackendError.set(true)
@@ -83,7 +83,7 @@ export class SettingsBusinessInfoSchemaCustomization {
     this.backendErrMsg.set('')
 
     try {
-      await this.settingsService.deleteProductAttributes(id)
+      await this.productService.deleteProductAttributes(id);
       this.attributes.update(values => values.filter(attribute => attribute.id !== id))
     } catch (error: unknown) {
       const errorMsg = this.getErrorMessage(error)

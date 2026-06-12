@@ -1,0 +1,93 @@
+<section class="add-product-modal" aria-labelledby="add-product-modal-title">
+  <button
+    type="button"
+    class="add-product-modal__close"
+    aria-label="Close"
+    (click)="modal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <header class="add-product-modal__header">
+    <h2 id="add-product-modal-title">Add New Product</h2>
+    <p>Fill in the product details based on your custom schema</p>
+  </header>
+
+  <form class="add-product-modal__form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <label class="add-product-modal__field">
+      <span>Product Name <span class="add-product-modal__required">*</span></span>
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Enter product name"
+        autocomplete="off"
+      />
+    </label>
+
+    <div class="add-product-modal__row">
+      <label class="add-product-modal__field">
+        <span>Retail Price <span class="add-product-modal__required">*</span></span>
+        <input
+          type="number"
+          formControlName="retailPrice"
+          placeholder="0.00"
+          inputmode="decimal"
+          autocomplete="off"
+        />
+      </label>
+
+      <label class="add-product-modal__field">
+        <span>Wholesale Price <span class="add-product-modal__required">*</span></span>
+        <input
+          type="number"
+          formControlName="wholesalePrice"
+          placeholder="0.00"
+          inputmode="decimal"
+          autocomplete="off"
+        />
+      </label>
+    </div>
+
+    <label class="add-product-modal__field">
+      <span>Stock Quantity <span class="add-product-modal__required">*</span></span>
+      <input
+        type="number"
+        formControlName="stock"
+        placeholder="0"
+        inputmode="numeric"
+        autocomplete="off"
+      />
+    </label>
+
+    <hr class="add-product-modal__divider" />
+
+    <h3 class="add-product-modal__section-title">Custom Attributes</h3>
+
+    <div class="add-product-modal__row" aria-label="Loading custom attributes">
+      @if (customAttributes.isLoading()) {
+        @for (_ of [1, 2]; track _) {
+          <div class="add-product-modal__field skeleton-field" aria-hidden="true">
+            <div class="skeleton skeleton--label"></div>
+            <div class="skeleton skeleton--input"></div>
+          </div>
+        }
+      } @else {
+        @for (attribute of customAttributes.value(); track attribute.id) {
+          <label class="add-product-modal__field">
+            <span>{{ attribute.attributeName }}</span>
+            @if (isInputTypeBoolean(attribute.attributeType)) {
+              <select [formControlName]="attribute.attributeName">
+                <option [ngValue]="true">True</option>
+                <option [ngValue]="false">False</option>
+              </select>
+            } @else {
+              <input [type]="attribute.attributeType" [formControlName]="attribute.attributeName">
+            }
+          </label>
+        }
+      }
+    </div>
+
+    <button type="submit" class="add-product-modal__submit">Add Product</button>
+  </form>
+</section>
