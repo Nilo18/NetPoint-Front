@@ -24,10 +24,11 @@
           <th scope="col">Retail</th>
           <th scope="col">Margin</th>
           <th scope="col">Profitability</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        @for (product of products(); track product.name) {
+        @for (product of products.value(); track product.name) {
           <tr>
             <th scope="row">{{ product.name }}</th>
             <td>
@@ -37,14 +38,20 @@
             </td>
             <td class="inventory-management__wholesale">{{ product.wholesalePrice }}</td>
             <td class="inventory-management__retail">{{ product.retailPrice }}</td>
-            <td class="inventory-management__margin">{{ product.margin }}</td>
+            <td class="inventory-management__margin">{{ product.marginPercent }}</td>
             <td>
               <span
                 class="inventory-management__profitability"
-                [class.inventory-management__profitability--high]="product.profitability === 'High'"
+                [class]="getProfitabilityClassName(product.profitability)"
               >
-                {{ product.profitability }}
+                {{ getProfitabilityLabel(product.profitability) }}
               </span>
+            </td>
+            <td>
+              <div class="inventory-management__actions">
+                <button (click)="editProduct(product)" style="cursor: pointer;">Edit</button>
+                <button>Remove</button>
+              </div>
             </td>
           </tr>
         }

@@ -80,6 +80,8 @@
                 <option [ngValue]="true">True</option>
                 <option [ngValue]="false">False</option>
               </select>
+            } @else if (attribute.attributeType.trim().toLowerCase() === 'number') {
+              <input type="number" [formControlName]="attribute.attributeName">
             } @else {
               <input [type]="attribute.attributeType" [formControlName]="attribute.attributeName">
             }
@@ -88,6 +90,6 @@
       }
     </div>
 
-    <button type="submit" class="add-product-modal__submit">Add Product</button>
+    <button type="submit" class="add-product-modal__submit">{{productToEdit ? 'Edit Product' : 'Add Product'}}</button>
   </form>
 </section>

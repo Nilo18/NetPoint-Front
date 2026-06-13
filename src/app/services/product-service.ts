@@ -3,6 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 
+export type CustomAttributeValue = string | number | boolean
+
 export enum AttributeType {
   String = 'string',
   Number = 'number',
@@ -23,7 +25,19 @@ export interface ProductAdditionCredentials {
   imageUrl?: string,
   name: string,
   retailPrice: number,
-  customAttributes: Record<string, string>
+  customAttributes: Record<string, CustomAttributeValue>
+}
+
+export interface ProductDTO {
+  id: number;
+  name: string;
+  retailPrice: number;
+  customAttributes: Record<string, CustomAttributeValue>;
+  stock: number;
+  wholesalePrice: number;
+  marginPercent: number;
+  profitability: number;
+  imageUrl?: string;
 }
 
 @Injectable({
@@ -100,7 +114,7 @@ export class ProductService {
 
   async getAllProducts() {
     try {
-      const res = await firstValueFrom(this.http.get(`${this.baseUrl}/api/products`));
+      const res = await firstValueFrom(this.http.get<ProductDTO[]>(`${this.baseUrl}/api/products`));
       console.log(res);
       return res;
     } catch (error) {
@@ -116,6 +130,17 @@ export class ProductService {
       return res
     } catch (error) {
       console.log("Couldn't add product: ", error);
+      throw error;      
+    }  
+  }
+
+  async editProduct(productId: number, product: ProductAdditionCredentials) {
+    try {
+      const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/products/${productId}`, product))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't edit product: ", error);
       throw error;      
     }  
   }

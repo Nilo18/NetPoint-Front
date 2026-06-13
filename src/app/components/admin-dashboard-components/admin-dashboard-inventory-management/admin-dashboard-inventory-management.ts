@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
+import { ProductDTO, ProductService } from '../../../services/product-service';
+import { KeyValuePipe } from '@angular/common';
 
 type Profitability = 'High' | 'Medium';
 
@@ -15,83 +17,57 @@ interface InventoryProduct {
 
 @Component({
   selector: 'app-admin-dashboard-inventory-management',
-  imports: [],
+  imports: [KeyValuePipe],
   templateUrl: './admin-dashboard-inventory-management.html',
   styleUrl: './admin-dashboard-inventory-management.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminDashboardInventoryManagement {
-  readonly products = signal<readonly InventoryProduct[]>([
-    {
-      name: 'Classic T-Shirt',
-      stock: 150,
-      wholesalePrice: '$15.00',
-      retailPrice: '$29.99',
-      margin: '50.0%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Denim Jeans',
-      stock: 85,
-      wholesalePrice: '$45.00',
-      retailPrice: '$79.99',
-      margin: '43.7%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Running Shoes',
-      stock: 42,
-      wholesalePrice: '$70.00',
-      retailPrice: '$129.99',
-      margin: '46.1%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Leather Jacket',
-      stock: 25,
-      wholesalePrice: '$180.00',
-      retailPrice: '$299.99',
-      margin: '40.0%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Hoodie',
-      stock: 120,
-      wholesalePrice: '$30.00',
-      retailPrice: '$59.99',
-      margin: '50.0%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Sneakers',
-      stock: 68,
-      wholesalePrice: '$50.00',
-      retailPrice: '$89.99',
-      margin: '44.4%',
-      profitability: 'Medium',
-    },
-    {
-      name: 'Baseball Cap',
-      stock: 200,
-      wholesalePrice: '$12.00',
-      retailPrice: '$24.99',
-      margin: '52.0%',
-      profitability: 'High',
-    },
-    {
-      name: 'Backpack',
-      stock: 55,
-      wholesalePrice: '$38.00',
-      retailPrice: '$69.99',
-      margin: '45.7%',
-      profitability: 'Medium',
-    },
-  ]);
+  products = resource<ProductDTO[], unknown>({
+    loader: () => this.productService.getAllProducts()
+  })
   private modalService: NgbModal = inject(NgbModal);
+  private productService: ProductService = inject(ProductService)
+
+  ngOnInit() {
+    console.log(this.products.value())
+  }
 
   openProductAdditionModal() {
-    this.modalService.open(AdminDashboardAddProductModal, {
+    return this.modalService.open(AdminDashboardAddProductModal, {
       centered: true
     })
+  }
+
+  editProduct(product: ProductDTO) {
+    const modalRef = this.openProductAdditionModal()
+
+    modalRef.componentInstance.productToEdit = product
+  }
+
+  getProfitabilityLabel(profit: number | null | undefined): 'Low' | 'Medium' | 'High' | 'N/A' {
+    if (profit == null) return 'N/A';
+    
+    // Adjust these threshold numbers based on your actual business rules
+    if (profit < 10) {
+      return 'Low';
+    } else if (profit >= 10 && profit < 50) {
+      return 'Medium';
+    } else {
+      return 'High';
+    }
+  }
+
+  getProfitabilityClassName(profit: number | null | undefined) {
+    if (profit == null) return 'N/A';
+    
+    // Adjust these threshold numbers based on your actual business rules
+    if (profit < 10) {
+      return 'inventory-management__profitability';
+    } else if (profit >= 10 && profit < 50) {
+      return 'inventory-management__profitability';
+    } else {
+      return 'inventory-management__profitability--high';
+    }
   }
 }
