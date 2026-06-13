@@ -14,7 +14,7 @@
             formControlName="otpCode"
             class="form-control verification-modal__otp-input">
             <p class="error">
-                {{ getError('otpCode', verificationForm) }}
+                {{ getOtpCodeError('otpCode', verificationForm) }}
             </p>
             <div class="verification-modal__body--btn-section">
                 @if (requestSent() && !gotBackendError()) {

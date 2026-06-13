@@ -2,13 +2,13 @@
     <div class="form__field-container">
         <label for="email">Business Email</label>
         <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
-        <p class="error">{{ getError('email', loginForm) }}</p>
+        <p class="error">{{ getEmailError('email', loginForm) }}</p>
     </div>
     <div class="form__field-container">
         <label for="password">Password</label>
         <input type="password" class="form-control" placeholder="Minimum 8 characters" 
         formControlName="password">
-        <p class="error">{{ getError('password', loginForm) }}</p>
+        <p class="error">{{ getPasswordError('password', loginForm) }}</p>
     </div>
     <div class="form__buttons">
         @if (loginStateService.showLoginNextStep()) {

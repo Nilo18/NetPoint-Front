@@ -3,7 +3,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductAttribute, ProductService } from '../../../services/product-service';
-import { FormValidatorService } from '../../../services/form-validator-service';
 
 export interface CustomAttribute {
   name: string;
@@ -22,7 +21,6 @@ export class SettingsSchemaCustomizerModal {
   public modal = inject(NgbActiveModal);
   private formBuilder = inject(FormBuilder);
   private productService = inject(ProductService);
-  private formValidator = inject(FormValidatorService)
 
   fieldTypes = ['TEXT', 'NUMBER', 'DATE', 'BOOLEAN'];
   submitted = signal(false);
@@ -136,10 +134,6 @@ export class SettingsSchemaCustomizerModal {
     } else {
       this.updateAttribute()
     }
-  }
-
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
   }
 
   private getBackendErrorMessage(error: unknown) {

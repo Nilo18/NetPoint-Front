@@ -2,7 +2,7 @@
     <div class="form__field-container">
         <label for="owner_name">Verificaton Code</label>
         <input type="text" class="form-control" placeholder="Enter the code you received" formControlName="otpCode">
-        <p class="error">{{ getError('owner_name', loginFormStageTwo) }}</p>
+        <p class="error">{{ getRequiredError('owner_name', loginFormStageTwo) }}</p>
     </div>
     <div class="form__buttons">
         <!-- @if (showNextStep) { -->

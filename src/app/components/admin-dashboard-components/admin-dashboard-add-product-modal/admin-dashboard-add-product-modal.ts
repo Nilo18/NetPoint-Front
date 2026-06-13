@@ -75,14 +75,18 @@ export class AdminDashboardAddProductModal {
 
   readonly productForm = this.formBuilder.nonNullable.group<{[key: string]: AbstractControl}>({
     name: this.formBuilder.nonNullable.control('', Validators.required),
-    retailPrice: this.formBuilder.nonNullable.control('', Validators.required),
-    wholesalePrice: this.formBuilder.nonNullable.control('', Validators.required),
-    stock: this.formBuilder.nonNullable.control('', Validators.required),
+    retailPrice: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
+      Validators.max(100000000)]),
+    wholesalePrice: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
+      Validators.max(100000000)]),
+    stock: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
+      Validators.max(1000000)]),
   });
 
   async addProduct() {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
+      console.log('Invalid form.')
       return;
     }
 
@@ -144,6 +148,7 @@ export class AdminDashboardAddProductModal {
   }
 
   onSubmit() {
+    console.log('I run')
     if (this.isSubmitting()) {
       return;
     }

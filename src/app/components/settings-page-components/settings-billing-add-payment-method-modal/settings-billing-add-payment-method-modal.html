@@ -25,7 +25,7 @@
         placeholder="John Doe"
         autocomplete="cc-name"
       />
-      <p class="error modal-error">{{ getError('cardholderName', paymentMethodForm) }}</p>
+      <p class="error modal-error">{{ getRequiredError('cardholderName', paymentMethodForm) }}</p>
     </div>
 
     <div class="form__field-container payment-method-modal__field">
@@ -40,7 +40,7 @@
         inputmode="numeric"
         (input)="keepNumbersOnly($event, 'cardNumber'); keepValidCardNumberSize($event)"
       />
-      <p class="error modal-error">{{ getError('cardNumber', paymentMethodForm) }}</p>
+      <p class="error modal-error">{{ getCardNumberError('cardNumber', paymentMethodForm) }}</p>
     </div>
 
     <div class="payment-method-modal__row">
@@ -58,7 +58,7 @@
           (input)="keepValidMonth($event)"
           (blur)="normalizeMonthOnBlur($event)"
         />
-        <p class="error modal-error">{{ getError('expMonth', paymentMethodForm) }}</p>
+        <p class="error modal-error">{{ getRequiredError('expMonth', paymentMethodForm) }}</p>
       </div>
 
       <div class="form__field-container payment-method-modal__field">
@@ -74,7 +74,7 @@
           maxlength="4"
           (input)="keepNumbersOnly($event, 'expYear', 4)"
         />
-        <p class="error modal-error">{{ getError('expYear', paymentMethodForm) }}</p>
+        <p class="error modal-error">{{ getExpYearError('expYear', paymentMethodForm) }}</p>
       </div>
 
       <div class="form__field-container payment-method-modal__field">
@@ -90,7 +90,7 @@
           maxlength="3"
           (input)="keepNumbersOnly($event, 'cvc', 3)"
         />
-        <p class="error modal-error">{{ getError('cvc', paymentMethodForm) }}</p>
+        <p class="error modal-error">{{ getCvcError('cvc', paymentMethodForm) }}</p>
       </div>
     </div>
 

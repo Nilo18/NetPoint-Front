@@ -56,7 +56,28 @@ export class UserInviteForm {
     }
   }
   
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getRequiredError(field: string, form: FormGroup): string {
+    return this.formValidator.getRequiredError(field, form)
+  }
+
+  getEmailError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getEmailError(field, form)
+    )
+  }
+
+  getPasswordError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMinLengthError(field, form)
+    )
+  }
+
+  getPhoneNumberError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getPatternError(field, form, 'Please enter a valid phone number')
+    )
   }
 }

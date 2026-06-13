@@ -14,7 +14,7 @@
         <div class="form__field-container">
           <label for="email">{{role() === 'ADMIN' ? 'Admin Email' : 'Cashier Email'}}</label>
           <input type="email" class="form-control" placeholder="user@example.com" formControlName="email">
-          <p class="error">{{ getError('email', userInviteForm )}}</p>
+          <p class="error">{{ getEmailError('email', userInviteForm )}}</p>
         </div>
       </form>
   </div>

@@ -91,7 +91,7 @@ export class AdminLoginSecondStageForm {
     }
   }
 
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getRequiredError(field: string, form: FormGroup): string {
+    return this.formValidator.getRequiredError(field, form)
   }
 }

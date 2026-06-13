@@ -34,16 +34,35 @@ export class SignupFirstStageForm {
     this.signupForm.patchValue(saved)
   }
 
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getRequiredError(field: string, form: FormGroup): string {
+    return this.formValidator.getRequiredError(field, form)
+  }
+
+  getEmailError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getEmailError(field, form)
+    )
+  }
+
+  getPasswordError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMinLengthError(field, form)
+    )
+  }
+
+  getConfirmPasswordError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getPasswordMismatchError(field, form)
+    )
   }
 
   onSubmit() {
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched()
       console.log('The form is invalid.')
-      // console.log(this.formValidator.getError('confirm_password', this.signupFormStageTwo))
-      // return this.formValidator.getError('confirm_password', this.signupFormStageTwo)
       return
     }
 

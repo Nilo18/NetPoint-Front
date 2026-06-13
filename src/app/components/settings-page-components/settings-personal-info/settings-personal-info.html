@@ -61,20 +61,20 @@
             type="text"
             placeholder="Your full name"
             formControlName="name">
-          <p class="error">{{ getError('name', userInfoForm) }}</p>
+          <p class="error">{{ getRequiredError('name', userInfoForm) }}</p>
         </div>
 
         <div class="personal-info__field form__field-container">
           <label for="personal-role">Role</label>
           <input id="personal-role" class="form-control" type="text" readonly formControlName="role">
-          <p class="error">{{ getError('role', userInfoForm) }}</p>
+          <p class="error">{{ getRequiredError('role', userInfoForm) }}</p>
         </div>
       </div>
 
       <div class="personal-info__field form__field-container">
         <label for="personal-email">Email Address</label>
         <input id="personal-email" class="form-control" type="email" formControlName="email">
-        <p class="error">{{ getError('email', userInfoForm) }}</p>
+        <p class="error">{{ getEmailError('email', userInfoForm) }}</p>
       </div>
 
       <div class="personal-info__field form__field-container">
@@ -85,7 +85,7 @@
           type="password"
           formControlName="newPassword"
           placeholder="Enter a new password">
-        <p class="error">{{ getError('newPassword', userInfoForm) }}</p>
+        <p class="error">{{ getNewPasswordError('newPassword', userInfoForm) }}</p>
       </div>
 
       <div class="personal-info__lower-section">

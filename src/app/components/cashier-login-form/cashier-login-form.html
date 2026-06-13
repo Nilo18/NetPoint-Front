@@ -2,13 +2,13 @@
     <div class="login__email form__field-container ">
         <label for="email">Business Email</label>
         <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
-        <p class="error">{{ getError('email', cashierForm) }}</p>
+        <p class="error">{{ getEmailError('email', cashierForm) }}</p>
     </div>
     <div class="login__password form__field-container ">
         <label for="pin">PIN</label>
         <input type="password" class="form-control" placeholder="Minimum 8 characters" 
         formControlName="pin">
-        <p class="error">{{ getError('password', cashierForm) }}</p>
+        <p class="error">{{ getRequiredError('pin', cashierForm) }}</p>
     </div>
     <div class="form__buttons">
         <!-- @if (showNextStep()) {

@@ -2,20 +2,20 @@
     <div class="form__field-container">
         <label for="owner_name">Your Name</label>
         <input type="text" class="form-control" placeholder="Your Name" formControlName="owner_name">
-        <p class="error">{{ getError('owner_name', signupFormStageTwo) }}</p>
+        <p class="error">{{ getRequiredError('owner_name', signupFormStageTwo) }}</p>
     </div>
     <div class="form__field-container">
         <label for="owner_email">Your Email</label>
         <input type="email" class="form-control" placeholder="you@example.com" 
         formControlName="owner_email">
-        <p class="error">{{ getError('owner_email', signupFormStageTwo) }}</p>
+        <p class="error">{{ getEmailError('owner_email', signupFormStageTwo) }}</p>
     </div>
     <div class="form__field-container">
         <label for="owner_password">Your Personal Account Password</label>
         <input type="password" class="form-control"
         placeholder="Minimum 8 characters"
         formControlName="owner_password">
-        <p class="error">{{ getError('owner_password', signupFormStageTwo) }}</p>
+        <p class="error">{{ getPasswordError('owner_password', signupFormStageTwo) }}</p>
     </div>
     <div class="form__field-container">
         <label for="phone_number">Your Phone Number</label>
@@ -23,7 +23,7 @@
         formControlName="phone_number"
         placeholder="+1 555 555 5555" 
         autocomplete="tel" >
-        <p class="error">{{ getError('phone_number', signupFormStageTwo) }}</p>
+        <p class="error">{{ getPhoneNumberError('phone_number', signupFormStageTwo) }}</p>
     </div>
     <div class="form__buttons">
         <!-- @if (showNextStep) { -->

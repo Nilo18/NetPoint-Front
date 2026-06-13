@@ -2,12 +2,12 @@
     <div class="form__field-container">
         <label for="name">Business Name</label>
         <input type="text" class="form-control" placeholder="Your Store Name" formControlName="name">
-        <p class="error">{{ getError('name', signupForm) }}</p>
+        <p class="error">{{ getRequiredError('name', signupForm) }}</p>
     </div>
     <div class="form__field-container">
         <label for="email">Business Email</label>
         <input type="email" class="form-control" placeholder="you@example.com" formControlName="email">
-        <p class="error">{{ getError('email', signupForm) }}</p>
+        <p class="error">{{ getEmailError('email', signupForm) }}</p>
     </div>
     <div class="form__field-container">
         <label for="industry">Industry</label>
@@ -25,19 +25,19 @@
             <option value="Salon">Salon & Beauty</option>
             <option value="Other">Other</option>
         </select>
-        <p class="error">{{ getError('industry', signupForm) }}</p>
+        <p class="error">{{ getRequiredError('industry', signupForm) }}</p>
     </div>
     <div class="form__field-container">
         <label for="password">Password</label>
         <input type="password" class="form-control" placeholder="Minimum 8 characters" 
         formControlName="password">
-        <p class="error">{{ getError('password', signupForm) }}</p>
+        <p class="error">{{ getPasswordError('password', signupForm) }}</p>
     </div>
     <div class="form__field-container">
         <label for="confirm_password">Confirm Password</label>
         <input type="password" class="form-control" placeholder="Re-enter password" 
         formControlName="confirm_password">
-        <p class="error">{{ getError('confirm_password', signupForm) }}</p>
+        <p class="error">{{ getConfirmPasswordError('confirm_password', signupForm) }}</p>
     </div>
     <div class="form__buttons">
         <!-- @if (showNextStep()) {

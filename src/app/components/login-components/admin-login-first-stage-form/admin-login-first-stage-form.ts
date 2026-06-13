@@ -47,8 +47,18 @@ export class AdminLoginFirstStageForm {
     console.log('Set showNextStep to: ', val)
   }
 
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getEmailError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getEmailError(field, form)
+    )
+  }
+
+  getPasswordError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMinLengthError(field, form)
+    )
   }
 
   async onSubmit() {

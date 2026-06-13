@@ -22,54 +22,59 @@ export class FormValidatorService {
       .replace(/^\w/, c => c.toUpperCase());    
   }
 
-  getError(field: string, form: FormGroup) {
+  getRequiredError(field: string, form: FormGroup): string {
     const control = form.get(field)
-    const label = this.formatLabel(field)
-    // console.log(label)
 
     if (!control || !control.touched) return ''
 
-    if (control.hasError('required')) { 
-      // field.charAt(0)
-      console.log(`Checking for: ${control} in ${form}`)
-      return `${label} is required.`
-    }
-    if (control.hasError('email')) {
-      console.log("returning 'Invalid email address.'")
-      return 'Invalid email address.'
-    }
+    return control.hasError('required') ? `${this.formatLabel(field)} is required.` : ''
+  }
 
-    if (control.hasError('minlength') && field === 'newPassword') {
-      const min = control.getError('minlength').requiredLength
-      console.log(control.getError('minlength'))
-      console.log('value of min is: ', min)
-      return `Password must be at least ${min} characters long`
-    }
+  getEmailError(field: string, form: FormGroup): string {
+    const control = form.get(field)
 
-    if (control.hasError('minlength')) {
-      const min = control.getError('minlength').requiredLength
-      console.log(control.getError('minlength'))
-      console.log('value of min is: ', min)
-      return `${label} must be at least ${min} characters long`
-    }
+    if (!control || !control.touched) return ''
 
-    if (control.hasError('maxlength')) {
-      const max = control.getError('maxlength').requiredLength
-      console.log(control.getError('maxlength'))
-      console.log('value of max is: ', max)
-      return `${label} must be at most ${max} characters long`
-    }
+    return control.hasError('email') ? 'Invalid email address.' : ''
+  }
 
-    if (field === 'pin' && control.hasError('pattern')) return 'Pin must be 6 digits and a number'
+  getMinLengthError(field: string, form: FormGroup, label = this.formatLabel(field)): string {
+    const control = form.get(field)
 
-    if (field === 'phone_number' && control.hasError('pattern')) return 'Please enter a valid phone number'
+    if (!control || !control.touched || !control.hasError('minlength')) return ''
 
-    if (control.hasError('pattern')) return 'Pattern mismatch'
+    const minLengthError = control.getError('minlength') as { requiredLength: number }
 
-    if (field === 'confirm_password' && form.hasError('passwordMismatch')) {
-      return 'Passwords do not match';
-    }
+    return `${label} must be at least ${minLengthError.requiredLength} characters long`
+  }
 
-    return ''
+  getMaxLengthError(field: string, form: FormGroup): string {
+    const control = form.get(field)
+
+    if (!control || !control.touched || !control.hasError('maxlength')) return ''
+
+    const maxLengthError = control.getError('maxlength') as { requiredLength: number }
+
+    return `${this.formatLabel(field)} must be at most ${maxLengthError.requiredLength} characters long`
+  }
+
+  getPatternError(field: string, form: FormGroup, message = 'Pattern mismatch'): string {
+    const control = form.get(field)
+
+    if (!control || !control.touched) return ''
+
+    return control.hasError('pattern') ? message : ''
+  }
+
+  getPasswordMismatchError(field: string, form: FormGroup): string {
+    const control = form.get(field)
+
+    if (!control || !control.touched) return ''
+
+    return form.hasError('passwordMismatch') ? 'Passwords do not match' : ''
+  }
+
+  getFirstError(...errors: string[]): string {
+    return errors.find(Boolean) ?? ''
   }
 }

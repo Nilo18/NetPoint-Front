@@ -55,8 +55,32 @@ export class SettingsBillingAddPaymentMethodModal {
     }),
   });
 
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getRequiredError(field: string, form: FormGroup): string {
+    return this.formValidator.getRequiredError(field, form)
+  }
+
+  getCardNumberError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMaxLengthError(field, form),
+      this.formValidator.getPatternError(field, form)
+    )
+  }
+
+  getExpYearError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMinLengthError(field, form),
+      this.formValidator.getPatternError(field, form)
+    )
+  }
+
+  getCvcError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMaxLengthError(field, form),
+      this.formValidator.getPatternError(field, form)
+    )
   } 
 
   protected keepNumbersOnly(event: Event, controlName: NumericPaymentMethodControl, maxLength?: number): void {

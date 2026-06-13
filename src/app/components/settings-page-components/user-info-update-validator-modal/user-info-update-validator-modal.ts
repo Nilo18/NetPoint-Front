@@ -33,8 +33,11 @@ export class UserInfoUpdateValidatorModal {
     })
   }
 
-  getError(field: string, form: FormGroup) {
-    return this.formValidator.getError(field, form)
+  getOtpCodeError(field: string, form: FormGroup): string {
+    return this.formValidator.getFirstError(
+      this.formValidator.getRequiredError(field, form),
+      this.formValidator.getMaxLengthError(field, form)
+    )
   }
 
   async onSubmit() {

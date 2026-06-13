@@ -1,10 +1,6 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
-import { Router } from '@angular/router';
-import { FormValidatorService } from '../../services/form-validator-service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthBanner } from '../../components/auth-banner/auth-banner';
-import { CashierLoginForm } from '../../components/cashier-login-form/cashier-login-form';
 import { AdminLoginFirstStageForm } from '../../components/login-components/admin-login-first-stage-form/admin-login-first-stage-form';
 import { AdminLoginSecondStageForm } from '../../components/login-components/admin-login-second-stage-form/admin-login-second-stage-form';
 import { LoginStateManagementService } from '../../services/login-state-management-service';
@@ -51,8 +47,4 @@ export class Login {
     // this.showNextStep.set(val)
     console.log('Set showNextStep to: ', val)
   }
-
-  // getError(field: string, form: FormGroup) {
-  //   return this.formValidator.getError(field, form)
-  // }
 }
