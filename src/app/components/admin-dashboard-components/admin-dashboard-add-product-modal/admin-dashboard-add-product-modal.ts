@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, resource, ViewEncapsulation } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, effect, inject, resource, signal, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
@@ -15,6 +16,8 @@ export class AdminDashboardAddProductModal {
   readonly modal = inject(NgbActiveModal);
   private readonly formBuilder = inject(FormBuilder);
   private productService = inject(ProductService);
+  protected readonly isSubmitting = signal(false);
+  protected readonly backendError = signal<string | null>(null);
   customAttributes = resource<ProductAttribute[], unknown>({
     loader: () => this.productService.getArtificialProductAttributes(),
   });
@@ -28,6 +31,8 @@ export class AdminDashboardAddProductModal {
       if (!attrs) return
       
       attrs.forEach(attr => {
+        if (this.productForm.contains(attr.attributeName)) return
+
         this.productForm.addControl(
           attr.attributeName,
           this.formBuilder.nonNullable.control(attr.attributeType.trim().toLowerCase() === 'boolean' ? true : '',
@@ -38,13 +43,10 @@ export class AdminDashboardAddProductModal {
   }
 
   ngOnInit() {
-    console.log(this.customAttributes.value())
-    console.log("Product to edit is: ", this.productToEdit)
     if (!this.productToEdit) {
       return
     }
 
-    console.log("Product to edit is: ", this.productToEdit.name)
     this.productForm.patchValue({
       name: this.productToEdit.name,
       retailPrice: this.productToEdit.retailPrice,
@@ -53,18 +55,22 @@ export class AdminDashboardAddProductModal {
     });
 
     const attrs = this.productToEdit.customAttributes
-    console.log('attrs are: ', attrs)
 
     if (attrs) {
       Object.entries(attrs).forEach(([key, value]) => {
+        if (this.productForm.contains(key)) {
+          this.productForm.get(key)?.setValue(value)
+          return
+        }
+
         this.productForm.addControl(
           key,
           this.formBuilder.nonNullable.control(value, Validators.required)
         )
       })
-
-      this.initialFormValue = this.productForm.getRawValue()
     }
+
+    this.initialFormValue = this.productForm.getRawValue()
   }
 
   readonly productForm = this.formBuilder.nonNullable.group<{[key: string]: AbstractControl}>({
@@ -76,22 +82,23 @@ export class AdminDashboardAddProductModal {
 
   async addProduct() {
     if (this.productForm.invalid) {
-      console.log('Invalid form: ', this.productForm.value)
       this.productForm.markAllAsTouched();
       return;
     }
 
     const payload = this.formatPayload()
-    console.log(payload);
 
     try {
+      this.isSubmitting.set(true);
+      this.backendError.set(null);
       const res = await this.productService.addProduct(payload)
-      
       if (res) {
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
-      console.log(error)
+      this.backendError.set(this.getErrorMessage(error, 'We could not add this product. Please try again.'));
+    } finally {
+      this.isSubmitting.set(false);
     }
   }
 
@@ -101,7 +108,6 @@ export class AdminDashboardAddProductModal {
     }
 
     if (this.productForm.invalid) {
-      console.log('Invalid form: ', this.productForm.value)
       this.productForm.markAllAsTouched();
       return;
     }
@@ -112,21 +118,22 @@ export class AdminDashboardAddProductModal {
     }
 
     const payload = this.formatPayload()
-    console.log(payload);
     try {
+      this.isSubmitting.set(true);
+      this.backendError.set(null);
       const res = await this.productService.editProduct(this.productToEdit.id, payload)
-
       if (res) {
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
-      console.log(error)
+      this.backendError.set(this.getErrorMessage(error, 'We could not update this product. Please try again.'));
+    } finally {
+      this.isSubmitting.set(false);
     }
   }
 
   private formatPayload() {
-    console.log(this.productForm.value)
-    const { name, retailPrice, wholesalePrice, stock, ...dynamicAttrs } = this.productForm.value;
+    const { name, retailPrice, wholesalePrice, stock, ...dynamicAttrs } = this.productForm.getRawValue();
 
     const customAttributes: Record<string, CustomAttributeValue> = {};
     Object.entries(dynamicAttrs).forEach(([key, value]) => {
@@ -137,6 +144,10 @@ export class AdminDashboardAddProductModal {
   }
 
   onSubmit() {
+    if (this.isSubmitting()) {
+      return;
+    }
+
     if (this.productToEdit) {
       this.editProduct()
     } else {
@@ -148,5 +159,51 @@ export class AdminDashboardAddProductModal {
     const stdAttributeType = attributeType.trim().toLowerCase()
 
     return stdAttributeType === 'boolean'
+  }
+
+  protected getSubmitLabel() {
+    if (this.isSubmitting()) {
+      return this.productToEdit ? 'Saving changes...' : 'Adding product...';
+    }
+
+    return this.productToEdit ? 'Edit Product' : 'Add Product';
+  }
+
+  private getErrorMessage(error: unknown, fallbackMessage: string) {
+    if (error instanceof HttpErrorResponse) {
+      const backendMessage = this.extractBackendMessage(error.error);
+
+      return backendMessage || error.message || fallbackMessage;
+    }
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return fallbackMessage;
+  }
+
+  private extractBackendMessage(errorBody: unknown): string | null {
+    if (typeof errorBody === 'string') {
+      return errorBody;
+    }
+
+    if (!errorBody || typeof errorBody !== 'object') {
+      return null;
+    }
+
+    if ('message' in errorBody && typeof errorBody.message === 'string') {
+      return errorBody.message;
+    }
+
+    if ('error' in errorBody && typeof errorBody.error === 'string') {
+      return errorBody.error;
+    }
+
+    if ('title' in errorBody && typeof errorBody.title === 'string') {
+      return errorBody.title;
+    }
+
+    return null;
   }
 }

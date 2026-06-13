@@ -1,8 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
 import { ProductDTO, ProductService } from '../../../services/product-service';
-import { KeyValuePipe } from '@angular/common';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 
 type Profitability = 'High' | 'Medium';
@@ -18,7 +18,7 @@ interface InventoryProduct {
 
 @Component({
   selector: 'app-admin-dashboard-inventory-management',
-  imports: [KeyValuePipe],
+  imports: [],
   templateUrl: './admin-dashboard-inventory-management.html',
   styleUrl: './admin-dashboard-inventory-management.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +27,7 @@ export class AdminDashboardInventoryManagement {
   products = resource<ProductDTO[], unknown>({
     loader: () => this.productService.getAllProducts()
   })
+  protected readonly deletingProductId = signal<number | null>(null);
   private modalService: NgbModal = inject(NgbModal);
   private productService: ProductService = inject(ProductService)
 
@@ -73,19 +74,69 @@ export class AdminDashboardInventoryManagement {
   }
 
   async deleteProduct(productId: number) {
-    try {
-      const res = await this.productService.deleteProduct(productId)
+    if (this.deletingProductId()) {
+      return;
+    }
 
-      if (res) {
-        this.products.reload()
-      }
+    try {
+      this.deletingProductId.set(productId);
+      await this.productService.deleteProduct(productId)
+
+      this.products.update((products) => products?.filter(product => product.id !== productId));
     } catch (error) {
       const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
         centered: true
       })
 
       modalRef.componentInstance.errTitle = "Something Went Wrong During Product Deletion"
-      modalRef.componentInstance.error.error.error
+      modalRef.componentInstance.errMsg = this.getErrorMessage(
+        error,
+        'We could not remove this product. Please try again.',
+      );
+    } finally {
+      this.deletingProductId.set(null);
     }
+  }
+
+  protected isDeletingProduct(productId: number) {
+    return this.deletingProductId() === productId;
+  }
+
+  private getErrorMessage(error: unknown, fallbackMessage: string) {
+    if (error instanceof HttpErrorResponse) {
+      const backendMessage = this.extractBackendMessage(error.error);
+
+      return backendMessage || error.message || fallbackMessage;
+    }
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return fallbackMessage;
+  }
+
+  private extractBackendMessage(errorBody: unknown): string | null {
+    if (typeof errorBody === 'string') {
+      return errorBody;
+    }
+
+    if (!errorBody || typeof errorBody !== 'object') {
+      return null;
+    }
+
+    if ('message' in errorBody && typeof errorBody.message === 'string') {
+      return errorBody.message;
+    }
+
+    if ('error' in errorBody && typeof errorBody.error === 'string') {
+      return errorBody.error;
+    }
+
+    if ('title' in errorBody && typeof errorBody.title === 'string') {
+      return errorBody.title;
+    }
+
+    return null;
   }
 }

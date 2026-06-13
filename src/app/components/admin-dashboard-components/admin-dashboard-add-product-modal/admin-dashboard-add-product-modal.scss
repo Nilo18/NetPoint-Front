@@ -35,6 +35,11 @@
     justify-content: center;
     cursor: pointer;
     padding: 0;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.45;
+    }
   }
 
   &__header {
@@ -60,6 +65,43 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+
+  &__fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+
+    &:disabled {
+      opacity: 0.78;
+    }
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 11px 13px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #7f1d1d;
+
+    strong {
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    span {
+      font-size: 13px;
+      line-height: 1.35;
+      color: #991b1b;
+    }
   }
 
   &__row {
@@ -163,6 +205,10 @@
     line-height: 1;
     font-weight: 700;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
 
     &:hover {
       background-color: #4f46e5;
@@ -177,6 +223,21 @@
       outline: 3px solid rgba(88, 80, 236, 0.3);
       outline-offset: 2px;
     }
+  }
+
+  &__spinner {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.42);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: add-product-modal-spin 0.75s linear infinite;
+  }
+}
+
+@keyframes add-product-modal-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

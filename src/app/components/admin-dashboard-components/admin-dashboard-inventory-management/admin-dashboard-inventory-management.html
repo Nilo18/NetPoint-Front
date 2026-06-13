@@ -28,7 +28,37 @@
         </tr>
       </thead>
       <tbody>
-        @for (product of products.value(); track product.name) {
+        @if (products.isLoading()) {
+          @for (_ of [1, 2, 3, 4]; track _) {
+            <tr aria-hidden="true">
+              <th scope="row">
+                <span class="skeleton skeleton--line inventory-management__skeleton-name"></span>
+              </th>
+              <td>
+                <span class="skeleton skeleton--badge"></span>
+              </td>
+              <td>
+                <span class="skeleton skeleton--line inventory-management__skeleton-price"></span>
+              </td>
+              <td>
+                <span class="skeleton skeleton--line inventory-management__skeleton-price"></span>
+              </td>
+              <td>
+                <span class="skeleton skeleton--line inventory-management__skeleton-margin"></span>
+              </td>
+              <td>
+                <span class="skeleton skeleton--badge inventory-management__skeleton-profitability"></span>
+              </td>
+              <td>
+                <div class="inventory-management__actions">
+                  <span class="skeleton skeleton--action-btn inventory-management__skeleton-action"></span>
+                  <span class="skeleton skeleton--action-btn inventory-management__skeleton-action"></span>
+                </div>
+              </td>
+            </tr>
+          }
+        } @else {
+          @for (product of products.value(); track product.name) {
           <tr>
             <th scope="row">{{ product.name }}</th>
             <td>
@@ -49,11 +79,43 @@
             </td>
             <td>
               <div class="inventory-management__actions">
-                <button (click)="editProduct(product)" style="cursor: pointer;">Edit</button>
-                <button (click)="deleteProduct(product.id)">Remove</button>
+                <button
+                  type="button"
+                  class="inventory-management__action"
+                  aria-label="Edit product"
+                  title="Edit product"
+                  (click)="editProduct(product)"
+                  [disabled]="isDeletingProduct(product.id)"
+                >
+                  <svg class="inventory-management__action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="inventory-management__action inventory-management__action--danger"
+                  aria-label="Delete product"
+                  title="Delete product"
+                  (click)="deleteProduct(product.id)"
+                  [disabled]="deletingProductId() !== null"
+                >
+                  @if (isDeletingProduct(product.id)) {
+                    <span class="inventory-management__spinner" aria-hidden="true"></span>
+                  } @else {
+                    <svg class="inventory-management__action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                    </svg>
+                  }
+                </button>
               </div>
             </td>
           </tr>
+          }
         }
       </tbody>
     </table>

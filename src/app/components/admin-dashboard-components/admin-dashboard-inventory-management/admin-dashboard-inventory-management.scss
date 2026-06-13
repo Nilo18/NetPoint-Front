@@ -153,6 +153,97 @@
   font-weight: 700;
 }
 
+.inventory-management__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 88px;
+}
+
+.inventory-management__action {
+  width: 36px;
+  min-width: 36px;
+  height: 32px;
+  border: 1px solid #d7dce3;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #263244;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover,
+  &:focus-visible {
+    background: #f5f7fb;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+}
+
+.inventory-management__action-icon {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.inventory-management__action--danger {
+  border-color: #fecaca;
+  color: #b91c1c;
+
+  &:hover,
+  &:focus-visible {
+    background: #fef2f2;
+  }
+}
+
+.inventory-management__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(185, 28, 28, 0.22);
+  border-top-color: #b91c1c;
+  border-radius: 50%;
+  animation: inventory-management-spin 0.75s linear infinite;
+}
+
+.inventory-management__skeleton-name {
+  width: 160px;
+  max-width: 100%;
+}
+
+.inventory-management__skeleton-price {
+  width: 78px;
+}
+
+.inventory-management__skeleton-margin {
+  width: 56px;
+}
+
+.inventory-management__skeleton-profitability {
+  width: 78px;
+  height: 28px;
+  border-radius: 10px;
+}
+
+.inventory-management__skeleton-action {
+  width: 36px;
+  height: 32px;
+  margin-top: 0;
+}
+
+@keyframes inventory-management-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 720px) {
   .inventory-management {
     padding: 24px 18px;
