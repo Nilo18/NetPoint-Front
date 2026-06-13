@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
 import { ProductDTO, ProductService } from '../../../services/product-service';
 import { KeyValuePipe } from '@angular/common';
+import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 
 type Profitability = 'High' | 'Medium';
 
@@ -68,6 +69,23 @@ export class AdminDashboardInventoryManagement {
       return 'inventory-management__profitability';
     } else {
       return 'inventory-management__profitability--high';
+    }
+  }
+
+  async deleteProduct(productId: number) {
+    try {
+      const res = await this.productService.deleteProduct(productId)
+
+      if (res) {
+        this.products.reload()
+      }
+    } catch (error) {
+      const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
+        centered: true
+      })
+
+      modalRef.componentInstance.errTitle = "Something Went Wrong During Product Deletion"
+      modalRef.componentInstance.error.error.error
     }
   }
 }

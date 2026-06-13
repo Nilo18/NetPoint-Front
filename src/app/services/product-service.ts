@@ -144,4 +144,15 @@ export class ProductService {
       throw error;      
     }  
   }
+
+  async deleteProduct(productId: number) {
+    try {
+      const res = await firstValueFrom(this.http.delete(`${this.baseUrl}/api/products/${productId}`))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't delete product: ", error);
+      throw error;      
+    }
+  }
 }

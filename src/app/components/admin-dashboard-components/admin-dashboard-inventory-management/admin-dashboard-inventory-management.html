@@ -50,7 +50,7 @@
             <td>
               <div class="inventory-management__actions">
                 <button (click)="editProduct(product)" style="cursor: pointer;">Edit</button>
-                <button>Remove</button>
+                <button (click)="deleteProduct(product.id)">Remove</button>
               </div>
             </td>
           </tr>
