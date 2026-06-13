@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, resource, signal, V
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
+import { FormValidatorService } from '../../../services/form-validator-service';
 
 @Component({
   selector: 'app-admin-dashboard-add-product-modal',
@@ -15,6 +16,7 @@ import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } fr
 export class AdminDashboardAddProductModal {
   readonly modal = inject(NgbActiveModal);
   private readonly formBuilder = inject(FormBuilder);
+  public formValidator = inject(FormValidatorService);
   private productService = inject(ProductService);
   protected readonly isSubmitting = signal(false);
   protected readonly backendError = signal<string | null>(null);
@@ -79,7 +81,7 @@ export class AdminDashboardAddProductModal {
       Validators.max(100000000)]),
     wholesalePrice: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
       Validators.max(100000000)]),
-    stock: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
+    stock: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(1), 
       Validators.max(1000000)]),
   });
 

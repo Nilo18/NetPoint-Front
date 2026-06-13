@@ -77,4 +77,32 @@ export class FormValidatorService {
   getFirstError(...errors: string[]): string {
     return errors.find(Boolean) ?? ''
   }
+
+  getMinAmountError(field: string, form: FormGroup, label = this.formatLabel(field)): string {
+    const control = form.get(field)
+
+    if (!control || !control.hasError('min')) return ''
+
+    const minAmountError = control.getError('min') as { min: number; actual: number }
+
+    return `${label} must be at least ${minAmountError.min}`
+  }
+
+  getMaxAmountError(field: string, form: FormGroup, label = this.formatLabel(field)): string {
+    const control = form.get(field)
+
+    if (!control || !control.hasError('max')) return ''
+
+    const maxAmountError = control.getError('max') as { max: number; actual: number }
+
+    return `${label} must be at most ${maxAmountError.max}`
+  }
+
+  getRequiredAmountError(field: string, form: FormGroup, label = this.formatLabel(field)): string {
+    return this.getFirstError(
+      this.getRequiredError(field, form),
+      this.getMinAmountError(field, form, label),
+      this.getMaxAmountError(field, form, label)
+    )
+  }
 }
