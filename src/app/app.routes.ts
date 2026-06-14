@@ -15,14 +15,18 @@ import { SettingsSecurity } from './components/settings-page-components/settings
 import { SettingsAppearance } from './components/settings-page-components/settings-appearance/settings-appearance';
 import { SettingsBilling } from './components/settings-page-components/settings-billing/settings-billing';
 import { SettingsPersonalInfo } from './components/settings-page-components/settings-personal-info/settings-personal-info';
+import { settingsChildGuard, settingsPageGuard } from './guards/settings-page-guard';
+import { authGuard } from './guards/auth-guard';
+import { basicGuard } from './guards/basic-guard';
+import { inviteTokenGuard } from './guards/invite-token-guard';
 
 export const routes: Routes = [
-    {path: "", component: Home},
-    {path: "signup", component: Signup},
-    {path: "login", component: Login},
-    {path: "expenses", component: ExpenseCalculator},
+    {path: "", component: Home, canActivate: [authGuard]},
+    {path: "signup", component: Signup, canActivate: [authGuard]},
+    {path: "login", component: Login, canActivate: [authGuard]},
+    {path: "expenses", component: ExpenseCalculator, canActivate: [basicGuard]},
     {path: "admin", component: AdminDashboard, canActivate: [adminDashboardGuard]},
-    {path: "settings", component: Settings,
+    {path: "settings", canActivate: [settingsPageGuard], canActivateChild: [settingsChildGuard], component: Settings,
         children: [
             { path: "", component: SettingsUserManagement },
             { path: "personal-info", component: SettingsPersonalInfo },
@@ -31,8 +35,8 @@ export const routes: Routes = [
             { path: "security", component: SettingsSecurity },
             { path: "appearance", component: SettingsAppearance },
             { path: "billing", component: SettingsBilling },
-        ]
+        ],
     },
-    {path: "setup-account", component: UserInviteTokenValidation},
+    {path: "setup-account", component: UserInviteTokenValidation, canActivate: [inviteTokenGuard]},
     {path: "**", component: NotFoundPage}
 ];

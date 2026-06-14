@@ -1,9 +1,11 @@
 <aside class="settings-sidebar">
     @for (section of sidebarSections; track section.id) {
-        <button class="settings-sidebar__section" [class.active-section]="router.url === section.link"
-        [routerLink]="section.link">
-            <span [innerHTML]="section.icon" class="settings-sidebar__section--icon-holder"></span>
-            <span>{{ section.heading }}</span>
-        </button>
+        @if (section.shouldAppear) {
+            <button class="settings-sidebar__section" [class.active-section]="router.url === section.link"
+            [routerLink]="section.link">
+                <span [innerHTML]="section.icon" class="settings-sidebar__section--icon-holder"></span>
+                <span>{{ section.heading }}</span>
+            </button>
+        }
     }
 </aside>

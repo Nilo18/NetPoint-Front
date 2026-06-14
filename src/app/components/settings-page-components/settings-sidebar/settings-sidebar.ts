@@ -7,12 +7,14 @@ import { SettingsAppearance } from '../settings-appearance/settings-appearance';
 import { SettingsBilling } from '../settings-billing/settings-billing';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
+import { DecodedToken, TokenService } from '../../../services/token-service';
 
 interface SidebarSection {
   id: number,
   heading: string,
   icon: SafeHtml,
   link: string,
+  shouldAppear: boolean
   // isActive: boolean
 }
 
@@ -25,6 +27,10 @@ interface SidebarSection {
 export class SettingsSidebar {
   private sanitizer = inject(DomSanitizer)
   public router = inject(Router)
+  private tokenService = inject(TokenService)
+  decodedToken: DecodedToken | null = this.tokenService.getDecodedToken()
+  role: string | undefined= this.decodedToken?.role.trim().toLowerCase()
+  sectionShouldAppear = this.role === 'owner'
   sidebarSections: SidebarSection[] = [
     {
       id: 1,
@@ -38,6 +44,7 @@ export class SettingsSidebar {
         </svg>`
       ),
       link: '/settings',
+      shouldAppear: this.sectionShouldAppear
       // isActive: true
     },
     {
@@ -55,6 +62,7 @@ export class SettingsSidebar {
         </svg>`
       ),
       link: '/settings/personal-info',
+      shouldAppear: true
       // isActive: false
     },
     {
@@ -74,6 +82,7 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/business-info',
+      shouldAppear: this.sectionShouldAppear
       // isActive: false
     },
     // {
@@ -142,6 +151,7 @@ export class SettingsSidebar {
       </svg>`
       ),
       link: '/settings/billing',
+      shouldAppear: this.sectionShouldAppear
       // isActive: false
     }
   ]

@@ -21,6 +21,7 @@ export class AdminDashboardHeader {
     loader: () => this.companyService.getCompanyInfo()
   });
   decodedToken!: DecodedToken
+  role!: string
 
   ngOnInit() {
     const token = this.tokenService.getDecodedToken()
@@ -28,6 +29,7 @@ export class AdminDashboardHeader {
     if (token) {
       this.decodedToken = token
       console.log(this.decodedToken.role)
+      this.role = this.decodedToken.role.trim().toLowerCase()
     }
   }
 

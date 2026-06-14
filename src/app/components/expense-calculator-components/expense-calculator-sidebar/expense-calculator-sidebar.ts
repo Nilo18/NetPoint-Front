@@ -101,4 +101,8 @@ export class ExpenseCalculatorSidebar {
 
     return null;
   }
+
+  roundNumber(num: number, digit: number) {
+    return num.toFixed(digit)
+  }
 }

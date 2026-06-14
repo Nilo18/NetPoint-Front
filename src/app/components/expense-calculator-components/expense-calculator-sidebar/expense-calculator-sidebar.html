@@ -19,7 +19,6 @@
                 type="button"
                 class="sale-sidebar__remove-item"
                 [attr.aria-label]="'Remove ' + cartItem.name"
-                [disabled]="isCheckingOut()"
                 (click)="removeItem.emit(cartItem.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -39,7 +38,6 @@
                   type="button"
                   class="sale-sidebar__quantity-button"
                   [attr.aria-label]="'Decrease quantity for ' + cartItem.name"
-                  [disabled]="isCheckingOut()"
                   (click)="decreaseQuantity.emit(cartItem.id)"
                 >
                   -
@@ -49,19 +47,15 @@
                   type="button"
                   class="sale-sidebar__quantity-button"
                   [attr.aria-label]="'Increase quantity for ' + cartItem.name"
-                  [disabled]="isCheckingOut() || cartItem.stock === 0"
                   (click)="increaseQuantity.emit(cartItem.id)"
                 >
                   +
                 </button>
               </div>
               <strong class="sale-sidebar__item-total">
-                ${{ cartItem.retailPrice * (cartItem.quantity ?? 1) }}
+                  ${{ roundNumber(cartItem.retailPrice * (cartItem.quantity ?? 1), 2) }}
               </strong>
             </div>
-            @if (cartItem.stock === 0) {
-              <p class="sale-sidebar__stock-note">No more stock available</p>
-            }
           </article>
         }
       }
@@ -85,10 +79,6 @@
       <strong>${{ total() }}</strong>
     </div>
 
-    @if (checkoutError()) {
-      <p class="sale-sidebar__error" aria-live="assertive">{{ checkoutError() }}</p>
-    }
-
     <!-- <div class="sale-sidebar__actions">
       <button type="button" class="sale-sidebar__action">
         <span class="sale-sidebar__hold-icon" aria-hidden="true"></span>
@@ -100,16 +90,6 @@
       </button>
     </div> -->
 
-    <button
-      type="button"
-      class="sale-sidebar__complete"
-      [disabled]="isCheckoutDisabled()"
-      (click)="checkout()"
-    >
-      @if (isCheckingOut()) {
-        <span class="sale-sidebar__spinner" aria-hidden="true"></span>
-      }
-      <span>{{ isCheckingOut() ? 'Completing...' : 'Complete Sale' }}</span>
-    </button>
+    <button type="button" class="sale-sidebar__complete" (click)="checkout()">Complete Sale</button>
   </div>
 </aside>

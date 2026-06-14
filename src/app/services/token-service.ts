@@ -37,4 +37,10 @@ export class TokenService {
 
     return encodedToken ? jwtDecode<DecodedToken>(encodedToken) : null
   }
+
+  getRole() {
+    const decodedToken = this.getDecodedToken()
+    const role = decodedToken?.role.trim().toLowerCase()
+    return role
+  }
 }

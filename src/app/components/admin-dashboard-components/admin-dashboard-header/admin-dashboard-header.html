@@ -10,7 +10,10 @@
     />
 
     <div class="admin-dashboard-header__store">
-      <h1 class="admin-dashboard-header__title">NetPoint Admin Dashboard</h1>
+      <h1 class="admin-dashboard-header__title">{{ 
+        role === 'owner' || role === 'admin' ? 
+        'NetPoint Admin Dashboard' : 'NetPoint Catalog'}}
+      </h1>
       @if (companyInfo.isLoading()) {
         <div class="skeleton skeleton--subtitle"></div>
       } @else if (companyInfo.error()) {
