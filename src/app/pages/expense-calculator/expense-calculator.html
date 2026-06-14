@@ -3,9 +3,18 @@
     <main class="expense-calculator">
             <!-- <p>Hello world</p> -->
         <section class="expense-calculator__products">
-            <app-expense-calculator-product-list></app-expense-calculator-product-list>
+            <app-expense-calculator-product-list
+                #productList
+                (productToAdd)="handleCartAddition($event)"
+            >
+            </app-expense-calculator-product-list>
         </section>
 
-        <app-expense-calculator-sidebar></app-expense-calculator-sidebar>
+        <app-expense-calculator-sidebar
+            [cartItems]="cart()"
+            (increaseQuantity)="increaseCartItemQuantity($event, productList.decreaseProductStock($event))"
+            (decreaseQuantity)="decreaseCartItemQuantity($event); productList.increaseProductStock($event)"
+            (removeItem)="productList.increaseProductStock($event, getCartItemQuantity($event)); removeCartItem($event)"
+        ></app-expense-calculator-sidebar>
     </main>
 </section>

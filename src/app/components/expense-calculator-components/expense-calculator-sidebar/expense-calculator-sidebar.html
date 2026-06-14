@@ -1,30 +1,95 @@
 <aside class="sale-sidebar" aria-label="Current sale">
-  <header class="sale-sidebar__header">
-    <h2>Current Sale</h2>
-  </header>
+  <div class="sale-sidebar__top">
+    <header class="sale-sidebar__header">
+      <h2>Current Sale</h2>
+    </header>
 
-  <div class="sale-sidebar__cart" role="status" aria-live="polite">
-    No items in cart
+    <div class="sale-sidebar__cart" role="status" aria-live="polite">
+      @if (cartItems()?.length === 0) {
+        <p class="sale-sidebar__empty">No items in cart</p>
+      } @else {
+        @for (cartItem of cartItems(); track cartItem.id) {
+          <article class="sale-sidebar__cart-item">
+            <div class="sale-sidebar__item-details">
+              <div class="sale-sidebar__item-details--text">
+                <h3>{{ cartItem.name }}</h3>
+                <p>${{ cartItem.retailPrice }} each</p>
+              </div>
+              <button
+                type="button"
+                class="sale-sidebar__remove-item"
+                [attr.aria-label]="'Remove ' + cartItem.name"
+                [disabled]="isCheckingOut()"
+                (click)="removeItem.emit(cartItem.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-trash2 lucide-trash-2 h-4 w-4">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  <line x1="10" x2="10" y1="11" y2="17"></line>
+                  <line x1="14" x2="14" y1="11" y2="17"></line>
+                </svg>
+              </button>
+            </div>
+
+            <div class="sale-sidebar__quantity-controls" aria-label="Quantity controls">
+              <div class="sale-sidebar__quantity-controls--btns">
+                <button
+                  type="button"
+                  class="sale-sidebar__quantity-button"
+                  [attr.aria-label]="'Decrease quantity for ' + cartItem.name"
+                  [disabled]="isCheckingOut()"
+                  (click)="decreaseQuantity.emit(cartItem.id)"
+                >
+                  -
+                </button>
+                <span>{{ cartItem.quantity ?? 1 }}</span>
+                <button
+                  type="button"
+                  class="sale-sidebar__quantity-button"
+                  [attr.aria-label]="'Increase quantity for ' + cartItem.name"
+                  [disabled]="isCheckingOut() || cartItem.stock === 0"
+                  (click)="increaseQuantity.emit(cartItem.id)"
+                >
+                  +
+                </button>
+              </div>
+              <strong class="sale-sidebar__item-total">
+                ${{ cartItem.retailPrice * (cartItem.quantity ?? 1) }}
+              </strong>
+            </div>
+            @if (cartItem.stock === 0) {
+              <p class="sale-sidebar__stock-note">No more stock available</p>
+            }
+          </article>
+        }
+      }
+    </div>
   </div>
 
   <div class="sale-sidebar__summary">
-    <label class="sale-sidebar__discount">
+    <!-- <label class="sale-sidebar__discount">
       <span class="visually-hidden">Discount percent</span>
       <input type="number" min="0" max="100" placeholder="Discount %">
       <button type="button" aria-label="Apply discount percent">%</button>
-    </label>
+    </label> -->
 
-    <div class="sale-sidebar__line">
+    <!-- <div class="sale-sidebar__line">
       <span>Subtotal</span>
       <strong>$0.00</strong>
-    </div>
+    </div> -->
 
     <div class="sale-sidebar__total">
       <span>Total</span>
-      <strong>$0.00</strong>
+      <strong>${{ total() }}</strong>
     </div>
 
-    <div class="sale-sidebar__actions">
+    @if (checkoutError()) {
+      <p class="sale-sidebar__error" aria-live="assertive">{{ checkoutError() }}</p>
+    }
+
+    <!-- <div class="sale-sidebar__actions">
       <button type="button" class="sale-sidebar__action">
         <span class="sale-sidebar__hold-icon" aria-hidden="true"></span>
         Hold
@@ -33,8 +98,18 @@
         <span class="sale-sidebar__print-icon" aria-hidden="true"></span>
         Print
       </button>
-    </div>
+    </div> -->
 
-    <button type="button" class="sale-sidebar__complete">Complete Sale</button>
+    <button
+      type="button"
+      class="sale-sidebar__complete"
+      [disabled]="isCheckoutDisabled()"
+      (click)="checkout()"
+    >
+      @if (isCheckingOut()) {
+        <span class="sale-sidebar__spinner" aria-hidden="true"></span>
+      }
+      <span>{{ isCheckingOut() ? 'Completing...' : 'Complete Sale' }}</span>
+    </button>
   </div>
 </aside>

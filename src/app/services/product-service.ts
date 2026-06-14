@@ -38,6 +38,7 @@ export interface ProductDTO {
   marginPercent: number;
   profitability: number;
   imageUrl?: string;
+  quantity?: number
 }
 
 @Injectable({

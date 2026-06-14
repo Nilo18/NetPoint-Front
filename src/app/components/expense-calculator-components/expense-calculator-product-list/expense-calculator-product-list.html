@@ -9,26 +9,71 @@
   </div>
 
   <div class="expense-products__grid">
-    @for (product of products; track product.name) {
-      <article class="expense-products__card" tabindex="0">
-        <div class="expense-products__image" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-          fill="none"stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-dollar-sign h-12 w-12 text-gray-400 group-hover:text-[#4F46E5] transition-colors">
-            <line x1="12" x2="12" y1="2" y2="22"></line>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+    @if (products.isLoading()) {
+      @for (card of loadingCards; track card) {
+        <article class="expense-products__card expense-products__card--loading" aria-hidden="true">
+          <div class="expense-products__image">
+            <span class="expense-products__skeleton expense-products__skeleton--icon"></span>
+          </div>
+
+          <div class="expense-products__details">
+            <span class="expense-products__skeleton expense-products__skeleton--name"></span>
+            <div class="expense-products__meta">
+              <span class="expense-products__skeleton expense-products__skeleton--price"></span>
+              <span class="expense-products__skeleton expense-products__skeleton--stock"></span>
+            </div>
+          </div>
+          <span class="expense-products__skeleton expense-products__skeleton--button"></span>
+        </article>
+      }
+    } @else if (productLoadError()) {
+      <section class="expense-products__state expense-products__state--error" aria-live="assertive">
+        <div class="expense-products__state-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" x2="12" y1="8" y2="12"></line>
+            <line x1="12" x2="12.01" y1="16" y2="16"></line>
           </svg>
         </div>
-
-        <div class="expense-products__details">
-          <h3 class="expense-products__name">{{ product.name }}</h3>
-          <div class="expense-products__meta">
-            <p class="expense-products__price">{{ product.price }}</p>
-            <p class="expense-products__stock">Stock: {{ product.stock }}</p>
+        <h3>Unable to load products</h3>
+        <p>{{ productLoadError() }}</p>
+        <button type="button" (click)="products.reload()">Retry</button>
+      </section>
+    } @else {
+      @for (product of productItems(); track product.id) {
+        <article class="expense-products__card" tabindex="0">
+          <div class="expense-products__image" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none"stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-dollar-sign h-12 w-12 text-gray-400 group-hover:text-[#4F46E5] transition-colors">
+              <line x1="12" x2="12" y1="2" y2="22"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
           </div>
-        </div>
-      </article>
+
+          <div class="expense-products__details">
+            <h3 class="expense-products__name">{{ product.name }}</h3>
+            <div class="expense-products__meta">
+              <p class="expense-products__price">${{ product.retailPrice }}</p>
+              <p class="expense-products__stock">Stock: {{ product.stock }}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            [disabled]="product.stock === 0"
+            (click)="addProductToCart(product)"
+          >
+            {{ product.stock === 0 ? 'Out of Stock' : 'Add To Cart' }}
+          </button>
+        </article>
+      } @empty {
+        <section class="expense-products__state">
+          <h3>No products available</h3>
+          <p>Add products to inventory before starting a sale.</p>
+        </section>
+      }
     }
   </div>
 </section>
