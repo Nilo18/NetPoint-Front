@@ -28,18 +28,24 @@ export class AdminDashboardAddProductModal {
 
   constructor() {
     effect(() => {
-      if (this.productToEdit) return
+      // if (this.productToEdit) return
       const attrs = this.customAttributes.value()
       if (!attrs) return
-      
+
       attrs.forEach(attr => {
         if (this.productForm.contains(attr.attributeName)) return
 
+        const savedValue = this.productToEdit?.customAttributes?.[attr.attributeName]
+        const defaultValue = attr.attributeType.trim().toLowerCase() === 'boolean' ? true : ''
+
         this.productForm.addControl(
           attr.attributeName,
-          this.formBuilder.nonNullable.control(attr.attributeType.trim().toLowerCase() === 'boolean' ? true : '',
-          Validators.required)
+          this.formBuilder.nonNullable.control(savedValue ?? defaultValue, Validators.required)
         )
+
+        if (this.productToEdit && !this.initialFormValue) {
+          this.initialFormValue = this.productForm.getRawValue();
+        }
       })
     })
   }
@@ -55,24 +61,6 @@ export class AdminDashboardAddProductModal {
       wholesalePrice: this.productToEdit.wholesalePrice,
       stock: this.productToEdit.stock,
     });
-
-    const attrs = this.productToEdit.customAttributes
-
-    if (attrs) {
-      Object.entries(attrs).forEach(([key, value]) => {
-        if (this.productForm.contains(key)) {
-          this.productForm.get(key)?.setValue(value)
-          return
-        }
-
-        this.productForm.addControl(
-          key,
-          this.formBuilder.nonNullable.control(value, Validators.required)
-        )
-      })
-    }
-
-    this.initialFormValue = this.productForm.getRawValue()
   }
 
   readonly productForm = this.formBuilder.nonNullable.group<{[key: string]: AbstractControl}>({
@@ -115,6 +103,7 @@ export class AdminDashboardAddProductModal {
 
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
+      console.log('Invalid form.')
       return;
     }
 
