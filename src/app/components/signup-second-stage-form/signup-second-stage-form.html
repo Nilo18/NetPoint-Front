@@ -17,14 +17,14 @@
         formControlName="owner_password">
         <p class="error">{{ getPasswordError('owner_password', signupFormStageTwo) }}</p>
     </div>
-    <div class="form__field-container">
+    <!-- <div class="form__field-container">
         <label for="phone_number">Your Phone Number</label>
         <input type="tel" class="form-control"
         formControlName="phone_number"
         placeholder="+1 555 555 5555" 
         autocomplete="tel" >
         <p class="error">{{ getPhoneNumberError('phone_number', signupFormStageTwo) }}</p>
-    </div>
+    </div> -->
     <div class="form__buttons">
         <!-- @if (showNextStep) { -->
         <button class="form__prevbtn btn" (click)="onBack()"

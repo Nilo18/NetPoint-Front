@@ -25,7 +25,7 @@ export class SignupSecondStageForm {
       owner_name: ['', [Validators.required]],
       owner_email: ['', [Validators.required, Validators.email]],
       owner_password: ['', [Validators.required, Validators.minLength(8)]],
-      phone_number: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      // phone_number: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       role: ['OWNER']
     })
 
