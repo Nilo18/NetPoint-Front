@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
 import { ProductDTO, ProductService } from '../../../services/product-service';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
+import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
 
 type Profitability = 'High' | 'Medium';
 
@@ -18,7 +19,7 @@ interface InventoryProduct {
 
 @Component({
   selector: 'app-admin-dashboard-inventory-management',
-  imports: [],
+  imports: [ProductPagination],
   templateUrl: './admin-dashboard-inventory-management.html',
   styleUrl: './admin-dashboard-inventory-management.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
