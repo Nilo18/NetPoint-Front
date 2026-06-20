@@ -90,6 +90,18 @@
       </button>
     </div> -->
 
-    <button type="button" class="sale-sidebar__complete" (click)="checkout()">Complete Sale</button>
+    <button
+      type="button"
+      class="sale-sidebar__complete"
+      [disabled]="isCheckoutDisabled()"
+      [attr.aria-busy]="isCheckingOut()"
+      (click)="checkout()">
+      @if (isCheckingOut()) {
+        <span class="sale-sidebar__spinner" aria-hidden="true"></span>
+        Processing sale…
+      } @else {
+        Complete Sale
+      }
+    </button>
   </div>
 </aside>
