@@ -58,7 +58,7 @@
             </tr>
           }
         } @else {
-          @for (product of products.value(); track product.name) {
+          @for (product of products.value()?.items; track product.name) {
           <tr>
             <th scope="row">{{ product.name }}</th>
             <td>

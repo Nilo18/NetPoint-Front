@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, output, resource, signal } from '@angular/core';
-import { ProductDTO, ProductService } from '../../../services/product-service';
+import { ProductDTO, ProductPageResponse, ProductService } from '../../../services/product-service';
 
 @Component({
   selector: 'app-expense-calculator-product-list',
@@ -12,10 +12,10 @@ import { ProductDTO, ProductService } from '../../../services/product-service';
 export class ExpenseCalculatorProductList {
   private productService = inject(ProductService)
   productItems = signal<ProductDTO[]>([]);
-  products = resource<ProductDTO[], unknown>({
+  products = resource<ProductPageResponse, unknown>({
     loader: async () => {
       const products = await this.productService.getAllProducts();
-      this.productItems.set(products);
+      this.productItems.set(products.items);
       return products;
     }
   })

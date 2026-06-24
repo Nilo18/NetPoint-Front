@@ -41,6 +41,14 @@ export interface ProductDTO {
   quantity?: number
 }
 
+export interface ProductPageResponse {
+  items: ProductDTO[],
+  page: number,
+  size: number,
+  totalPages: number,
+  currentPage: number
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -115,7 +123,7 @@ export class ProductService {
 
   async getAllProducts() {
     try {
-      const res = await firstValueFrom(this.http.get<ProductDTO[]>(`${this.baseUrl}/api/products`));
+      const res = await firstValueFrom(this.http.get<ProductPageResponse>(`${this.baseUrl}/api/products`));
       console.log(res);
       return res;
     } catch (error) {

@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
-import { ProductDTO, ProductService } from '../../../services/product-service';
+import { ProductDTO, ProductPageResponse, ProductService } from '../../../services/product-service';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
 
@@ -25,7 +25,7 @@ interface InventoryProduct {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminDashboardInventoryManagement {
-  products = resource<ProductDTO[], unknown>({
+  products = resource<ProductPageResponse, unknown>({
     loader: () => this.productService.getAllProducts()
   })
   protected readonly deletingProductId = signal<number | null>(null);
@@ -83,7 +83,11 @@ export class AdminDashboardInventoryManagement {
       this.deletingProductId.set(productId);
       await this.productService.deleteProduct(productId)
 
-      this.products.update((products) => products?.filter(product => product.id !== productId));
+      const currentProducts = this.products.value();
+      if (currentProducts?.items) {
+        currentProducts.items = currentProducts.items.filter(product => product.id !== productId);
+      }
+      // this.products.update((products) => products?.filter(product => product.id !== productId));
     } catch (error) {
       const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
         centered: true
