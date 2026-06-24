@@ -1,17 +1,20 @@
 <section class="inventory-management" aria-labelledby="inventory-management-title">
   <header class="inventory-management__header">
-    <div>
-      <h2 id="inventory-management-title" class="inventory-management__title">Inventory Management</h2>
-      <p class="inventory-management__subtitle">Manage your product catalog and stock levels</p>
-    </div>
+    <div class="inventory-management__header--top">
+      <div>
+        <h2 id="inventory-management-title" class="inventory-management__title">Inventory Management</h2>
+        <p class="inventory-management__subtitle">Manage your product catalog and stock levels</p>
+      </div>
 
-    <button class="inventory-management__add-button btn" type="button" (click)="openProductAdditionModal()">
-      <svg class="inventory-management__add-icon" aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M12 5V19" />
-        <path d="M5 12H19" />
-      </svg>
-      <span>Add Product</span>
-    </button>
+      <button class="inventory-management__add-button btn" type="button" (click)="openProductAdditionModal()">
+        <svg class="inventory-management__add-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M12 5V19" />
+          <path d="M5 12H19" />
+        </svg>
+        <span>Add Product</span>
+      </button>
+    </div>
+    <app-admin-dashboard-search-bar></app-admin-dashboard-search-bar>
   </header>
 
   <div class="inventory-management__table-wrap table-responsive">
