@@ -6,6 +6,8 @@ import { ProductDTO, ProductPageResponse, ProductService } from '../../../servic
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
 import { AdminDashboardSearchBar } from '../admin-dashboard-search-bar/admin-dashboard-search-bar';
+import { AdminDashboardSorting } from '../admin-dashboard-sorting/admin-dashboard-sorting';
+import { AdminDashboardFiltering } from '../admin-dashboard-filtering/admin-dashboard-filtering';
 
 type Profitability = 'High' | 'Medium';
 
@@ -20,7 +22,7 @@ interface InventoryProduct {
 
 @Component({
   selector: 'app-admin-dashboard-inventory-management',
-  imports: [ProductPagination, AdminDashboardSearchBar],
+  imports: [ProductPagination, AdminDashboardSearchBar, AdminDashboardSorting, AdminDashboardFiltering],
   templateUrl: './admin-dashboard-inventory-management.html',
   styleUrl: './admin-dashboard-inventory-management.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

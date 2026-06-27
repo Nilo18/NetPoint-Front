@@ -46,6 +46,15 @@
     line-height: 1.25;
   }
 
+  &__filters {
+    display: flex;
+    gap: 1rem;
+    
+    app-admin-dashboard-sorting, app-admin-dashboard-filtering {
+      width: 50%;
+    }
+  }
+
   &__add-button {
     display: inline-flex;
     align-items: center;

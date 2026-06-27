@@ -1,0 +1,13 @@
+.dashboard-sorting {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+
+    &__sort-by, &__sort-direction {
+        // display: flex;
+        width: 100%;
+        label {
+            font-size: 14px;
+        }
+    }
+}
