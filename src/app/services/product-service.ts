@@ -49,6 +49,17 @@ export interface ProductPageResponse {
   currentPage: number
 }
 
+export interface ProductQuery {
+  page: number;
+  size: number;
+  search: string;
+  sortBy: string;
+  sortDirection: string;
+  filterBy: string;
+  filterFrom: string;
+  filterTo: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -56,6 +67,16 @@ export class ProductService {
   private urlHolderService = inject(BackendUrlHolderService);
   private http = inject(HttpClient);
   private baseUrl = this.urlHolderService.getBaseUrl();
+  private query: ProductQuery = {
+    page: 0,
+    size: 10,
+    search: '',
+    sortBy: '',
+    sortDirection: '',
+    filterBy: '',
+    filterFrom: '',
+    filterTo: ''
+  };
 
   async addProductAttribute(productAttribute: ProductAttribute) {
     try {
@@ -121,9 +142,97 @@ export class ProductService {
     }
   }
 
+  searchProducts(search: string) {
+    this.query = {
+      ...this.query,
+      search: search
+    }
+
+    return this.getAllProducts()
+  }
+
+  filterProducts(filterBy: string, filterFrom: string | number | null, filterTo: string | number | null) {
+    const from = this.normalizeFilterValue(filterFrom);
+    const to = this.normalizeFilterValue(filterTo);
+
+    const hasRange = from !== '' && to !== '';
+
+    this.query = hasRange
+      ? {
+          ...this.query,
+          filterBy,
+          filterFrom: from,
+          filterTo: to,
+          page: 0,
+        }
+      : {
+          ...this.query,
+          filterBy: '',
+          filterFrom: '',
+          filterTo: '',
+          page: 0,
+        };
+
+    return this.getAllProducts();
+  }
+
+  private normalizeFilterValue(value: string | number | null): string {
+    if (value === null) {
+      return '';
+    }
+
+    return String(value).trim();
+  }
+
+  sortProducts(sortBy: string, sortDirection: string) {
+    this.query = {
+      ...this.query,
+      sortBy: sortBy,
+      sortDirection: sortDirection,
+      page: 0
+    }
+
+    return this.getAllProducts()
+  }
+
+  private buildParams(query: ProductQuery): Record<string, string | number> {
+    const params: Record<string, string | number> = {
+      page: query.page,
+      size: query.size
+    };
+
+    if (query.search) {
+      params['search'] = query.search;
+    }
+
+    if (query.sortBy) {
+      params['sortBy'] = query.sortBy;
+    }
+
+    if (query.sortDirection) {
+      params['sortDirection'] = query.sortDirection;
+    }
+
+    if (query.filterBy) {
+      params['filterBy'] = query.filterBy;
+    }
+
+    if (query.filterFrom) {
+      params['filterFrom'] = query.filterFrom;
+    }
+
+    if (query.filterTo) {
+      params['filterTo'] = query.filterTo;
+    }
+
+    return params;
+  }
+
   async getAllProducts() {
     try {
-      const res = await firstValueFrom(this.http.get<ProductPageResponse>(`${this.baseUrl}/api/products`));
+      const res = await firstValueFrom(this.http.get<ProductPageResponse>(`${this.baseUrl}/api/products`, {
+        params: this.buildParams(this.query)
+      }));
       console.log(res);
       return res;
     } catch (error) {

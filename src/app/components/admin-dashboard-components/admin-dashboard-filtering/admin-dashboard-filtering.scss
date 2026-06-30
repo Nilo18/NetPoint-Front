@@ -1,5 +1,15 @@
 .dashboard-filtering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+
     label {
         font-size: 14px;
+    }
+
+    &__filter-by, &__from, &__to {
+        width: 100%;
     }
 }

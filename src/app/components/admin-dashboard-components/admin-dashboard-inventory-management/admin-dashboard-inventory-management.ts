@@ -39,6 +39,10 @@ export class AdminDashboardInventoryManagement {
     console.log(this.products.value())
   }
 
+  handleProductsTransformation(newProducts: ProductPageResponse) {
+    this.products.set(newProducts)
+  }
+
   openProductAdditionModal() {
     return this.modalService.open(AdminDashboardAddProductModal, {
       centered: true
