@@ -195,6 +195,16 @@ export class ProductService {
     return this.getAllProducts()
   }
 
+  paginateProducts(page: number, size: number) {
+    this.query = {
+      ...this.query,
+      page: page,
+      size: size
+    }
+
+    return this.getAllProducts()
+  }
+
   private buildParams(query: ProductQuery): Record<string, string | number> {
     const params: Record<string, string | number> = {
       page: query.page,

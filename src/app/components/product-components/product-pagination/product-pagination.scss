@@ -1,0 +1,23 @@
+@use '../../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables' as *;
+
+.product-pagination {
+    @include FlexContainerColumn;
+
+    ul {
+        gap: 1px;
+
+        li {
+            cursor: pointer;
+
+            a {
+                color: $primary-color-hover;
+            }
+        }
+    }
+}
+
+.selected-page {
+    border: 1px solid $primary-color-hover;
+    border-color: $primary-color-hover !important;
+}

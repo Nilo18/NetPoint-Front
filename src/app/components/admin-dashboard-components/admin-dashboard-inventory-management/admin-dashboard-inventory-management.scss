@@ -5,6 +5,11 @@
   border-radius: 17px;
   background: #ffffff;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  gap: 39px;
 
   &__pagination {
     width: 100%;
@@ -19,7 +24,7 @@
     // align-items: flex-start;
     // justify-content: space-between;
     gap: 24px;
-    margin-bottom: 39px;
+    // margin-bottom: 39px;
 
     &--top {
       // width: 100%;
