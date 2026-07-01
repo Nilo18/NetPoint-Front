@@ -1,8 +1,9 @@
 <div class="dashboard-filtering">
     <div class="dashboard-filtering__filter-by">
         <label>Filter by</label>
-        <select class="form-select" [(ngModel)]="filterObj.filterBy">
+        <select class="form-select" (change)="onFilterByChange($event)">
             <option value="stock">Stock</option>
+            <option value="margin">Margin Percent</option>
             <option value="retailPrice">Retail Price</option>
             <option value="wholesalePrice">Wholesale Price</option>
             <option value="Profitability">Profitability</option>
@@ -10,11 +11,11 @@
     </div>
     <div class="dashboard-filtering__from">
         <label>From</label>
-        <input type="number" class="form-control" [(ngModel)]="filterObj.filterFrom" min="0" max="100000000">
+        <input type="number" class="form-control" (change)="onFilterFromChange($event)" min="0" max="100000000">
     </div>
     <div class="dashboard-filtering__to">
         <label>To</label>
-        <input type="number" class="form-control" [(ngModel)]="filterObj.filterTo" min="0" max="100000000">
+        <input type="number" class="form-control" (change)="onFilterToChange($event)" min="0" max="100000000">
     </div>
-    <button (click)="filter()">Filter</button>
+    <!-- <button (click)="filter()">Filter</button> -->
 </div>

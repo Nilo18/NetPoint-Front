@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, effect, inject, output, signal, untracked } from '@angular/core';
 import { ProductPageResponse, ProductService } from '../../../services/product-service';
 import { FormsModule } from '@angular/forms';
 
@@ -16,24 +16,99 @@ interface FilterObject {
 })
 export class AdminDashboardFiltering {
   private productService = inject(ProductService)
-  filterObj: FilterObject = {
+  oldFilterObj = signal<FilterObject>({
     filterBy: 'stock',
     filterFrom: '',
     filterTo: ''
-  }
+  })
+  filterObj = signal<FilterObject>({
+    filterBy: 'stock',
+    filterFrom: '',
+    filterTo: ''
+  })
   productsWereFiltered = output<ProductPageResponse>()
 
-  async filter() {
+  onFilterByChange(event: Event) {
+    const filterBy = (event.target as HTMLSelectElement).value
+
+    this.filterObj.update((current) => ({
+      ...current,
+      filterBy
+    }))
+    console.log(this.filterObj())
+  }
+
+  onFilterFromChange(event: Event) {
+    const filterFrom = (event.target as HTMLInputElement).value
+
+    this.filterObj.update((current) => ({
+      ...current,
+      filterFrom
+    }))
+    console.log(this.filterObj())
+  }
+
+  onFilterToChange(event: Event) {
+    const filterTo = (event.target as HTMLInputElement).value
+
+    this.filterObj.update((current) => ({
+      ...current,
+      filterTo
+    }))
+    console.log(this.filterObj())
+  }
+
+  constructor() {
+    effect(() => {
+      const filterObj = this.filterObj()
+      const oldFilterObj = untracked(this.oldFilterObj)
+      const onlyFilterFromChanged = 
+        filterObj.filterFrom !== '' && filterObj.filterTo === ''
+      const onlyFilterToChanged =
+        filterObj.filterTo !== '' && filterObj.filterFrom === ''
+
+      if (onlyFilterFromChanged || onlyFilterToChanged) {
+        console.log('Only one part of the range has changed, avoiding request')
+        return
+      }
+
+      const onlyFilterByChanged = 
+        filterObj.filterBy !== oldFilterObj.filterBy &&
+        !filterObj.filterFrom &&
+        !filterObj.filterTo;
+
+      const stockFilterIsIncomplete =
+        filterObj.filterBy === 'stock' &&
+        !filterObj.filterTo;
+
+      const fromAndToHadValuesAndWereReset = 
+        oldFilterObj.filterFrom !== '' && 
+        oldFilterObj.filterTo !== '' &&
+        filterObj.filterFrom === '' &&
+        filterObj.filterTo === ''
+
+      if ((onlyFilterByChanged || stockFilterIsIncomplete) && !fromAndToHadValuesAndWereReset) {
+        console.log('Filter is incomplete, avoiding request.');
+        return;
+      }
+
+      this.oldFilterObj.set({ ...filterObj });
+
+      this.filter(filterObj)
+    })
+  }
+
+  async filter(filterObj: FilterObject) {
     console.log("Sending: ", this.filterObj)
-    if (this.filterObj.filterBy === '') {
+    if (filterObj.filterBy === '') {
       console.log('Filter attributes are incomplete.')
       return
     }
 
     const res = await this.productService.filterProducts(
-      this.filterObj.filterBy,
-      this.filterObj.filterFrom,
-      this.filterObj.filterTo
+      filterObj.filterBy,
+      filterObj.filterFrom,
+      filterObj.filterTo
     )
     
     if (!res) {

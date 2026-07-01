@@ -17,8 +17,8 @@ export class AdminDashboardSorting {
   private productService = inject(ProductService)
   productsWereSorted = output<ProductPageResponse>()
   sortObj = signal<SortObject>({
-    sortBy: 'sort',
-    sortDirection: 'asc'
+    sortBy: 'stock',
+    sortDirection: 'desc'
   })
 
   constructor() {
