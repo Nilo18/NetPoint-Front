@@ -16,7 +16,8 @@
     </div>
     <app-admin-dashboard-search-bar></app-admin-dashboard-search-bar>
     <div class="inventory-management__filters">
-      <app-admin-dashboard-sorting></app-admin-dashboard-sorting>
+      <app-admin-dashboard-sorting (productsWereSorted)="handleProductsTransformation($event)">
+      </app-admin-dashboard-sorting>
       <app-admin-dashboard-filtering (productsWereFiltered)="handleProductsTransformation($event)">
       </app-admin-dashboard-filtering>
     </div>
