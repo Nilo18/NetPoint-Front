@@ -132,6 +132,9 @@
     </table>
   </div>
   <div class="inventory-management__pagination">
-    <app-product-pagination></app-product-pagination>
+    <app-product-pagination (productPaginated)="handleProductsTransformation($event)"
+    [newTotalPageAmount]="products.value()?.totalPages"
+    [newCurrentPage]="products.value()?.currentPage">
+    </app-product-pagination>
   </div>
 </section>

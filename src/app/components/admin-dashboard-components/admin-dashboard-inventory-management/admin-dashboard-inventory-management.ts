@@ -34,12 +34,17 @@ export class AdminDashboardInventoryManagement {
   protected readonly deletingProductId = signal<number | null>(null);
   private modalService: NgbModal = inject(NgbModal);
   private productService: ProductService = inject(ProductService)
+  // pageAmountChanged = signal<boolean>(false)
 
   ngOnInit() {
     console.log(this.products.value())
   }
 
   handleProductsTransformation(newProducts: ProductPageResponse) {
+    // if (newProducts.totalPages !== this.products.value()?.totalPages) {
+    //   this.pageAmountChanged.set(true)
+    // }
+
     this.products.set(newProducts)
   }
 

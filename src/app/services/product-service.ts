@@ -198,7 +198,7 @@ export class ProductService {
   paginateProducts(page: number, size: number) {
     this.query = {
       ...this.query,
-      page: page,
+      page: page - 1,
       size: size
     }
 

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ProductService } from '../../../services/product-service';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ProductPageResponse, ProductService } from '../../../services/product-service';
 
 @Component({
   selector: 'app-product-pagination',
@@ -13,8 +13,34 @@ export class ProductPagination {
   // usersLoaded = output<User[]>()
   // backendError = output<string>()
   currentPage = signal(1)
-  totalPages = signal(1)
+  totalPages = signal<number>(1)
+  pageIsLoading = signal<boolean>(false)
+  productPaginated = output<ProductPageResponse>()
+  newTotalPageAmount = input<number | undefined>(undefined)
+  newCurrentPage = input<number | undefined>(undefined)
   basePageSize: number = 10
+
+  constructor() {
+    effect(() => {
+      const totalPageAmount = this.newTotalPageAmount()
+      const currentPage = this.newCurrentPage()
+
+      if (totalPageAmount && totalPageAmount !== this.totalPages()) {
+        this.totalPages.set(totalPageAmount)
+      }
+
+      if (currentPage !== undefined && currentPage + 1 !== this.currentPage()) {
+        this.currentPage.set(currentPage + 1)
+      }
+    })
+  }
+
+  async ngOnInit() {
+    if (!this.pageIsLoading()) {
+      const res = await this.loadPage(1)
+      console.log("LOADED PAGE: ", res)
+    }
+  }
 
   get pageArray(): number[] {
     return this.totalPages() <= 10 ?
@@ -26,27 +52,29 @@ export class ProductPagination {
     return this.pageArray.slice(0, 9)
   }
 
-    async onPageClick(page: number) {
+  async onPageClick(page: number) {
+    console.log('CHANGING TO PAGE: ', page)
     if (this.currentPage() === page || this.totalPages() === 1) {
       console.log('Already on the selected page.')
       return
     }
 
+    this.pageIsLoading.set(true)
     if (page <= 0) {
-      await this.loadPage(this.totalPages(), this.basePageSize)
+      await this.loadPage(this.totalPages())
       return
     }
 
     if (page > this.totalPages()) {
       console.log('The suggested page exceeds the total amount of pages.')
-      await this.loadPage(1, this.basePageSize)
+      await this.loadPage(1)
       return
     }
 
-    await this.loadPage(page, this.basePageSize)
+    await this.loadPage(page)
   }
 
-  private async loadPage(page: number, size: number) {
+  private async loadPage(page: number) {
     // this.settingsService.setIsLoading(true)
     console.log('clicked page:', page, typeof page)
 
@@ -60,10 +88,14 @@ export class ProductPagination {
 
       this.currentPage.set(res.currentPage + 1)
       this.totalPages.set(res.totalPages)
+      // console.log(this.totalPages())
+      this.productPaginated.emit(res)
       // this.usersLoaded.emit(res.userList)
       console.log('currentPage after:', this.currentPage(), typeof this.currentPage())
     } catch (error: any) {
       // this.backendError.emit(error.error.error)
+    } finally {
+      this.pageIsLoading.set(false)
     }
   }
 }
