@@ -184,24 +184,30 @@ export class ProductService {
     return String(value).trim();
   }
 
-  sortProducts(sortBy: string, sortDirection: string) {
+  modifyQueryForSorting(sortBy: string, sortDirection: string) {
     this.query = {
       ...this.query,
       sortBy: sortBy,
       sortDirection: sortDirection,
       page: 0
     }
+  }
 
+  sortProducts(sortBy: string, sortDirection: string) {
+    this.modifyQueryForSorting(sortBy, sortDirection)
     return this.getAllProducts()
   }
 
-  paginateProducts(page: number, size: number) {
+  modifyQueryForPagination(page: number, size: number) {
     this.query = {
       ...this.query,
       page: page - 1,
       size: size
     }
+  }
 
+  paginateProducts(page: number, size: number) {
+    this.modifyQueryForPagination(page, size)
     return this.getAllProducts()
   }
 

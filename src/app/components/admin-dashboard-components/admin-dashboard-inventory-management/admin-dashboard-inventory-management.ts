@@ -28,12 +28,18 @@ interface InventoryProduct {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminDashboardInventoryManagement {
+  private productService: ProductService = inject(ProductService)
   products = resource<ProductPageResponse, unknown>({
-    loader: () => this.productService.getAllProducts()
+    loader: () => {
+      this.productService.modifyQueryForPagination(1, 10)
+      this.productService.modifyQueryForSorting('stock', 'desc')
+      return this.productService.getAllProducts()
+    }
   })
+  protected readonly tableIsLoading = signal(false);
+  protected readonly backendError = signal<string | null>(null);
   protected readonly deletingProductId = signal<number | null>(null);
   private modalService: NgbModal = inject(NgbModal);
-  private productService: ProductService = inject(ProductService)
   // pageAmountChanged = signal<boolean>(false)
 
   ngOnInit() {
@@ -46,6 +52,20 @@ export class AdminDashboardInventoryManagement {
     // }
 
     this.products.set(newProducts)
+    this.backendError.set(null)
+    this.tableIsLoading.set(false)
+  }
+
+  handleProductsLoading(isLoading: boolean) {
+    this.tableIsLoading.set(isLoading)
+    if (isLoading) {
+      this.backendError.set(null)
+    }
+  }
+
+  handleProductsBackendError(message: string) {
+    this.backendError.set(message)
+    this.tableIsLoading.set(false)
   }
 
   openProductAdditionModal() {

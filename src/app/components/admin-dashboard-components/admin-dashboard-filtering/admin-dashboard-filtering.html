@@ -1,7 +1,7 @@
 <div class="dashboard-filtering">
     <div class="dashboard-filtering__filter-by">
         <label>Filter by</label>
-        <select class="form-select" (change)="onFilterByChange($event)">
+        <select class="form-select" (change)="onFilterByChange($event)" [disabled]="isLoading()">
             <option value="stock">Stock</option>
             <option value="margin">Margin Percent</option>
             <option value="retailPrice">Retail Price</option>
@@ -11,11 +11,11 @@
     </div>
     <div class="dashboard-filtering__from">
         <label>From</label>
-        <input type="number" class="form-control" (change)="onFilterFromChange($event)" min="0" max="100000000">
+        <input type="number" class="form-control" (change)="onFilterFromChange($event)" min="0" max="100000000" [disabled]="isLoading()">
     </div>
     <div class="dashboard-filtering__to">
         <label>To</label>
-        <input type="number" class="form-control" (change)="onFilterToChange($event)" min="0" max="100000000">
+        <input type="number" class="form-control" (change)="onFilterToChange($event)" min="0" max="100000000" [disabled]="isLoading()">
     </div>
     <!-- <button (click)="filter()">Filter</button> -->
 </div>

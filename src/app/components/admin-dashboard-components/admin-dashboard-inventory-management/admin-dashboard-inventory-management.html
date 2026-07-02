@@ -14,16 +14,29 @@
         <span>Add Product</span>
       </button>
     </div>
-    <app-admin-dashboard-search-bar (productWasSearched)="handleProductsTransformation($event)">
+    <app-admin-dashboard-search-bar
+      (productWasSearched)="handleProductsTransformation($event)"
+      (loadingChanged)="handleProductsLoading($event)"
+      (backendError)="handleProductsBackendError($event)">
     </app-admin-dashboard-search-bar>
     <div class="inventory-management__filters">
-      <app-admin-dashboard-sorting (productsWereSorted)="handleProductsTransformation($event)">
+      <app-admin-dashboard-sorting
+        (productsWereSorted)="handleProductsTransformation($event)"
+        (loadingChanged)="handleProductsLoading($event)"
+        (backendError)="handleProductsBackendError($event)">
       </app-admin-dashboard-sorting>
-      <app-admin-dashboard-filtering (productsWereFiltered)="handleProductsTransformation($event)">
+      <app-admin-dashboard-filtering
+        (productsWereFiltered)="handleProductsTransformation($event)"
+        (loadingChanged)="handleProductsLoading($event)"
+        (backendError)="handleProductsBackendError($event)">
       </app-admin-dashboard-filtering>
     </div>
 
   </header>
+
+  @if (backendError()) {
+    <p class="inventory-management__error" role="alert">{{ backendError() }}</p>
+  }
 
   <div class="inventory-management__table-wrap table-responsive">
     <table class="inventory-management__table table mb-0 align-middle">
@@ -39,7 +52,24 @@
         </tr>
       </thead>
       <tbody>
-        @if (products.isLoading()) {
+        @if (products.value()?.items?.length === 0) {
+          <tr>
+            <td colspan="7">
+              <div class="inventory-management__empty" role="status" aria-live="polite">
+                <svg class="inventory-management__empty-icon" aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                  <path d="M3.29 7 12 12l8.71-5" />
+                  <path d="M12 22V12" />
+                  <path d="M9 9.75 6.2 8.15" />
+                </svg>
+                <h3 class="inventory-management__empty-title">No products to display</h3>
+                <p class="inventory-management__empty-description">
+                  There are no products matching the current view. Adjust your search or filters, or add a new product to your inventory.
+                </p>
+              </div>
+            </td>
+          </tr>
+        } @else if (products.isLoading() || tableIsLoading()) {
           @for (_ of [1, 2, 3, 4]; track _) {
             <tr aria-hidden="true">
               <th scope="row">
@@ -132,9 +162,12 @@
     </table>
   </div>
   <div class="inventory-management__pagination">
-    <app-product-pagination (productPaginated)="handleProductsTransformation($event)"
-    [newTotalPageAmount]="products.value()?.totalPages"
-    [newCurrentPage]="products.value()?.currentPage">
+    <app-product-pagination
+      (productPaginated)="handleProductsTransformation($event)"
+      (loadingChanged)="handleProductsLoading($event)"
+      (backendError)="handleProductsBackendError($event)"
+      [newTotalPageAmount]="products.value()?.totalPages"
+      [newCurrentPage]="products.value()?.currentPage">
     </app-product-pagination>
   </div>
 </section>

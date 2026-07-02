@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { ProductPageResponse, ProductService } from '../../../services/product-service';
 
@@ -14,8 +15,11 @@ export class ProductPagination {
   // backendError = output<string>()
   currentPage = signal(1)
   totalPages = signal<number>(1)
+  requestSent = signal<boolean>(false)
   pageIsLoading = signal<boolean>(false)
   productPaginated = output<ProductPageResponse>()
+  loadingChanged = output<boolean>()
+  backendError = output<string>()
   newTotalPageAmount = input<number | undefined>(undefined)
   newCurrentPage = input<number | undefined>(undefined)
   basePageSize: number = 10
@@ -35,12 +39,12 @@ export class ProductPagination {
     })
   }
 
-  async ngOnInit() {
-    if (!this.pageIsLoading()) {
-      const res = await this.loadPage(1)
-      console.log("LOADED PAGE: ", res)
-    }
-  }
+  // async ngOnInit() {
+  //   if (!this.pageIsLoading()) {
+  //     const res = await this.loadPage(1)
+  //     console.log("LOADED PAGE: ", res)
+  //   }
+  // }
 
   get pageArray(): number[] {
     return this.totalPages() <= 10 ?
@@ -54,12 +58,15 @@ export class ProductPagination {
 
   async onPageClick(page: number) {
     console.log('CHANGING TO PAGE: ', page)
+    if (this.pageIsLoading() || this.requestSent()) {
+      return
+    }
+
     if (this.currentPage() === page || this.totalPages() === 1) {
       console.log('Already on the selected page.')
       return
     }
 
-    this.pageIsLoading.set(true)
     if (page <= 0) {
       await this.loadPage(this.totalPages())
       return
@@ -78,6 +85,15 @@ export class ProductPagination {
     // this.settingsService.setIsLoading(true)
     console.log('clicked page:', page, typeof page)
 
+    if (this.requestSent()) {
+      console.log('Page request is currently being processed, returning.')
+      return
+    }
+
+    this.requestSent.set(true)
+    this.pageIsLoading.set(true)
+    this.loadingChanged.emit(true)
+
     try {
       const res = await this.productService.paginateProducts(page, this.basePageSize)
 
@@ -92,10 +108,50 @@ export class ProductPagination {
       this.productPaginated.emit(res)
       // this.usersLoaded.emit(res.userList)
       console.log('currentPage after:', this.currentPage(), typeof this.currentPage())
-    } catch (error: any) {
-      // this.backendError.emit(error.error.error)
+    } catch (error: unknown) {
+      this.backendError.emit(this.getErrorMessage(error, 'We could not load this page. Please try again.'))
     } finally {
+      this.requestSent.set(false)
       this.pageIsLoading.set(false)
+      this.loadingChanged.emit(false)
     }
+  }
+
+  private getErrorMessage(error: unknown, fallbackMessage: string) {
+    if (error instanceof HttpErrorResponse) {
+      const backendMessage = this.extractBackendMessage(error.error)
+
+      return backendMessage || error.message || fallbackMessage
+    }
+
+    if (error instanceof Error) {
+      return error.message
+    }
+
+    return fallbackMessage
+  }
+
+  private extractBackendMessage(errorBody: unknown): string | null {
+    if (typeof errorBody === 'string') {
+      return errorBody
+    }
+
+    if (!errorBody || typeof errorBody !== 'object') {
+      return null
+    }
+
+    if ('message' in errorBody && typeof errorBody.message === 'string') {
+      return errorBody.message
+    }
+
+    if ('error' in errorBody && typeof errorBody.error === 'string') {
+      return errorBody.error
+    }
+
+    if ('title' in errorBody && typeof errorBody.title === 'string') {
+      return errorBody.title
+    }
+
+    return null
   }
 }

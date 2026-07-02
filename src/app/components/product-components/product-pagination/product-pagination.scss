@@ -4,6 +4,14 @@
 .product-pagination {
     @include FlexContainerColumn;
 
+    .pagination {
+        .page-item {
+            .page-link {
+                color: $primary-color;
+            }
+        }
+    }
+
     ul {
         gap: 1px;
 
