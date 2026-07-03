@@ -100,7 +100,7 @@
           }
         } @else {
           @for (product of products.value()?.items; track product.name) {
-          <tr>
+          <tr class="inventory-management__body-row">
             <th scope="row">{{ product.name }}</th>
             <td>
               <span class="inventory-management__stock" [class.inventory-management__stock--low]="product.stock < 50">
