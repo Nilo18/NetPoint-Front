@@ -6,7 +6,8 @@
 .expense-calculator {
   background: #f9fafb;
   width: 100%; /* Fixes 100vw overflow bugs */
-  min-height: calc(100vh - 72px); /* Fill screen minus your header height */
+  min-height: 100vh; /* Fill screen minus your header height */
+  // height: 100vh;
   
   /* 1. Change layout mode to Grid */
   display: grid;

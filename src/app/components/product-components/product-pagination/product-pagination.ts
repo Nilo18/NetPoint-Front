@@ -22,7 +22,7 @@ export class ProductPagination {
   backendError = output<string>()
   newTotalPageAmount = input<number | undefined>(undefined)
   newCurrentPage = input<number | undefined>(undefined)
-  basePageSize: number = 10
+  basePageSize = input<number>(10)
 
   constructor() {
     effect(() => {
@@ -95,7 +95,7 @@ export class ProductPagination {
     this.loadingChanged.emit(true)
 
     try {
-      const res = await this.productService.paginateProducts(page, this.basePageSize)
+      const res = await this.productService.paginateProducts(page, this.basePageSize())
 
       if (!res) {
         // this.settingsService.setIsLoading(false)

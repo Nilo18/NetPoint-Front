@@ -63,6 +63,18 @@ body {
     // overflow-wrap: break-word;
 }
 
+.empty-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 4px;
+    color: #64748b;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
 .loading {
     margin-top: 5px;
     // color: red;

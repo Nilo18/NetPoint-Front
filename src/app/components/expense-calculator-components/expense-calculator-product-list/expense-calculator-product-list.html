@@ -1,15 +1,30 @@
 <section class="expense-products" aria-label="Product list">
-  <div class="expense-products__search">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+  <div class="expense-products__transformations">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
     class="lucide lucide-search absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400">
       <circle cx="11" cy="11" r="8"></circle>
       <path d="m21 21-4.3-4.3"></path></svg>
-    <input type="search" placeholder="Search products..." aria-label="Search products">
+    <input type="search" placeholder="Search products..." aria-label="Search products"> -->
+    <app-admin-dashboard-search-bar
+      (productWasSearched)="handleProductsTransformation($event)"
+      (loadingChanged)="handleProductsLoading($event)"
+      (backendError)="handleProductsBackendError($event)">
+    </app-admin-dashboard-search-bar>
+    <app-admin-dashboard-sorting
+      (productsWereSorted)="handleProductsTransformation($event)"
+      (loadingChanged)="handleProductsLoading($event)"
+      (backendError)="handleProductsBackendError($event)">>
+    </app-admin-dashboard-sorting>
+    <app-admin-dashboard-filtering
+      (productsWereFiltered)="handleProductsTransformation($event)"
+      (loadingChanged)="handleProductsLoading($event)"
+      (backendError)="handleProductsBackendError($event)">>
+    </app-admin-dashboard-filtering>
   </div>
 
   <div class="expense-products__grid">
-    @if (products.isLoading()) {
+    @if (products.isLoading() || tableIsLoading()) {
       @for (card of loadingCards; track card) {
         <article class="expense-products__card expense-products__card--loading" aria-hidden="true">
           <div class="expense-products__image">
@@ -41,7 +56,7 @@
         <button type="button" (click)="products.reload()">Retry</button>
       </section>
     } @else {
-      @for (product of productItems(); track product.id) {
+      @for (product of products.value()?.items; track product.id) {
         <article class="expense-products__card" tabindex="0">
           <div class="expense-products__image" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -70,10 +85,25 @@
         </article>
       } @empty {
         <section class="expense-products__state">
-          <h3>No products available</h3>
-          <p>Add products to inventory before starting a sale.</p>
+          <svg class="empty-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2
+             2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="M3.29 7 12 12l8.71-5" />
+            <path d="M12 22V12" />
+            <path d="M9 9.75 6.2 8.15" />
+          </svg>
+          <h3>No products to display</h3>
+          <p>There are no products matching the current view. Adjust your search or filters, or add a new product to your inventory.</p>
         </section>
       }
     }
   </div>
 </section>
+<app-product-pagination
+    (productPaginated)="handleProductsTransformation($event)"
+    (loadingChanged)="handleProductsLoading($event)"
+    (backendError)="handleProductsBackendError($event)"
+    [newTotalPageAmount]="products.value()?.totalPages"
+    [newCurrentPage]="products.value()?.currentPage"
+    [basePageSize]="8">
+</app-product-pagination>

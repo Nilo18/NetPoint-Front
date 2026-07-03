@@ -5,6 +5,7 @@ import { TokenService } from '../../services/token-service';
 import { ExpenseCalculatorProductList } from '../../components/expense-calculator-components/expense-calculator-product-list/expense-calculator-product-list';
 import { ExpenseCalculatorSidebar } from '../../components/expense-calculator-components/expense-calculator-sidebar/expense-calculator-sidebar';
 import { ProductDTO } from '../../services/product-service';
+import { AdminDashboardSearchBar } from '../../components/admin-dashboard-components/admin-dashboard-search-bar/admin-dashboard-search-bar';
 
 @Component({
   selector: 'app-expense-calculator',
