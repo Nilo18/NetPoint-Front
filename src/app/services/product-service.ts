@@ -241,6 +241,7 @@ export class ProductService {
       params['filterTo'] = query.filterTo;
     }
 
+    console.log(params)
     return params;
   }
 

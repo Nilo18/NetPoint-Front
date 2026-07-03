@@ -303,6 +303,20 @@
     animation: inventory-management-spin 0.75s linear infinite;
   }
 
+  &__skeleton-row {
+    text-align: center;
+
+    th,
+    td {
+      text-align: center;
+    }
+
+    .skeleton {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
   &__skeleton-name {
     width: 160px;
     max-width: 100%;
