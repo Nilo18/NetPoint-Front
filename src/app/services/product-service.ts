@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 
@@ -60,6 +60,23 @@ export interface ProductQuery {
   filterTo: string;
 }
 
+export interface ProductStatsQuery {
+  search: string;
+  filterBy: string;
+  filterFrom: string;
+  filterTo: string;
+}
+
+export interface ProductStats {
+  totalRevenue: number,
+  increaseFromLastMonth: number,
+  netProfit: number,
+  margin: number,
+  topSellingItem: string,
+  unitsSold: number,
+  lowStockItemCount: number
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -67,16 +84,18 @@ export class ProductService {
   private urlHolderService = inject(BackendUrlHolderService);
   private http = inject(HttpClient);
   private baseUrl = this.urlHolderService.getBaseUrl();
-  private query: ProductQuery = {
+  private query = signal<ProductQuery>({
     page: 0,
     size: 10,
     search: '',
-    sortBy: '',
-    sortDirection: '',
+    sortBy: 'stock',
+    sortDirection: 'desc',
     filterBy: '',
     filterFrom: '',
     filterTo: ''
-  };
+  });
+
+  getQuery() { return this.query }
 
   async addProductAttribute(productAttribute: ProductAttribute) {
     try {
@@ -143,10 +162,10 @@ export class ProductService {
   }
 
   searchProducts(search: string) {
-    this.query = {
-      ...this.query,
+    this.query.update(query => ({
+      ...query,
       search: search
-    }
+    }))
 
     return this.getAllProducts()
   }
@@ -157,21 +176,21 @@ export class ProductService {
 
     const hasRange = from !== '' && to !== '';
 
-    this.query = hasRange
+    this.query.update(query => hasRange
       ? {
-          ...this.query,
+          ...query,
           filterBy,
           filterFrom: from,
           filterTo: to,
           page: 0,
         }
       : {
-          ...this.query,
+          ...query,
           filterBy: '',
           filterFrom: '',
           filterTo: '',
           page: 0,
-        };
+        });
 
     return this.getAllProducts();
   }
@@ -185,12 +204,12 @@ export class ProductService {
   }
 
   modifyQueryForSorting(sortBy: string, sortDirection: string) {
-    this.query = {
-      ...this.query,
+    this.query.update(query => ({
+      ...query,
       sortBy: sortBy,
       sortDirection: sortDirection,
       page: 0
-    }
+    }))
   }
 
   sortProducts(sortBy: string, sortDirection: string) {
@@ -199,11 +218,11 @@ export class ProductService {
   }
 
   modifyQueryForPagination(page: number, size: number) {
-    this.query = {
-      ...this.query,
+    this.query.update(query => ({
+      ...query,
       page: page - 1,
       size: size
-    }
+    }))
   }
 
   paginateProducts(page: number, size: number) {
@@ -248,13 +267,31 @@ export class ProductService {
   async getAllProducts() {
     try {
       const res = await firstValueFrom(this.http.get<ProductPageResponse>(`${this.baseUrl}/api/products`, {
-        params: this.buildParams(this.query)
+        params: this.buildParams(this.query())
       }));
       console.log(res);
       return res;
     } catch (error) {
       console.log("Couldn't get products: ", error);
       throw error;
+    }
+  }
+
+  async getProductStats(statsQuery: ProductStatsQuery) {
+    try {
+      let httpParams = new HttpParams()
+      .set('search', statsQuery.search)
+      .set('filterBy', statsQuery.filterBy)
+      .set('filterFrom', statsQuery.filterFrom)
+      .set('filterTo', statsQuery.filterTo);
+      const res = await firstValueFrom(this.http.get<ProductStats>(`${this.baseUrl}/api/products/stats`, {
+        params: httpParams
+      }))
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get product stats: ", error)
+      throw error
     }
   }
 

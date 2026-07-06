@@ -1,5 +1,20 @@
 <section class="dashboard-stats" aria-label="Admin dashboard statistics">
-  @for (stat of stats(); track stat.title) {
+  @if (backendError()) {
+    <p class="dashboard-stats__error" role="alert">{{ backendError() }}</p>
+  } @else if (productStats.isLoading()) {
+    @for (_ of [1, 2, 3, 4]; track _) {
+      <article class="dashboard-stats__card dashboard-stats__card--loading" aria-hidden="true">
+        <div class="dashboard-stats__header">
+          <span class="skeleton skeleton--line dashboard-stats__skeleton-title"></span>
+          <span class="skeleton skeleton--badge dashboard-stats__skeleton-icon"></span>
+        </div>
+
+        <span class="skeleton skeleton--line dashboard-stats__skeleton-value"></span>
+        <span class="skeleton skeleton--line dashboard-stats__skeleton-detail"></span>
+      </article>
+    }
+  } @else {
+    @for (stat of stats(); track stat.title) {
     <article class="dashboard-stats__card">
       <div class="dashboard-stats__header">
         <h2 class="dashboard-stats__title">{{ stat.title }}</h2>
@@ -40,5 +55,6 @@
         {{ stat.detail }}
       </p>
     </article>
+    }
   }
 </section>

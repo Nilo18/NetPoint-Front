@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
-import { ProductDTO, ProductPageResponse, ProductService } from '../../../services/product-service';
+import { ProductDTO, ProductPageResponse, ProductQuery, ProductService } from '../../../services/product-service';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
 import { AdminDashboardSearchBar } from '../admin-dashboard-search-bar/admin-dashboard-search-bar';
@@ -29,10 +29,11 @@ interface InventoryProduct {
 })
 export class AdminDashboardInventoryManagement {
   private productService: ProductService = inject(ProductService)
-  products = resource<ProductPageResponse, unknown>({
+  products = resource<ProductPageResponse, ProductQuery>({
+    // params: () => this.productService.getQuery(),
     loader: () => {
-      this.productService.modifyQueryForPagination(1, 10)
-      this.productService.modifyQueryForSorting('stock', 'desc')
+      // this.productService.modifyQueryForPagination(1, 10)
+      // this.productService.modifyQueryForSorting('stock', 'desc')
       return this.productService.getAllProducts()
     }
   })
@@ -47,10 +48,6 @@ export class AdminDashboardInventoryManagement {
   }
 
   handleProductsTransformation(newProducts: ProductPageResponse) {
-    // if (newProducts.totalPages !== this.products.value()?.totalPages) {
-    //   this.pageAmountChanged.set(true)
-    // }
-
     this.products.set(newProducts)
     this.backendError.set(null)
     this.tableIsLoading.set(false)
