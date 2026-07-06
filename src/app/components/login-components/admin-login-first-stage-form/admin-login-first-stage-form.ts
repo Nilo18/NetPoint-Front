@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { LoginStateManagementService } from '../../../services/login-state-management-service';
 import { AuthService } from '../../../services/auth-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-admin-login-first-stage-form',
@@ -17,6 +18,7 @@ export class AdminLoginFirstStageForm {
   // showNextStep: WritableSignal<boolean> = signal(false)
   public loginStateService = inject(LoginStateManagementService)
   public authService = inject(AuthService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
 
   constructor() {
     effect(() => {
@@ -86,12 +88,11 @@ export class AdminLoginFirstStageForm {
         console.log('Sending request...')
         const res = await this.authService.login(payload) 
         this.loginStateService.setTempToken(res.token)
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.log('Not showing next step because got error: ', error)
         this.loginStateService.setGotBackendLoginError(true)
         this.loginStateService.setRequestSent(false)
-        console.log(error.error)
-        this.loginStateService.setBackendLoginErrorMsg(error.error.error)
+        this.loginStateService.setBackendLoginErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
         return
       }
       this.loginStateService.setShowLoginNextStep(true)

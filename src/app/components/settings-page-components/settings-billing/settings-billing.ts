@@ -5,6 +5,7 @@ import { SettingsBillingPlanChangerModal } from '../settings-billing-plan-change
 import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-modal';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 type CardBrand = 'visa' | 'mastercard' | 'unknown';
 
@@ -24,6 +25,7 @@ interface CardBrandDisplay {
 export class SettingsBilling {
   public settingsService = inject(SettingsPageService)
   private modalService = inject(NgbModal)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   paymentPlan: WritableSignal<PaymentPlan | null> = signal(null)
   gotBackendError = signal(false)
   backendErrMsg = signal('')
@@ -57,9 +59,9 @@ export class SettingsBilling {
       this.gotBackendError.set(false)
       this.backendErrMsg.set('')
       console.log(`Assigned paymentPlan: `, this.paymentPlan)
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.gotBackendError.set(true)
-      this.backendErrMsg.set(error.error?.error ?? 'Could not load billing information.')
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not load billing information.'))
     } finally {
       this.settingsService.setIsLoading(false)
     }
@@ -108,13 +110,13 @@ export class SettingsBilling {
         if (res) {
           window.location.reload()
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         const errorModalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
           centered: true
         })
 
         errorModalRef.componentInstance.errTitle = 'Something went wrong while cancelling your subscription'
-        errorModalRef.componentInstance.errMsg = error.error?.error ?? 'Please try again later.'
+        errorModalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(error, 'Please try again later.')
         throw error
       }
     }
@@ -153,13 +155,13 @@ export class SettingsBilling {
         if (res) {
           window.location.reload()
         } 
-      } catch (error: any) {
+      } catch (error: unknown) {
         const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
           centered: true
         })
 
         modalRef.componentInstance.errTitle = 'Something went wrong while removing your payment method'
-        modalRef.componentInstance.errMsg = error.error.error
+        modalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(error, 'Please try again later.')
       }
     }
   }

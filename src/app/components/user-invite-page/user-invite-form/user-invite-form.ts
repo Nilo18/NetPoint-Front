@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { UserInviteService } from '../../../services/user-invite-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-user-invite-form',
@@ -18,6 +19,7 @@ export class UserInviteForm {
   private router = inject(Router)
   private userInviteService = inject(UserInviteService)
   private formValidator = inject(FormValidatorService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
 
   ngOnInit() {
     if (this.userInviteStateService.shouldShowForm()) {
@@ -49,9 +51,9 @@ export class UserInviteForm {
       )
       localStorage.setItem('net_token', res.token)
       this.router.navigate(['/admin'])    
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.userInviteStateService.setGotError(true)
-      this.userInviteStateService.setBackendErrorMsg(error.error.error)
+      this.userInviteStateService.setBackendErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Could not complete registration. Please try again.'))
       this.userInviteStateService.setRequestSent(false)
     }
   }

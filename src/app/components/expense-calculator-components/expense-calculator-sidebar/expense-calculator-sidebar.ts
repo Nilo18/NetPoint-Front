@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { ProductDTO } from '../../../services/product-service';
 import { CheckoutRequestItem, CheckoutService } from '../../../services/checkout-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-expense-calculator-sidebar',
@@ -15,6 +15,7 @@ import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-displ
 export class ExpenseCalculatorSidebar {
   private checkoutService = inject(CheckoutService)
   private modalService = inject(NgbModal)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   cartItems = input.required<ProductDTO[] | null>()
   isCheckingOut = signal(false)
   checkoutError = signal('')
@@ -51,7 +52,10 @@ export class ExpenseCalculatorSidebar {
         window.location.reload()
       }
     } catch (error: unknown) {
-      const errorMessage = this.getBackendErrorMessage(error)
+      const errorMessage = this.backendErrorHandler.getErrorMessage(
+        error,
+        'We could not complete the sale. Please try again.',
+      )
       this.checkoutError.set(errorMessage)
       const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
         centered: true
@@ -62,44 +66,6 @@ export class ExpenseCalculatorSidebar {
     } finally {
       this.isCheckingOut.set(false)
     }
-  }
-
-  private getBackendErrorMessage(error: unknown) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error);
-
-      return backendMessage || error.message || 'We could not complete the sale. Please try again.';
-    }
-
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    return 'We could not complete the sale. Please try again.';
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody;
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null;
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message;
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error;
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title;
-    }
-
-    return null;
   }
 
   roundNumber(num: number, digit: number) {

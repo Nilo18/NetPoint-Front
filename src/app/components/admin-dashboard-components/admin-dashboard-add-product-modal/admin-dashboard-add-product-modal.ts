@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, resource, signal, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-admin-dashboard-add-product-modal',
@@ -18,6 +18,7 @@ export class AdminDashboardAddProductModal {
   private readonly formBuilder = inject(FormBuilder);
   public formValidator = inject(FormValidatorService);
   private productService = inject(ProductService);
+  private backendErrorHandler = inject(BackendErrorHandlerService);
   protected readonly isSubmitting = signal(false);
   protected readonly backendError = signal<string | null>(null);
   customAttributes = resource<ProductAttribute[], unknown>({
@@ -90,7 +91,7 @@ export class AdminDashboardAddProductModal {
         window.location.reload();
       }
     } catch (error) {
-      this.backendError.set(this.getErrorMessage(error, 'We could not add this product. Please try again.'));
+      this.backendError.set(this.backendErrorHandler.getErrorMessage(error, 'We could not add this product. Please try again.'));
     } finally {
       this.isSubmitting.set(false);
     }
@@ -121,7 +122,7 @@ export class AdminDashboardAddProductModal {
         window.location.reload();
       }
     } catch (error) {
-      this.backendError.set(this.getErrorMessage(error, 'We could not update this product. Please try again.'));
+      this.backendError.set(this.backendErrorHandler.getErrorMessage(error, 'We could not update this product. Please try again.'));
     } finally {
       this.isSubmitting.set(false);
     }
@@ -165,41 +166,4 @@ export class AdminDashboardAddProductModal {
     return this.productToEdit ? 'Edit Product' : 'Add Product';
   }
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error);
-
-      return backendMessage || error.message || fallbackMessage;
-    }
-
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    return fallbackMessage;
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody;
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null;
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message;
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error;
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title;
-    }
-
-    return null;
-  }
 }

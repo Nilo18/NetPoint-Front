@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { ProductPageResponse, ProductService } from '../../../services/product-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-product-pagination',
@@ -11,6 +11,7 @@ import { ProductPageResponse, ProductService } from '../../../services/product-s
 })
 export class ProductPagination {
   private productService = inject(ProductService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   // usersLoaded = output<User[]>()
   // backendError = output<string>()
   currentPage = signal(1)
@@ -109,7 +110,7 @@ export class ProductPagination {
       // this.usersLoaded.emit(res.userList)
       console.log('currentPage after:', this.currentPage(), typeof this.currentPage())
     } catch (error: unknown) {
-      this.backendError.emit(this.getErrorMessage(error, 'We could not load this page. Please try again.'))
+      this.backendError.emit(this.backendErrorHandler.getErrorMessage(error, 'We could not load this page. Please try again.'))
     } finally {
       this.requestSent.set(false)
       this.pageIsLoading.set(false)
@@ -117,41 +118,4 @@ export class ProductPagination {
     }
   }
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error)
-
-      return backendMessage || error.message || fallbackMessage
-    }
-
-    if (error instanceof Error) {
-      return error.message
-    }
-
-    return fallbackMessage
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title
-    }
-
-    return null
-  }
 }

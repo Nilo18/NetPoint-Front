@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal, ViewEncapsulation } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductAttribute, ProductService } from '../../../services/product-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 export interface CustomAttribute {
   name: string;
@@ -21,6 +21,7 @@ export class SettingsSchemaCustomizerModal {
   public modal = inject(NgbActiveModal);
   private formBuilder = inject(FormBuilder);
   private productService = inject(ProductService);
+  private backendErrorHandler = inject(BackendErrorHandlerService);
 
   fieldTypes = ['TEXT', 'NUMBER', 'DATE', 'BOOLEAN'];
   submitted = signal(false);
@@ -78,7 +79,7 @@ export class SettingsSchemaCustomizerModal {
     } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(this.getBackendErrorMessage(error))
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
       console.log(error)
     }
   }
@@ -123,7 +124,7 @@ export class SettingsSchemaCustomizerModal {
     } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(this.getBackendErrorMessage(error))
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
       console.log(error)
     }
   }
@@ -136,11 +137,4 @@ export class SettingsSchemaCustomizerModal {
     }
   }
 
-  private getBackendErrorMessage(error: unknown) {
-    if (error instanceof HttpErrorResponse && typeof error.error?.error === 'string') {
-      return error.error.error
-    }
-
-    return 'Something went wrong. Please try again.'
-  }
 }

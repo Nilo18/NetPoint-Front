@@ -12,6 +12,7 @@ import { SettingsBusinessInfoValidatorModal } from '../settings-business-info-va
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { Router } from '@angular/router';
 import { SettingsBusinessInfoSchemaCustomization } from '../settings-business-info-schema-customization/settings-business-info-schema-customization';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-business-info',
@@ -26,6 +27,7 @@ export class BusinessInfo {
   private modalService = inject(NgbModal)
   private fb = inject(FormBuilder)
   private router = inject(Router)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   decodedToken!: DecodedToken | null
   businessForm!: FormGroup
   formValueChanged: boolean = false
@@ -75,9 +77,9 @@ export class BusinessInfo {
         email: res.email,
         industry: res.industry
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.gotBackendError.set(true)
-      this.errMsg.set(error.error.error)
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not load business information.'))
     }
   }
 
@@ -123,10 +125,10 @@ export class BusinessInfo {
         this.openVerificationModal(res.tempToken)
         this.requestSent.set(false)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(error.error.error)
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not update business information. Please try again.'))
     }
   }
 
@@ -166,8 +168,8 @@ export class BusinessInfo {
       this.deleteSuccessMsg.set('Business account deleted.')
       this.tokenService.clearToken()
       await this.router.navigate(['/'])
-    } catch (error: any) {
-      this.deleteErrMsg.set(error.error.error)
+    } catch (error: unknown) {
+      this.deleteErrMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not delete business account. Please try again.'))
     } finally {
       this.deleteRequestSent.set(false)
     }

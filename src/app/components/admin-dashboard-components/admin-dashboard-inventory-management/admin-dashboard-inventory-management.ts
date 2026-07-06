@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminDashboardAddProductModal } from '../admin-dashboard-add-product-modal/admin-dashboard-add-product-modal';
@@ -8,6 +7,7 @@ import { ProductPagination } from '../../product-components/product-pagination/p
 import { AdminDashboardSearchBar } from '../admin-dashboard-search-bar/admin-dashboard-search-bar';
 import { AdminDashboardSorting } from '../admin-dashboard-sorting/admin-dashboard-sorting';
 import { AdminDashboardFiltering } from '../admin-dashboard-filtering/admin-dashboard-filtering';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 type Profitability = 'High' | 'Medium';
 
@@ -41,6 +41,7 @@ export class AdminDashboardInventoryManagement {
   protected readonly backendError = signal<string | null>(null);
   protected readonly deletingProductId = signal<number | null>(null);
   private modalService: NgbModal = inject(NgbModal);
+  private backendErrorHandler = inject(BackendErrorHandlerService);
   // pageAmountChanged = signal<boolean>(false)
 
   ngOnInit() {
@@ -123,7 +124,7 @@ export class AdminDashboardInventoryManagement {
       })
 
       modalRef.componentInstance.errTitle = "Something Went Wrong During Product Deletion"
-      modalRef.componentInstance.errMsg = this.getErrorMessage(
+      modalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(
         error,
         'We could not remove this product. Please try again.',
       );
@@ -136,41 +137,4 @@ export class AdminDashboardInventoryManagement {
     return this.deletingProductId() === productId;
   }
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error);
-
-      return backendMessage || error.message || fallbackMessage;
-    }
-
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    return fallbackMessage;
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody;
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null;
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message;
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error;
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title;
-    }
-
-    return null;
-  }
 }

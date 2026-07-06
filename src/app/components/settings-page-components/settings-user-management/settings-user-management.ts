@@ -7,6 +7,7 @@ import { UserPagination } from '../user-pagination/user-pagination';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
 import { SettingsRolePermissions } from '../settings-role-permissions/settings-role-permissions';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-settings-user-management',
@@ -18,6 +19,7 @@ import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-o
 export class SettingsUserManagement {
   public settingsService = inject(SettingsPageService)
   private modalService = inject(NgbModal)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   userList = signal<User[]>([])
   gotBackendError = signal(false)
   gotSearchError = signal(false)
@@ -66,12 +68,12 @@ export class SettingsUserManagement {
         }
       }
       this.settingsService.setIsLoading(false)
-    } catch (error: any) {
+    } catch (error: unknown) {
       const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
         centered: true
       })
 
-      modalRef.componentInstance.errMsg = error.error.error
+      modalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(error, 'Could not delete user. Please try again.')
     }
   }
 
@@ -109,9 +111,9 @@ export class SettingsUserManagement {
     try {
       const users = await this.settingsService.searchUsers(searchTerm)
       this.userList.set(users)
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.gotSearchError.set(true)
-      this.backendErrMsg.set(error.error.error)
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not search users. Please try again.'))
     } finally {
       this.settingsService.setIsLoading(false)
     }

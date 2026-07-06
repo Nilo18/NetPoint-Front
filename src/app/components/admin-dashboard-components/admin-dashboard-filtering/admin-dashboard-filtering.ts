@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, output, signal, untracked } from '@angular/core';
 import { ProductPageResponse, ProductService } from '../../../services/product-service';
 import { FormsModule } from '@angular/forms';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 interface FilterObject {
   filterBy: string,
@@ -18,6 +18,7 @@ interface FilterObject {
 })
 export class AdminDashboardFiltering {
   private productService = inject(ProductService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   oldFilterObj = signal<FilterObject>({
     filterBy: 'stock',
     filterFrom: '',
@@ -127,48 +128,11 @@ export class AdminDashboardFiltering {
 
       this.productsWereFiltered.emit(res)
     } catch (error: unknown) {
-      this.backendError.emit(this.getErrorMessage(error, 'We could not filter products. Please try again.'))
+      this.backendError.emit(this.backendErrorHandler.getErrorMessage(error, 'We could not filter products. Please try again.'))
     } finally {
       this.isLoading.set(false)
       this.loadingChanged.emit(false)
     }
   }
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error)
-
-      return backendMessage || error.message || fallbackMessage
-    }
-
-    if (error instanceof Error) {
-      return error.message
-    }
-
-    return fallbackMessage
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title
-    }
-
-    return null
-  }
 }

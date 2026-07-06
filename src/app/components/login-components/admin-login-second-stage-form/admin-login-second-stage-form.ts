@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { LoginStateManagementService } from '../../../services/login-state-management-service';
 import { jwtDecode } from 'jwt-decode';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-admin-login-second-stage-form',
@@ -19,6 +20,7 @@ export class AdminLoginSecondStageForm {
   private router = inject(Router)
   private formValidator = inject(FormValidatorService)
   public loginStateService = inject(LoginStateManagementService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
 
   ngOnInit() {
     // this.loginStateService.setGotBackendLoginError(false)
@@ -61,14 +63,12 @@ export class AdminLoginSecondStageForm {
         } else {
           this.router.navigate(['/expenses'])
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.log(error)
-        console.log('error.error from the second stage component: ', error.error)
         console.log('catch block reached')
-        console.log('error status:', error.status)
         this.loginStateService.setRequestSent(false)
         this.loginStateService.setGotBackendLoginError(true)
-        this.loginStateService.setBackendLoginErrorMsg(error.error.error)
+        this.loginStateService.setBackendLoginErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
         // switch (error.status) {
         //   case 400:
         //     this.loginStateService.setBackendLoginErrorMsg('Please make sure all fields are filled in correctly.')

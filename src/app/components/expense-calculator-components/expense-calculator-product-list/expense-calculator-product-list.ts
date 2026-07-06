@@ -1,10 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, output, resource, signal } from '@angular/core';
 import { ProductDTO, ProductPageResponse, ProductService } from '../../../services/product-service';
 import { AdminDashboardSearchBar } from '../../admin-dashboard-components/admin-dashboard-search-bar/admin-dashboard-search-bar';
 import { AdminDashboardSorting } from '../../admin-dashboard-components/admin-dashboard-sorting/admin-dashboard-sorting';
 import { AdminDashboardFiltering } from '../../admin-dashboard-components/admin-dashboard-filtering/admin-dashboard-filtering';
 import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-expense-calculator-product-list',
@@ -15,6 +15,7 @@ import { ProductPagination } from '../../product-components/product-pagination/p
 })
 export class ExpenseCalculatorProductList {
   private productService = inject(ProductService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   // productItems = signal<ProductDTO[]>([]);
   protected readonly tableIsLoading = signal(false);
   protected readonly backendError = signal<string | null>(null);
@@ -27,7 +28,10 @@ export class ExpenseCalculatorProductList {
       // return products;
     }
   })
-  productLoadError = computed(() => this.getBackendErrorMessage(this.products.error()))
+  productLoadError = computed(() => this.backendErrorHandler.getNullableErrorMessage(
+    this.products.error(),
+    'Products could not be loaded. Please try again.',
+  ) ?? '')
   productToAdd = output<ProductDTO>()
   readonly loadingCards = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -98,45 +102,4 @@ export class ExpenseCalculatorProductList {
     });
   }
 
-  private getBackendErrorMessage(error: unknown) {
-    if (!error) {
-      return '';
-    }
-
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error);
-
-      return backendMessage || error.message || 'Products could not be loaded. Please try again.';
-    }
-
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    return 'Products could not be loaded. Please try again.';
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody;
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null;
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message;
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error;
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title;
-    }
-
-    return null;
-  }
 }

@@ -1,5 +1,6 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { UserInviteService } from './user-invite-service';
+import { BackendErrorHandlerService } from './backend-error-handler-service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class UserInviteStateManagementService {
   private _requestSent: WritableSignal<boolean> = signal(false)
   readonly requestSent = this._requestSent.asReadonly()
   private userInviteService = inject(UserInviteService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
 
   setGotError(value: boolean): void {
     this._gotError.set(value);
@@ -68,9 +70,9 @@ export class UserInviteStateManagementService {
 
       this.setShouldShowForm(true)
       // }
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.setGotError(true)
-      this.setBackendErrorMsg(error.error.error)
+      this.setBackendErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Invitation could not be verified. Please try again.'))
     }
   }
 

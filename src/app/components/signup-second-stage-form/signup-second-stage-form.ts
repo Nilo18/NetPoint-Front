@@ -4,6 +4,8 @@ import { SignupStateManagementService } from '../../services/signup-state-manage
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { FormValidatorService } from '../../services/form-validator-service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BackendErrorHandlerService } from '../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-signup-second-stage-form',
@@ -18,6 +20,7 @@ export class SignupSecondStageForm {
   private authService = inject(AuthService)
   private router = inject(Router)
   private formValidator = inject(FormValidatorService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
 
   ngOnInit() {
     // console.log('Checking the type: ', typeof this.signupFormStageTwo.value);
@@ -51,14 +54,14 @@ export class SignupSecondStageForm {
         const res = await this.authService.signup(finalFormValue)
         localStorage.setItem('net_token', res)
         this.router.navigate(['/admin'])
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.log(error)
-        console.log(error.error)
         console.log('catch block reached')
-        console.log('error status:', error.status)
         this.signupService.setRequestSent(false)
         this.signupService.setGotBackendError(true)
-        switch (error.status) {
+        const status = error instanceof HttpErrorResponse ? error.status : undefined
+
+        switch (status) {
           case 400:
             this.signupService.setBackendErrorMsg('Please make sure all fields are filled in correctly.')
             break;
@@ -69,7 +72,7 @@ export class SignupSecondStageForm {
             this.signupService.setBackendErrorMsg('Something went wrong on our end. Please try again later.')
             break;
           default:
-            this.signupService.setBackendErrorMsg('Something went wrong. Please try again.')
+            this.signupService.setBackendErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
         }
         // this.cdr.detectChanges()
         console.log('requestSent:', this.signupService.requestSent)

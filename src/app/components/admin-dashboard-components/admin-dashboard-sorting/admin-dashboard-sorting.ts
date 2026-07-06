@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, output, signal } from '@angular/core';
 import { ProductPageResponse, ProductService } from '../../../services/product-service';
 import { FormsModule } from '@angular/forms';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 interface SortObject {
   sortBy: string,
@@ -17,6 +17,7 @@ interface SortObject {
 })
 export class AdminDashboardSorting {
   private productService = inject(ProductService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   productsWereSorted = output<ProductPageResponse>()
   loadingChanged = output<boolean>()
   backendError = output<string>()
@@ -27,36 +28,42 @@ export class AdminDashboardSorting {
     sortDirection: 'desc'
   })
 
-  constructor() {
-    effect(() => {
-      const sortObj = this.sortObj()
+  // constructor() {
+  //   effect(() => {
+  //     const sortObj = this.sortObj()
 
-      /** This was added to omit the getAllProducts() call, because admin-dashboard-inventory-management already does it */
-      if (!this.hasSkippedInitialSort) {
-        this.hasSkippedInitialSort = true
-        return
-      }
+  //     /** This was added to omit the getAllProducts() call, because admin-dashboard-inventory-management already does it */
+  //     if (!this.hasSkippedInitialSort) {
+  //       this.hasSkippedInitialSort = true
+  //       return
+  //     }
 
-      this.sort(sortObj)
-    })
-  }
+  //     this.sort(sortObj)
+  //   })
+  // }
 
   onSortByChange(event: Event) {
     const sortBy = (event.target as HTMLSelectElement).value
 
-    this.sortObj.update((current) => ({
-      ...current,
+    const next = {
+      ...this.sortObj(),
       sortBy
-    }))
+    }
+
+    this.sortObj.set(next)
+    this.sort(next)
   }
 
   onSortDirectionChange(event: Event) {
     const sortDirection = (event.target as HTMLSelectElement).value
 
-    this.sortObj.update((current) => ({
-      ...current,
+    const next = {
+      ...this.sortObj(),
       sortDirection
-    }))
+    }
+
+    this.sortObj.set(next)
+    this.sort(next)
   }
 
   async sort(sortObj: SortObject) {
@@ -74,48 +81,11 @@ export class AdminDashboardSorting {
 
       this.productsWereSorted.emit(res)
     } catch (error: unknown) {
-      this.backendError.emit(this.getErrorMessage(error, 'We could not sort products. Please try again.'))
+      this.backendError.emit(this.backendErrorHandler.getErrorMessage(error, 'We could not sort products. Please try again.'))
     } finally {
       this.isLoading.set(false)
       this.loadingChanged.emit(false)
     }
   }
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error)
-
-      return backendMessage || error.message || fallbackMessage
-    }
-
-    if (error instanceof Error) {
-      return error.message
-    }
-
-    return fallbackMessage
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title
-    }
-
-    return null
-  }
 }

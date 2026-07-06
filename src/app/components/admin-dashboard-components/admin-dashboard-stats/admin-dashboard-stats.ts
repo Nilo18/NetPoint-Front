@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, resource } from '@angular/core';
 import { ProductService, ProductStats, ProductStatsQuery } from '../../../services/product-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 type StatTone = 'default' | 'success' | 'warning';
 type StatDetailTone = 'muted' | 'positive';
@@ -23,6 +23,7 @@ interface DashboardStat {
 })
 export class AdminDashboardStats {
   private productService = inject(ProductService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   productStats = resource<ProductStats, ProductStatsQuery>({
     params: () => {
       const activeQuery = this.productService.getQuery()(); 
@@ -36,7 +37,7 @@ export class AdminDashboardStats {
     },
     loader: ({params}) => this.productService.getProductStats(params)
   })
-  readonly backendError = computed(() => this.getErrorMessage(
+  readonly backendError = computed(() => this.backendErrorHandler.getNullableErrorMessage(
     this.productStats.error(),
     'We could not load dashboard stats. Please try again.',
   ))
@@ -84,45 +85,4 @@ export class AdminDashboardStats {
     ]
   });
 
-  private getErrorMessage(error: unknown, fallbackMessage: string) {
-    if (!error) {
-      return null;
-    }
-
-    if (error instanceof HttpErrorResponse) {
-      const backendMessage = this.extractBackendMessage(error.error);
-
-      return backendMessage || error.message || fallbackMessage;
-    }
-
-    if (error instanceof Error) {
-      return error.message;
-    }
-
-    return fallbackMessage;
-  }
-
-  private extractBackendMessage(errorBody: unknown): string | null {
-    if (typeof errorBody === 'string') {
-      return errorBody;
-    }
-
-    if (!errorBody || typeof errorBody !== 'object') {
-      return null;
-    }
-
-    if ('message' in errorBody && typeof errorBody.message === 'string') {
-      return errorBody.message;
-    }
-
-    if ('error' in errorBody && typeof errorBody.error === 'string') {
-      return errorBody.error;
-    }
-
-    if ('title' in errorBody && typeof errorBody.title === 'string') {
-      return errorBody.title;
-    }
-
-    return null;
-  }
 }

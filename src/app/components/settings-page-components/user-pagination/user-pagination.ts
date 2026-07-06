@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { SettingsPageService, User } from '../../../services/settings-page-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-user-pagination',
@@ -10,6 +11,7 @@ import { SettingsPageService, User } from '../../../services/settings-page-servi
 })
 export class UserPagination {
   public settingsService = inject(SettingsPageService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   companyId = input.required<number>()
   usersLoaded = output<User[]>()
   backendError = output<string>()
@@ -68,8 +70,8 @@ export class UserPagination {
       this.totalPages.set(res.totalPages)
       this.usersLoaded.emit(res.userList)
       console.log('currentPage after:', this.currentPage(), typeof this.currentPage())
-    } catch (error: any) {
-      this.backendError.emit(error.error.error)
+    } catch (error: unknown) {
+      this.backendError.emit(this.backendErrorHandler.getErrorMessage(error, 'We could not load this page. Please try again.'))
     }
   }
 }

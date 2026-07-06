@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserInfoUpdateValidatorModal } from '../user-info-update-validator-modal/user-info-update-validator-modal';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 interface UserInfoFormValue extends User {
   newPassword: string | null
@@ -22,6 +22,7 @@ export class SettingsPersonalInfo {
   private fb = inject(FormBuilder)
   private formValidator = inject(FormValidatorService)
   private modalService = inject(NgbModal)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   userInfoForm!: FormGroup
   userInfo: UserInfoFormValue = {
     id: -1,
@@ -67,7 +68,7 @@ export class SettingsPersonalInfo {
     } catch (error: unknown) {
       this.isLoading.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(this.getBackendErrorMessage(error))
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
       console.log(error)
     }
   }
@@ -125,16 +126,9 @@ export class SettingsPersonalInfo {
     } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(this.getBackendErrorMessage(error))
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
       console.log(error)
     }
   }
 
-  private getBackendErrorMessage(error: unknown) {
-    if (error instanceof HttpErrorResponse && typeof error.error?.error === 'string') {
-      return error.error.error
-    }
-
-    return 'Something went wrong. Please try again.'
-  }
 }

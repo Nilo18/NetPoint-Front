@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsPageService } from '../../../services/settings-page-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 interface BillingPlanOption {
   name: string;
@@ -23,6 +24,7 @@ export class SettingsBillingPlanChangerModal {
   protected readonly modal = inject(NgbActiveModal);
   selectedPlan = 'Starter Plan';
   private settingsService = inject(SettingsPageService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   protected readonly requestSent = signal(false);
   protected readonly pendingPlan = signal('');
   protected readonly backendErrMsg = signal('');
@@ -89,9 +91,9 @@ export class SettingsBillingPlanChangerModal {
       if (res) {
         window.location.reload()
       }
-    } catch (error: any) {
-      console.log(error.error.error)
-      this.backendErrMsg.set(error.error?.error ?? 'Could not change your plan. Please try again.')
+    } catch (error: unknown) {
+      console.log(error)
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not change your plan. Please try again.'))
     } finally {
       this.requestSent.set(false);
       this.pendingPlan.set('');

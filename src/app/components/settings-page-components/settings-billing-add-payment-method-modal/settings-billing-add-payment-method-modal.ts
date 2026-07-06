@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { PaymentMethod, SettingsPageService } from '../../../services/settings-page-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 type NumericPaymentMethodControl = 'cardNumber' | 'expYear' | 'cvc';
 
@@ -18,6 +18,7 @@ export class SettingsBillingAddPaymentMethodModal {
   protected readonly modal = inject(NgbActiveModal);
   private formValidator = inject(FormValidatorService)
   private settingsService = inject(SettingsPageService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   passedPaymentMethod: PaymentMethod | null = null
   protected readonly requestSent = signal(false)
   protected readonly backendErrMsg = signal('')
@@ -163,29 +164,6 @@ export class SettingsBillingAddPaymentMethodModal {
     }
   }
 
-  private getBackendErrorMessage(error: unknown): string {
-    if (error instanceof HttpErrorResponse) {
-      const backendError = error.error
-
-      if (typeof backendError === 'string') {
-        return backendError
-      }
-
-      if (this.isBackendErrorBody(backendError)) {
-        return backendError.error
-      }
-    }
-
-    return 'Could not save your payment method. Please try again.'
-  }
-
-  private isBackendErrorBody(value: unknown): value is { error: string } {
-    return typeof value === 'object'
-      && value !== null
-      && 'error' in value
-      && typeof value.error === 'string'
-  }
-
   async onSubmit() {
     if (this.requestSent() || !this.isFormValid()) return
 
@@ -203,7 +181,10 @@ export class SettingsBillingAddPaymentMethodModal {
         window.location.reload()
       }
     } catch (error) {
-      this.backendErrMsg.set(this.getBackendErrorMessage(error))
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(
+        error,
+        'Could not save your payment method. Please try again.',
+      ))
     } finally {
       this.requestSent.set(false)
       this.paymentMethodForm.enable()

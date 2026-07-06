@@ -7,6 +7,7 @@ import {
 import { ProductAttribute, ProductService } from '../../../services/product-service';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-display-modal/delete-request-error-display-modal';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 interface Attribute {
   name: string;
@@ -24,6 +25,7 @@ interface Attribute {
 export class SettingsBusinessInfoSchemaCustomization {
   private modal = inject(NgbModal);
   private productService = inject(ProductService);
+  private backendErrorHandler = inject(BackendErrorHandlerService);
   attributes = signal<ProductAttribute[]>([]);
   isLoading = signal(true)
   gotBackendError = signal(false)
@@ -41,7 +43,10 @@ export class SettingsBusinessInfoSchemaCustomization {
       this.attributes.set(res)
     } catch (error: unknown) {
       this.gotBackendError.set(true)
-      this.backendErrMsg.set(this.getErrorMessage(error))
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(
+        error,
+        'Unable to process the request. Please try again.',
+      ))
     } finally {
       this.isLoading.set(false)
     }
@@ -86,7 +91,10 @@ export class SettingsBusinessInfoSchemaCustomization {
       await this.productService.deleteProductAttributes(id);
       this.attributes.update(values => values.filter(attribute => attribute.id !== id))
     } catch (error: unknown) {
-      const errorMsg = this.getErrorMessage(error)
+      const errorMsg = this.backendErrorHandler.getErrorMessage(
+        error,
+        'Unable to process the request. Please try again.',
+      )
       const modalRef = this.modal.open(DeleteRequestErrorDisplayModal, {
         centered: true
       })
@@ -99,23 +107,4 @@ export class SettingsBusinessInfoSchemaCustomization {
     }
   }
 
-  private getErrorMessage(error: unknown): string {
-    if (typeof error === 'object' && error !== null && 'error' in error) {
-      const responseError = (error as { error?: unknown }).error
-
-      if (typeof responseError === 'object' && responseError !== null && 'error' in responseError) {
-        const nestedError = (responseError as { error?: unknown }).error
-
-        if (typeof nestedError === 'string') {
-          return nestedError
-        }
-      }
-
-      if (typeof responseError === 'string') {
-        return responseError
-      }
-    }
-
-    return 'Unable to process the request. Please try again.'
-  }
 }

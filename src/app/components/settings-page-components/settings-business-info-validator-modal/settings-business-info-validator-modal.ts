@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { SettingsPageService } from '../../../services/settings-page-service';
 import { CompanyDTO } from '../../../services/company-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-settings-business-info-validator-modal',
@@ -16,6 +17,7 @@ export class SettingsBusinessInfoValidatorModal {
   private fb = inject(FormBuilder)
   private formValidator = inject(FormValidatorService)
   private settingsService = inject(SettingsPageService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   tempToken!: string
   companyInfo!: CompanyDTO
   verificationForm!: FormGroup
@@ -66,11 +68,10 @@ export class SettingsBusinessInfoValidatorModal {
         //   this.modal.close()
         // }, 2000)
       }
-    } catch (error: any) {
-      // console.log(error.error.error)
+    } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(error.error.error)
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
     }
   }
 }

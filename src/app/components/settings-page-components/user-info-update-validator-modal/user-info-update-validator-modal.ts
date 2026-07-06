@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { SettingsPageService, User } from '../../../services/settings-page-service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-user-info-update-validator-modal',
@@ -16,6 +16,7 @@ export class UserInfoUpdateValidatorModal {
   private fb = inject(FormBuilder)
   private formValidator = inject(FormValidatorService)
   private settingsService = inject(SettingsPageService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   tempToken!: string
   userInfo!: User
   newPassword!: string
@@ -70,18 +71,9 @@ export class UserInfoUpdateValidatorModal {
         // }, 2000)
       }
     } catch (error: unknown) {
-      // console.log(error.error.error)
       this.requestSent.set(false)
       this.gotBackendError.set(true)
-      this.errMsg.set(this.getBackendErrorMessage(error))
+      this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Something went wrong. Please try again.'))
     }
-  }
-
-  private getBackendErrorMessage(error: unknown) {
-    if (error instanceof HttpErrorResponse && typeof error.error?.error === 'string') {
-      return error.error.error
-    }
-
-    return 'Something went wrong. Please try again.'
   }
 }

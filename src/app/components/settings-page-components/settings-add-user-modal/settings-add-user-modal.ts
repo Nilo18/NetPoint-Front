@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 import { SettingsPageService } from '../../../services/settings-page-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
+import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 
 @Component({
   selector: 'app-settings-add-user-modal',
@@ -16,6 +17,7 @@ export class SettingsAddUserModal {
   private fb = inject(FormBuilder)
   private settingsService = inject(SettingsPageService)
   private formValidator = inject(FormValidatorService)
+  private backendErrorHandler = inject(BackendErrorHandlerService)
   userInviteForm!: FormGroup
   // cashierAdditionForm!: FormGroup
   role: WritableSignal<string> = signal('ADMIN')
@@ -72,11 +74,11 @@ export class SettingsAddUserModal {
           this.modal.close()
         }, 2000)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.requestSent.set(false)
       this.gotBackendError.set(true)
       this.success.set(false)
-      this.backendErrMsg.set(error.error.error)
+      this.backendErrMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not invite user. Please try again.'))
     }
   }
 
