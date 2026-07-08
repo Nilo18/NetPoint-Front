@@ -2,37 +2,24 @@
   <h2 id="revenue-profit-title" class="chart-card__title">Revenue &amp; Profit Trends</h2>
 
   <div class="chart-card__canvas">
-    <svg class="trend-chart" viewBox="0 0 800 360" role="img" aria-label="Revenue and profit trends from January to June">
-      @for (row of gridRows(); track row) {
-        <line class="trend-chart__grid" x1="100" [attr.y1]="row" x2="750" [attr.y2]="row" />
-      }
-
-      @for (column of gridColumns(); track column) {
-        <line class="trend-chart__grid" [attr.x1]="column" y1="42" [attr.x2]="column" y2="322" />
-      }
-
-      <line class="trend-chart__axis" x1="100" y1="42" x2="100" y2="322" />
-      <line class="trend-chart__axis" x1="100" y1="322" x2="750" y2="322" />
-
-      @for (label of yAxisLabels(); track label; let index = $index) {
-        <text class="trend-chart__label trend-chart__label--y" x="92" [attr.y]="gridRows()[index] + 7">
-          {{ label }}
-        </text>
-      }
-
-      @for (point of points(); track point.label) {
-        <text class="trend-chart__label trend-chart__label--x" [attr.x]="point.x" y="346">
-          {{ point.label }}
-        </text>
-      }
-
-      <polyline class="trend-chart__line trend-chart__line--revenue" [attr.points]="revenueLinePoints()" />
-      <polyline class="trend-chart__line trend-chart__line--profit" [attr.points]="profitLinePoints()" />
-
-      @for (point of points(); track point.label) {
-        <circle class="trend-chart__marker trend-chart__marker--revenue" [attr.cx]="point.x" [attr.cy]="point.revenueY" r="4" />
-        <circle class="trend-chart__marker trend-chart__marker--profit" [attr.cx]="point.x" [attr.cy]="point.profitY" r="4" />
-      }
-    </svg>
+    @if (loading()) {
+      <div class="chart-card__state" role="status" aria-live="polite">
+        <span class="chart-card__spinner" aria-hidden="true"></span>
+        <span>Loading chart data...</span>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="chart-card__state chart-card__state--error" role="alert">
+        {{ errorMessage() }}
+      </div>
+    } @else {
+      <canvas
+        baseChart
+        aria-label="Revenue and profit trends"
+        role="img"
+        type="line"
+        [data]="lineChartData()"
+        [options]="lineChartOptions()"
+      ></canvas>
+    }
   </div>
 </article>

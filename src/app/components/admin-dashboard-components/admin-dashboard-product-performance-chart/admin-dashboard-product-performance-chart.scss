@@ -16,44 +16,45 @@
 }
 
 .chart-card__canvas {
+  position: relative;
   width: 100%;
-  overflow-x: auto;
+  height: 320px;
 }
 
-.bar-chart {
-  display: block;
+.chart-card__state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
-  min-width: 620px;
-  height: auto;
+  height: 100%;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  color: #555f6d;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
 }
 
-.bar-chart__grid {
-  stroke: #d1d5db;
-  stroke-dasharray: 4 5;
-  stroke-width: 1.2;
+.chart-card__state--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
-.bar-chart__axis {
-  stroke: #7b7f87;
-  stroke-width: 1.4;
+.chart-card__spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #d1d5db;
+  border-top-color: #18b987;
+  border-radius: 50%;
+  animation: chart-card-spin 0.8s linear infinite;
 }
 
-.bar-chart__bar {
-  fill: #18b987;
-}
-
-.bar-chart__label {
-  fill: #555f6d;
-  font-size: 20px;
-  font-weight: 400;
-}
-
-.bar-chart__label--y {
-  text-anchor: end;
-}
-
-.bar-chart__label--x {
-  text-anchor: middle;
+@keyframes chart-card-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 640px) {
@@ -63,5 +64,9 @@
 
   .chart-card__title {
     font-size: 18px;
+  }
+
+  .chart-card__canvas {
+    height: 280px;
   }
 }

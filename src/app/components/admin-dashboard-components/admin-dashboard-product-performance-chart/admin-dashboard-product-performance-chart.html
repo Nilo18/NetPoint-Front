@@ -2,30 +2,24 @@
   <h2 id="product-performance-title" class="chart-card__title">Product Performance</h2>
 
   <div class="chart-card__canvas">
-    <svg class="bar-chart" viewBox="0 0 800 360" role="img" aria-label="Product performance by sales">
-      @for (row of gridRows(); track row) {
-        <line class="bar-chart__grid" x1="100" [attr.y1]="row" x2="750" [attr.y2]="row" />
-      }
-
-      @for (column of gridColumns(); track column) {
-        <line class="bar-chart__grid" [attr.x1]="column" y1="42" [attr.x2]="column" y2="322" />
-      }
-
-      <line class="bar-chart__axis" x1="100" y1="42" x2="100" y2="322" />
-      <line class="bar-chart__axis" x1="100" y1="322" x2="750" y2="322" />
-
-      @for (label of yAxisLabels(); track label; let index = $index) {
-        <text class="bar-chart__label bar-chart__label--y" x="92" [attr.y]="gridRows()[index] + 7">
-          {{ label }}
-        </text>
-      }
-
-      @for (bar of bars(); track bar.label) {
-        <rect class="bar-chart__bar" [attr.x]="bar.x" [attr.y]="bar.y" width="78" [attr.height]="bar.height" />
-        <text class="bar-chart__label bar-chart__label--x" [attr.x]="bar.x + 39" y="346">
-          {{ bar.label }}
-        </text>
-      }
-    </svg>
+    @if (loading()) {
+      <div class="chart-card__state" role="status" aria-live="polite">
+        <span class="chart-card__spinner" aria-hidden="true"></span>
+        <span>Loading chart data...</span>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="chart-card__state chart-card__state--error" role="alert">
+        {{ errorMessage() }}
+      </div>
+    } @else {
+      <canvas
+        baseChart
+        aria-label="Top product performance by profit"
+        role="img"
+        type="bar"
+        [data]="barChartData()"
+        [options]="barChartOptions"
+      ></canvas>
+    }
   </div>
 </article>

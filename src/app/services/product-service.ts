@@ -77,6 +77,22 @@ export interface ProductStats {
   lowStockItemCount: number
 }
 
+export interface MonthlyFinancials {
+  month: string,
+  revenue: number
+  profit: number
+}
+
+export interface TopProfitableItem {
+  productName: string,
+  productProfit: number
+}
+
+export interface ProductChartData {
+  monthlyData: MonthlyFinancials[],
+  topSixProducts: TopProfitableItem[]
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -94,6 +110,13 @@ export class ProductService {
     filterFrom: '',
     filterTo: ''
   });
+  // private _productChartData = signal<ProductChartData>({
+  //   monthlyData: [],
+  //   topSixProducts: []
+  // })
+
+  // readonly productChartData = this._productChartData.asReadonly()
+
 
   getQuery() { return this.query }
 
@@ -291,6 +314,18 @@ export class ProductService {
       return res
     } catch (error) {
       console.log("Couldn't get product stats: ", error)
+      throw error
+    }
+  }
+
+  async getProductCharts() {
+    try {
+      const res = await firstValueFrom(this.http.get<ProductChartData>(`${this.baseUrl}/api/products/charts`))
+      console.log(res)
+      // this._productChartData.set(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get product chart data: ", error)
       throw error
     }
   }

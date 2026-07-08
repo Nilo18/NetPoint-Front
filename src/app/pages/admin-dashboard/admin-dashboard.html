@@ -3,8 +3,17 @@
   <app-admin-dashboard-stats></app-admin-dashboard-stats>
 
   <section class="admin-dashboard__charts" aria-label="Admin dashboard charts">
-    <app-admin-dashboard-revenue-chart></app-admin-dashboard-revenue-chart>
-    <app-admin-dashboard-product-performance-chart></app-admin-dashboard-product-performance-chart>
+    <app-admin-dashboard-revenue-chart
+      [trends]="charts().monthlyData"
+      [loading]="chartsLoading()"
+      [errorMessage]="chartsError()"
+    ></app-admin-dashboard-revenue-chart>
+    <app-admin-dashboard-product-performance-chart
+      [products]="charts().topSixProducts"
+      [loading]="chartsLoading()"
+      [errorMessage]="chartsError()"
+    >
+    </app-admin-dashboard-product-performance-chart>
   </section>
 
   <app-admin-dashboard-inventory-management></app-admin-dashboard-inventory-management>
