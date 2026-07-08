@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, resource, signal, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, resource, signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
@@ -156,6 +156,51 @@ export class AdminDashboardAddProductModal {
     const stdAttributeType = attributeType.trim().toLowerCase()
 
     return stdAttributeType === 'boolean'
+  }
+
+  allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
+  selectedFile = signal<File | null>(null)
+  imagePreview = signal<string | null>(null)
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0]
+
+      const maxSize = 5 * 1024 * 1024
+      if (file.size > maxSize) {
+        alert('File size is too large')
+        input.value = ''
+        return
+      }
+
+      if (!this.allowedTypes.includes(file.type)) {
+        alert('Invalid file format')
+        input.value = ''
+        return
+      }
+
+      this.selectedFile.set(file)
+
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
+  removePreview(event: MouseEvent) {
+    event.stopPropagation()
+    this.imagePreview.set(null)
+    this.selectedFile.set(null)
+
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = ''
+    }
   }
 
   protected getSubmitLabel() {
