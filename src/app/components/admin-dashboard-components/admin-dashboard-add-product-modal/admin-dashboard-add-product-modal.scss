@@ -1,3 +1,6 @@
+@use '../../../../styles/variables.scss' as *;
+@use '../../../../styles/mixins.scss' as *;
+
 .modal-dialog:has(app-admin-dashboard-add-product-modal) {
   max-width: 640px;
 }
@@ -65,6 +68,46 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+
+  &__image-label {
+    font-size: 14px;
+  }
+  
+  &__image {
+    width: 100%;
+    min-height: 163.99px;
+    border: 3px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    padding: 2rem 0px;
+    @include FlexContainerColumn;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      color: #9CA3AF;
+    }
+
+    p {
+      color: #9CA3AF;
+      margin-bottom: 0;
+    }
+
+    &--upload-label {
+      font-size: 14px;
+    }
+
+    &--size-label {
+      font-size: 12px;
+    }
+  }
+
+  &__image:hover {
+    border-color: $primary-color;
+    background-color: #F9FAFB;
   }
 
   &__fieldset {
