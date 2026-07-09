@@ -29,7 +29,8 @@
 
     <label class="add-product-modal__image-label">Product Image (Optional)</label>
     <div class="add-product-modal__image" (click)="fileInput.click()">
-      <input type="file" accept=".png, .jpg, .jpeg, .webp" #fileInput hidden (change)="onFileSelected($event)">
+      <input type="file" accept=".png, .jpg, .jpeg, .webp" #fileInput hidden (change)="onFileSelected($event)"
+      formControlName="imageUrl">
       @if (!imagePreview()) {
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus h-8 w-8"
@@ -91,10 +92,10 @@
           <span>Wholesale Price <span class="add-product-modal__required">*</span></span>
           <input
             type="number"
-            formControlName="wholesalePrice"
             placeholder="0.00"
             inputmode="decimal"
             autocomplete="off"
+            formControlName="wholesalePrice"
           />
           <p class="error">{{ formValidator.getRequiredAmountError('wholesalePrice', productForm) }}</p>
         </label>

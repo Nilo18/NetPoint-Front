@@ -26,6 +26,9 @@ export class AdminDashboardAddProductModal {
   });
   productToEdit: ProductDTO | null = null;
   initialFormValue: unknown | null = null;
+  allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
+  selectedFile = signal<File | null>(null)
+  imagePreview = signal<string | null>(null)
 
   constructor() {
     effect(() => {
@@ -65,6 +68,7 @@ export class AdminDashboardAddProductModal {
   }
 
   readonly productForm = this.formBuilder.nonNullable.group<{[key: string]: AbstractControl}>({
+    imageUrl: this.formBuilder.nonNullable.control(''),
     name: this.formBuilder.nonNullable.control('', Validators.required),
     retailPrice: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(0), 
       Validators.max(100000000)]),
@@ -75,13 +79,18 @@ export class AdminDashboardAddProductModal {
   });
 
   async addProduct() {
+    console.log(this.productForm.getRawValue());
+    // console.log('wholesalePrice:', wholesalePrice);
+    const payload = this.formatPayload()
+    for (const [key, value] of payload.entries()) {
+      console.log(key, value)
+    }
+
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
       console.log('Invalid form.')
       return;
     }
-
-    const payload = this.formatPayload()
 
     try {
       this.isSubmitting.set(true);
@@ -129,14 +138,26 @@ export class AdminDashboardAddProductModal {
   }
 
   private formatPayload() {
-    const { name, retailPrice, wholesalePrice, stock, ...dynamicAttrs } = this.productForm.getRawValue();
+    const { imageUrl, name, retailPrice, wholesalePrice, stock, ...dynamicAttrs } = this.productForm.getRawValue();
 
     const customAttributes: Record<string, CustomAttributeValue> = {};
     Object.entries(dynamicAttrs).forEach(([key, value]) => {
       customAttributes[key] = value;
     });
 
-    return { name, retailPrice, wholesalePrice, stock, customAttributes };
+    const formData = new FormData()
+
+    formData.append('name', name);
+    formData.append('retailPrice', String(retailPrice));
+    formData.append('wholesalePrice', wholesalePrice == null ? '' : String(wholesalePrice));
+    formData.append('stock', String(stock));
+    formData.append('customAttributesJson', JSON.stringify(customAttributes));
+
+    const file = this.selectedFile();
+    if (file) {
+      formData.append('image', file);
+    }
+    return formData;
   }
 
   onSubmit() {
@@ -157,10 +178,6 @@ export class AdminDashboardAddProductModal {
 
     return stdAttributeType === 'boolean'
   }
-
-  allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
-  selectedFile = signal<File | null>(null)
-  imagePreview = signal<string | null>(null)
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement

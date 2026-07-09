@@ -330,7 +330,7 @@ export class ProductService {
     }
   }
 
-  async addProduct(product: ProductAdditionCredentials) {
+  async addProduct(product: FormData) {
     try {
       const res = await firstValueFrom(this.http.post(`${this.baseUrl}/api/products`, product))
       console.log(res)
@@ -341,7 +341,7 @@ export class ProductService {
     }  
   }
 
-  async editProduct(productId: number, product: ProductAdditionCredentials) {
+  async editProduct(productId: number, product: FormData) {
     try {
       const res = await firstValueFrom(this.http.put(`${this.baseUrl}/api/products/${productId}`, product))
       console.log(res)

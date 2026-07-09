@@ -60,6 +60,64 @@
     }
   }
 
+  &__image-template {
+    display: inline-flex;
+    width: 75px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d9e2ef;
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.34) 48%, rgba(255, 255, 255, 0) 49%),
+      linear-gradient(135deg, #f7f9fc 0%, #eef4ff 52%, #ecfdf5 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+
+  &__image-template-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  &__image-template-frame {
+    fill: #ffffff;
+    stroke: #9aa9bd;
+    stroke-width: 1.8;
+  }
+
+  &__image-template-sun {
+    fill: #f7c948;
+  }
+
+  &__image-template-mountain {
+    fill: none;
+    stroke: #63748a;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.2;
+  }
+
+  &__image-template-box {
+    fill: #4f46e5;
+    stroke: #4338ca;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+  }
+
+  &__image-template-box-line {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.7);
+    stroke-linecap: round;
+    stroke-width: 1.4;
+  }
+
+  &__image {
+    width: 75px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
   &__body-row {
     text-align: center;
   }

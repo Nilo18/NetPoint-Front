@@ -42,6 +42,7 @@
     <table class="inventory-management__table table mb-0 align-middle">
       <thead>
         <tr>
+          <th scope="col">Image</th>
           <th scope="col">Product</th>
           <th scope="col">Stock</th>
           <th scope="col">Wholesale</th>
@@ -101,6 +102,21 @@
         } @else {
           @for (product of products.value()?.items; track product.name) {
           <tr class="inventory-management__body-row">
+            <td>
+              @if (product.imageUrl) {
+                <img [src]="product.imageUrl" class="inventory-management__image">
+              } @else {
+                <div class="inventory-management__image-template" aria-hidden="true">
+                  <svg class="inventory-management__image-template-icon" viewBox="0 0 64 64">
+                    <rect class="inventory-management__image-template-frame" x="10" y="12" width="44" height="34" rx="7" />
+                    <circle class="inventory-management__image-template-sun" cx="43" cy="23" r="4" />
+                    <path class="inventory-management__image-template-mountain" d="M16 40 27 29l8 8 6-6 7 9" />
+                    <path class="inventory-management__image-template-box" d="M22 49h20l5-9H27l-5 9Z" />
+                    <!-- <path class="inventory-management__image-template-box-line" d="M27 40v9" /> -->
+                  </svg>
+                </div>
+              }
+            </td>
             <th scope="row">{{ product.name }}</th>
             <td>
               <span class="inventory-management__stock" [class.inventory-management__stock--low]="product.stock < 50">
