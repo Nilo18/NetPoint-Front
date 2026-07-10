@@ -68,7 +68,7 @@ export class UserPagination {
 
       this.currentPage.set(res.currentPage + 1)
       this.totalPages.set(res.totalPages)
-      this.usersLoaded.emit(res.userList)
+      this.usersLoaded.emit(res.items)
       console.log('currentPage after:', this.currentPage(), typeof this.currentPage())
     } catch (error: unknown) {
       this.backendError.emit(this.backendErrorHandler.getErrorMessage(error, 'We could not load this page. Please try again.'))

@@ -26,13 +26,19 @@ export class SettingsUserManagement {
   backendErrMsg = signal('')
   decodedTokenCompanyId = signal<number | null>(null)
 
-  ngOnInit() {
+  async ngOnInit() {
     const token = localStorage.getItem('net_token') 
 
     if (token) {
       const decodedToken = jwtDecode<{ companyId: string | number }>(token)
       const companyId = Number(decodedToken.companyId)
       this.decodedTokenCompanyId.set(companyId)
+      console.log("decodedTokenCompanyId is: ", this.decodedTokenCompanyId())
+      // const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
+      // if (res) {
+      //   this.settingsService.setIsLoading(false)
+      //   this.userList.set(res.userList)
+      // }
     } else {
       console.log('Token missing.')
       this.settingsService.setIsLoading(false)
@@ -60,7 +66,7 @@ export class SettingsUserManagement {
       if (this.userList().length === 0) {
         const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
         if (res) {
-          this.userList.set(res.userList)
+          this.userList.set(res.items)
           // this.settingsService.setIsLoading(false)
           // this.gotSearchError.set(false)
           // this.backendErrMsg.set('')
@@ -96,7 +102,7 @@ export class SettingsUserManagement {
       this.settingsService.setIsLoading(true)
       const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
       if (res) {
-        this.userList.set(res.userList)
+        this.userList.set(res.items)
         this.settingsService.setIsLoading(false)
         this.gotSearchError.set(false)
         this.backendErrMsg.set('')

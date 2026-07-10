@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild, WritableSignal } from '@angular/core';
 import { SettingsHeader } from '../settings-header/settings-header';
 import { SettingsSidebar } from '../settings-sidebar/settings-sidebar';
 import { SettingsPageService } from '../../../services/settings-page-service';
@@ -38,6 +38,11 @@ export class BusinessInfo {
   deleteErrMsg: WritableSignal<string> = signal('')
   deleteSuccessMsg: WritableSignal<string> = signal('')
   isLoading: WritableSignal<boolean> = signal(true)
+  readonly isImageDragged = signal(false)
+  readonly selectedImage = signal<File | null>(null)
+  readonly imagePreview = signal<string | null>(null)
+  readonly imageError = signal('')
+  private readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
   oldValue = {
     id: -1,
     name: '', 
@@ -92,6 +97,76 @@ export class BusinessInfo {
       this.formValidator.getRequiredError(field, form),
       this.formValidator.getEmailError(field, form)
     )
+  }
+
+  onImageDragOver(event: DragEvent) {
+    event.preventDefault()
+    event.stopPropagation()
+    this.isImageDragged.set(true)
+  }
+
+  onImageDragLeave(event: DragEvent) {
+    const dropZone = event.currentTarget as HTMLElement
+    const nextTarget = event.relatedTarget as Node | null
+
+    if (!nextTarget || !dropZone.contains(nextTarget)) {
+      this.isImageDragged.set(false)
+    }
+  }
+
+  onImageDrop(event: DragEvent) {
+    event.preventDefault()
+    event.stopPropagation()
+    this.isImageDragged.set(false)
+
+    const file = event.dataTransfer?.files.item(0)
+    if (file) {
+      this.processImage(file)
+    }
+  }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement
+    const file = input.files?.item(0)
+
+    if (file) {
+      this.processImage(file)
+    }
+
+    input.value = ''
+  }
+
+  private processImage(file: File) {
+    const maxSize = 5 * 1024 * 1024
+    this.imageError.set('')
+
+    if (!this.allowedImageTypes.includes(file.type)) {
+      this.imageError.set('Choose a PNG, JPG, JPEG, or WEBP image.')
+      return
+    }
+
+    if (file.size > maxSize) {
+      this.imageError.set('The image must be 5 MB or smaller.')
+      return
+    }
+
+    this.selectedImage.set(file)
+    const reader = new FileReader()
+    reader.onload = () => this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
+    reader.readAsDataURL(file)
+  }
+
+  @ViewChild('businessImageInput') businessImageInput?: ElementRef<HTMLInputElement>
+
+  removeImage(event: MouseEvent) {
+    event.stopPropagation()
+    this.selectedImage.set(null)
+    this.imagePreview.set(null)
+    this.imageError.set('')
+
+    if (this.businessImageInput) {
+      this.businessImageInput.nativeElement.value = ''
+    }
   }
 
   async onSubmit() {

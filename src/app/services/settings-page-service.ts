@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface GetUserListResponse {
-  userList: User[],
+  items: User[],
   page: number,
   size: number,
   totalPages: number,
