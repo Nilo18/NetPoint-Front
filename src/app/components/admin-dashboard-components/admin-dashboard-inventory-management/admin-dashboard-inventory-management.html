@@ -73,6 +73,9 @@
         } @else if (products.isLoading() || tableIsLoading()) {
           @for (_ of [1, 2, 3, 4]; track _) {
             <tr class="inventory-management__skeleton-row" aria-hidden="true">
+              <td>
+                <span class="skeleton inventory-management__skeleton-image"></span>
+              </td>
               <th scope="row">
                 <span class="skeleton skeleton--line inventory-management__skeleton-name"></span>
               </th>
