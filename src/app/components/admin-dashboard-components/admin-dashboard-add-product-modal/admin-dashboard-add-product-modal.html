@@ -28,10 +28,30 @@
     }
 
     <label class="add-product-modal__image-label">Product Image (Optional)</label>
-    <div class="add-product-modal__image" (click)="fileInput.click()">
+    <div
+    class="add-product-modal__image"
+    [class.add-product-modal__image--dragged]="isDragged()"
+    [attr.aria-label]="isDragged() ? 'Drop your image file here' : 'Upload a product image'"
+    (click)="fileInput.click()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)">
       <input type="file" accept=".png, .jpg, .jpeg, .webp" #fileInput hidden (change)="onFileSelected($event)"
       formControlName="imageUrl">
-      @if (!imagePreview()) {
+      @if (isDragged()) {
+        <div class="add-product-modal__image--drop-content" aria-live="polite">
+          <span class="add-product-modal__image--drop-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 13V2"></path>
+              <path d="m7 7 5-5 5 5"></path>
+              <path d="M5 13a4 4 0 0 0 0 8h14a4 4 0 0 0 .65-7.95A7 7 0 0 0 6.33 11.4 4 4 0 0 0 5 13Z"></path>
+            </svg>
+          </span>
+          <p class="add-product-modal__image--drop-label">Drop your file here</p>
+          <p class="add-product-modal__image--drop-hint">Release to upload your product image</p>
+        </div>
+      } @else if (!imagePreview()) {
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus h-8 w-8"
         data-fg-dhs194="1.36:376.9902:node_modules/lucide-react:437:31:18755:33:e:ImagePlus::::::fUJ" 
@@ -44,9 +64,7 @@
         </svg>
         <p class="add-product-modal__image--upload-label">Click or drag to upload an image</p>
         <p class="add-product-modal__image--size-label">PNG, JPG, JPEG, WEBP up to 5MB</p>
-      }
-
-      @if (imagePreview()) {
+      } @else {
         <div class="add-product-modal__image--preview">
           <img [src]="imagePreview()" alt="Upload Preview">
           <button type="button" aria-label="Remove image preview" (click)="removePreview($event)">

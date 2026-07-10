@@ -21,6 +21,7 @@ export class AdminDashboardAddProductModal {
   private backendErrorHandler = inject(BackendErrorHandlerService);
   protected readonly isSubmitting = signal(false);
   protected readonly backendError = signal<string | null>(null);
+  protected readonly isDragged = signal<boolean>(false)
   customAttributes = resource<ProductAttribute[], unknown>({
     loader: () => this.productService.getArtificialProductAttributes(),
   });
@@ -59,6 +60,10 @@ export class AdminDashboardAddProductModal {
       return
     }
 
+    console.log(this.productToEdit)
+    if (this.productToEdit.imageUrl) {
+      this.imagePreview.set(this.productToEdit.imageUrl)
+    }
     this.productForm.patchValue({
       name: this.productToEdit.name,
       retailPrice: this.productToEdit.retailPrice,
@@ -77,6 +82,57 @@ export class AdminDashboardAddProductModal {
     stock: this.formBuilder.nonNullable.control('', [Validators.required, Validators.min(1), 
       Validators.max(1000000)]),
   });
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault()
+    event.stopPropagation()
+    this.isDragged.set(true)
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault()
+    event.stopPropagation()
+    this.isDragged.set(false)
+
+    const files = event.dataTransfer?.files
+    if (files && files[0]) {
+      this.processFile(files[0])
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement
+
+    if (input.files && input.files[0]) {
+      this.processFile(input.files[0])
+      input.value = ''
+    }
+  }
+
+  private processFile(file: File) {
+    const maxSize = 5 * 1024 * 1024
+    if (file.size > maxSize) {
+      alert('File size is too large')
+      return
+    }
+
+    if (!this.allowedTypes.includes(file.type)) {
+      alert('Invalid file format')
+      return
+    }
+
+    this.selectedFile.set(file)
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  onDragLeave() {
+    this.isDragged.set(false)
+  }
 
   async addProduct() {
     console.log(this.productForm.getRawValue());
@@ -177,36 +233,6 @@ export class AdminDashboardAddProductModal {
     const stdAttributeType = attributeType.trim().toLowerCase()
 
     return stdAttributeType === 'boolean'
-  }
-
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement
-
-    if (input.files && input.files[0]) {
-      const file = input.files[0]
-
-      const maxSize = 5 * 1024 * 1024
-      if (file.size > maxSize) {
-        alert('File size is too large')
-        input.value = ''
-        return
-      }
-
-      if (!this.allowedTypes.includes(file.type)) {
-        alert('Invalid file format')
-        input.value = ''
-        return
-      }
-
-      this.selectedFile.set(file)
-
-      const reader = new FileReader()
-
-      reader.onload = () => {
-        this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
-      }
-      reader.readAsDataURL(file)
-    }
   }
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
