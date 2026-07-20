@@ -7,6 +7,7 @@ export interface CompanyDTO {
   id: number,
   name: string,
   email: string,
+  logo?: string
   industry: string
 }
 

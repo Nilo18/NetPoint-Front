@@ -191,11 +191,30 @@ export class SettingsPageService {
     }
   }
 
-  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: VerificationCredentials) {
+  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: VerificationCredentials, logo?: File) {
+    const formData = new FormData();
+
+    formData.append(
+      'data',
+      new Blob(
+        [JSON.stringify({
+          id: newInfo.id,
+          name: newInfo.name,
+          email: newInfo.email,
+          industry: newInfo.industry,
+          verificationInfo
+        })],
+        { type: 'application/json' }
+      )
+    );
+
+    if (logo) {
+      formData.append('logo', logo);
+    }
     try {
-      console.log('Sending: ', {verificationInfo, newInfo })
+      // console.log('Sending: ', {verificationInfo, newInfo })
       const res = await firstValueFrom(this.http.put<CompanyDTO>(`${this.baseUrl}/settings/company`, 
-        {verificationInfo, newInfo }))
+        formData))
       console.log('Received company update response: ', res)
       return res
     } catch (error) {

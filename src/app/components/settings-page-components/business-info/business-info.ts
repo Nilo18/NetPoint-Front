@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, ViewChild, WritableSignal } from '@angular/core';
 import { SettingsHeader } from '../settings-header/settings-header';
 import { SettingsSidebar } from '../settings-sidebar/settings-sidebar';
 import { SettingsPageService } from '../../../services/settings-page-service';
@@ -40,7 +40,8 @@ export class BusinessInfo {
   isLoading: WritableSignal<boolean> = signal(true)
   readonly isImageDragged = signal(false)
   readonly selectedImage = signal<File | null>(null)
-  readonly imagePreview = signal<string | null>(null)
+  readonly oldImagePreview = signal<string | null | undefined>(null)
+  readonly imagePreview = signal<string | null | undefined>(null)
   readonly imageError = signal('')
   private readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
   oldValue = {
@@ -82,11 +83,19 @@ export class BusinessInfo {
         email: res.email,
         industry: res.industry
       })
+      this.oldImagePreview.set(res.logo)
+      this.imagePreview.set(res.logo)
     } catch (error: unknown) {
       this.gotBackendError.set(true)
       this.errMsg.set(this.backendErrorHandler.getErrorMessage(error, 'Could not load business information.'))
     }
   }
+
+  // constructor() {
+  //   effect(() => {
+
+  //   })
+  // }
 
   getRequiredError(field: string, form: FormGroup): string {
     return this.formValidator.getRequiredError(field, form)
@@ -152,6 +161,7 @@ export class BusinessInfo {
 
     this.selectedImage.set(file)
     const reader = new FileReader()
+    this.oldImagePreview.set(this.imagePreview())
     reader.onload = () => this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
     reader.readAsDataURL(file)
   }
@@ -178,7 +188,8 @@ export class BusinessInfo {
       return
     }
 
-    if (JSON.stringify(this.businessForm.value) === JSON.stringify(this.oldValue)) {
+    if (JSON.stringify(this.businessForm.value) === JSON.stringify(this.oldValue) && 
+        this.imagePreview() === this.oldImagePreview()) {
       console.log('Form value has not changed, avoiding redundant request')
       return
     }
@@ -216,6 +227,7 @@ export class BusinessInfo {
 
     modalRef.componentInstance.tempToken = tempToken
     modalRef.componentInstance.companyInfo = this.businessForm.value
+    modalRef.componentInstance.selectedImage = this.selectedImage()
 
     return modalRef
   }

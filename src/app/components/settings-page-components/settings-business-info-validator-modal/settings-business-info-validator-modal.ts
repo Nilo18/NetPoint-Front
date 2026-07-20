@@ -20,6 +20,7 @@ export class SettingsBusinessInfoValidatorModal {
   private backendErrorHandler = inject(BackendErrorHandlerService)
   tempToken!: string
   companyInfo!: CompanyDTO
+  selectedImage!: File | null
   verificationForm!: FormGroup
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
@@ -59,7 +60,8 @@ export class SettingsBusinessInfoValidatorModal {
     this.errMsg.set('')
 
     try {
-      const res = await this.settingsService.updateCompanyBusinessInfo(this.companyInfo, this.verificationForm.value) 
+      const logo = this.selectedImage ? this.selectedImage : undefined
+      const res = await this.settingsService.updateCompanyBusinessInfo(this.companyInfo, this.verificationForm.value, logo) 
 
       if (res) {
         this.requestSent.set(false)
