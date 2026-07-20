@@ -19,11 +19,13 @@ export class UserInfoUpdateValidatorModal {
   private backendErrorHandler = inject(BackendErrorHandlerService)
   tempToken!: string
   userInfo!: User
+  selectedImage!: File | null
   newPassword!: string
   verificationForm!: FormGroup
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
   requestSent: WritableSignal<boolean> = signal(false)
+  shouldRemoveImage!: boolean;
 
   ngOnInit() {
     console.log('Received userInfo as: ', this.userInfo)
@@ -58,9 +60,32 @@ export class UserInfoUpdateValidatorModal {
     this.gotBackendError.set(false)
     this.errMsg.set('')
 
+    const formData = new FormData()
+
+    // const userBlob = new Blob(
+    //   [JSON.stringify(this.userInfo)],
+    //   { type: "application/json" }
+    // )
+
+    const request = {
+      newInfo: this.userInfo,
+      verificationInfo: this.verificationForm.value,
+      removeImage: this.shouldRemoveImage
+    }
+
+    const requestBlob = new Blob(
+      [JSON.stringify(request)],
+      { type: "application/json" }
+    )
+
+    formData.append('request', requestBlob)
+    if (this.selectedImage) {
+      formData.append('image', this.selectedImage)
+    }
+
     try {
       const res = await this.settingsService.updatePersonalInfo(
-        this.userInfo, this.verificationForm.value
+        formData
       ) 
 
       if (res) {

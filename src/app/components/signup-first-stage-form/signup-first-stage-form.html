@@ -1,4 +1,25 @@
 <form class="form__body" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="image-uploader-field">
+        <span class="image-uploader-label">Company Image (Optional)</span>
+        <div class="image-uploader" [class.image-uploader--dragged]="isImageDragged()" role="button" tabindex="0"
+            aria-label="Upload a company image" (click)="companyImageInput.click()"
+            (keydown.enter)="companyImageInput.click()" (keydown.space)="$event.preventDefault(); companyImageInput.click()"
+            (dragover)="onImageDragOver($event)" (dragleave)="onImageDragLeave()" (drop)="onImageDrop($event)">
+            <input #companyImageInput type="file" accept=".png,.jpg,.jpeg,.webp" hidden (change)="onImageSelected($event)">
+            @if (isImageDragged()) {
+                <div class="image-uploader__drop-content"><span class="image-uploader__drop-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 13V2"/><path d="m7 7 5-5 5 5"/><path d="M5 13a4 4 0 0 0 0 8h14a4 4 0 0 0 .65-7.95A7 7 0 0 0 6.33 11.4 4 4 0 0 0 5 13Z"/></svg>
+                </span><strong>Drop your file here</strong><span>Release to upload your company image</span></div>
+            } @else if (imagePreview()) {
+                <div class="image-uploader__preview"><img [src]="imagePreview()" alt="Selected company image preview">
+                    <button type="button" aria-label="Remove company image" (click)="removeImage($event)">×</button></div>
+            } @else {
+                <svg class="image-uploader__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
+                <p class="image-uploader__upload-label">Click or drag to upload an image</p><p class="image-uploader__size-label">PNG, JPG, JPEG, WEBP up to 5MB</p>
+            }
+        </div>
+        @if (imageError()) { <p class="image-uploader-error" role="alert">{{ imageError() }}</p> }
+    </div>
     <div class="form__field-container">
         <label for="name">Business Name</label>
         <input type="text" class="form-control" placeholder="Your Store Name" formControlName="name">
@@ -33,12 +54,12 @@
         formControlName="password">
         <p class="error">{{ getPasswordError('password', signupForm) }}</p>
     </div>
-    <div class="form__field-container">
+    <!-- <div class="form__field-container">
         <label for="confirm_password">Confirm Password</label>
         <input type="password" class="form-control" placeholder="Re-enter password" 
         formControlName="confirm_password">
         <p class="error">{{ getConfirmPasswordError('confirm_password', signupForm) }}</p>
-    </div>
+    </div> -->
     <div class="form__buttons">
         <!-- @if (showNextStep()) {
             <button class="form__prevbtn btn" (click)="setShowNextStep(false)">Back</button>

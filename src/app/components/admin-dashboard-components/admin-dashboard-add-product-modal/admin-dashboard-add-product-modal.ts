@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
+import { ImageUploadProcessorService } from '../../../services/image-upload-processor-service';
 
 @Component({
   selector: 'app-admin-dashboard-add-product-modal',
@@ -19,6 +20,7 @@ export class AdminDashboardAddProductModal {
   public formValidator = inject(FormValidatorService);
   private productService = inject(ProductService);
   private backendErrorHandler = inject(BackendErrorHandlerService);
+  private imageUploadProcessor = inject(ImageUploadProcessorService);
   protected readonly isSubmitting = signal(false);
   protected readonly backendError = signal<string | null>(null);
   protected readonly isDragged = signal<boolean>(false)
@@ -27,9 +29,9 @@ export class AdminDashboardAddProductModal {
   });
   productToEdit: ProductDTO | null = null;
   initialFormValue: unknown | null = null;
-  allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
   selectedFile = signal<File | null>(null)
   imagePreview = signal<string | null>(null)
+  imageError = signal('')
 
   constructor() {
     effect(() => {
@@ -48,10 +50,11 @@ export class AdminDashboardAddProductModal {
           this.formBuilder.nonNullable.control(savedValue ?? defaultValue, Validators.required)
         )
 
-        if (this.productToEdit && !this.initialFormValue) {
-          this.initialFormValue = this.productForm.getRawValue();
-        }
       })
+
+      if (this.productToEdit && !this.initialFormValue) {
+        this.initialFormValue = this.productForm.getRawValue();
+      }
     })
   }
 
@@ -84,54 +87,19 @@ export class AdminDashboardAddProductModal {
   });
 
   onDragOver(event: DragEvent) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.isDragged.set(true)
+    this.imageUploadProcessor.onDragOver(event, this.isDragged)
   }
 
   onDrop(event: DragEvent) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.isDragged.set(false)
-
-    const files = event.dataTransfer?.files
-    if (files && files[0]) {
-      this.processFile(files[0])
-    }
+    this.imageUploadProcessor.onDrop(event, this.imageUploadState)
   }
 
   onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement
-
-    if (input.files && input.files[0]) {
-      this.processFile(input.files[0])
-      input.value = ''
-    }
-  }
-
-  private processFile(file: File) {
-    const maxSize = 5 * 1024 * 1024
-    if (file.size > maxSize) {
-      alert('File size is too large')
-      return
-    }
-
-    if (!this.allowedTypes.includes(file.type)) {
-      alert('Invalid file format')
-      return
-    }
-
-    this.selectedFile.set(file)
-
-    const reader = new FileReader()
-    reader.onload = () => {
-      this.imagePreview.set(typeof reader.result === 'string' ? reader.result : null)
-    }
-    reader.readAsDataURL(file)
+    this.imageUploadProcessor.onFileSelected(event, this.imageUploadState)
   }
 
   onDragLeave() {
-    this.isDragged.set(false)
+    this.imageUploadProcessor.onDragLeave(undefined, this.isDragged)
   }
 
   async addProduct() {
@@ -173,7 +141,13 @@ export class AdminDashboardAddProductModal {
       return;
     }
 
-    if (JSON.stringify(this.productForm.getRawValue()) === JSON.stringify(this.initialFormValue)) {
+    const formValueChanged =
+      JSON.stringify(this.productForm.getRawValue()) !== JSON.stringify(this.initialFormValue)
+    const imageChanged =
+      this.selectedFile() !== null ||
+      this.imagePreview() !== (this.productToEdit.imageUrl ?? null)
+
+    if (!formValueChanged && !imageChanged) {
       console.log("Form value has not changed.")
       return
     }
@@ -209,6 +183,13 @@ export class AdminDashboardAddProductModal {
     formData.append('stock', String(stock));
     formData.append('customAttributesJson', JSON.stringify(customAttributes));
 
+    if (this.productToEdit) {
+      const removeImage = Boolean(
+        this.productToEdit.imageUrl && !this.imagePreview() && !this.selectedFile()
+      )
+      formData.append('removeImage', String(removeImage));
+    }
+
     const file = this.selectedFile();
     if (file) {
       formData.append('image', file);
@@ -237,12 +218,15 @@ export class AdminDashboardAddProductModal {
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>
   removePreview(event: MouseEvent) {
-    event.stopPropagation()
-    this.imagePreview.set(null)
-    this.selectedFile.set(null)
+    this.imageUploadProcessor.removeImage(event, this.imageUploadState, this.fileInput?.nativeElement)
+  }
 
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = ''
+  private get imageUploadState() {
+    return {
+      isDragged: this.isDragged,
+      selectedFile: this.selectedFile,
+      preview: this.imagePreview,
+      error: this.imageError,
     }
   }
 

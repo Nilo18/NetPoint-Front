@@ -48,11 +48,11 @@
         <input id="biz-email" type="email" value="nikalongurashvili@gmail.com" class="form-control" formControlName="email"/>
         <p class="error">{{ getEmailError('email', businessForm) }}</p>
       </div>
-      <div class="business-form__image-field">
-        <span class="business-form__image-label">Business Image (Optional)</span>
+      <div class="business-form__image-field image-uploader-field">
+        <span class="business-form__image-label image-uploader-label">Business Image (Optional)</span>
         <div
-          class="business-form__image-upload"
-          [class.business-form__image-upload--dragged]="isImageDragged()"
+          class="business-form__image-upload image-uploader"
+          [class.image-uploader--dragged]="isImageDragged()"
           [attr.aria-label]="isImageDragged() ? 'Drop your business image here' : 'Upload a business image'"
           role="button"
           tabindex="0"
@@ -71,8 +71,8 @@
             (change)="onImageSelected($event)"
           >
           @if (isImageDragged()) {
-            <div class="business-form__image-drop-content" aria-live="polite">
-              <span class="business-form__image-icon" aria-hidden="true">
+            <div class="business-form__image-drop-content image-uploader__drop-content" aria-live="polite">
+              <span class="business-form__image-icon image-uploader__drop-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 13V2"></path>
                   <path d="m7 7 5-5 5 5"></path>
@@ -83,7 +83,7 @@
               <span>Release to upload your business image</span>
             </div>
           } @else if (imagePreview()) {
-            <div class="business-form__image-preview">
+            <div class="business-form__image-preview image-uploader__preview">
               <img [src]="imagePreview()" alt="Selected business image preview">
               <button type="button" aria-label="Remove business image" (click)="removeImage($event)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"

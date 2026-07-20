@@ -40,6 +40,11 @@
     object-fit: cover;
     object-position: center;
     box-shadow: 0 9px 18px rgba(86, 64, 231, 0.22);
+
+    &--skeleton {
+      flex-shrink: 0;
+      box-shadow: none;
+    }
   }
 
   &__store {
@@ -54,6 +59,16 @@
     font-size: 20px;
     font-weight: 700;
     line-height: 1.12;
+
+    &--skeleton {
+      width: 230px;
+      height: 22px;
+      border-radius: 6px;
+
+      @media (max-width: 520px) {
+        width: 190px;
+      }
+    }
 
     @media (max-width: 520px) {
       font-size: 21px;
@@ -181,6 +196,13 @@
     font-size: 20px;
     font-weight: 700;
     line-height: 1;
+
+    img {
+      width: inherit;
+      height: inherit;
+      border-radius: inherit;
+      object-fit: cover;
+    }
 
     span {
       font-size: 14px;

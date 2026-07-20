@@ -27,10 +27,10 @@
       </div>
     }
 
-    <label class="add-product-modal__image-label">Product Image (Optional)</label>
+    <label class="add-product-modal__image-label image-uploader-label">Product Image (Optional)</label>
     <div
-    class="add-product-modal__image"
-    [class.add-product-modal__image--dragged]="isDragged()"
+    class="add-product-modal__image image-uploader"
+    [class.image-uploader--dragged]="isDragged()"
     [attr.aria-label]="isDragged() ? 'Drop your image file here' : 'Upload a product image'"
     (click)="fileInput.click()"
     (dragover)="onDragOver($event)"
@@ -39,8 +39,8 @@
       <input type="file" accept=".png, .jpg, .jpeg, .webp" #fileInput hidden (change)="onFileSelected($event)"
       formControlName="imageUrl">
       @if (isDragged()) {
-        <div class="add-product-modal__image--drop-content" aria-live="polite">
-          <span class="add-product-modal__image--drop-icon" aria-hidden="true">
+        <div class="add-product-modal__image--drop-content image-uploader__drop-content" aria-live="polite">
+          <span class="add-product-modal__image--drop-icon image-uploader__drop-icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 13V2"></path>
@@ -65,7 +65,7 @@
         <p class="add-product-modal__image--upload-label">Click or drag to upload an image</p>
         <p class="add-product-modal__image--size-label">PNG, JPG, JPEG, WEBP up to 5MB</p>
       } @else {
-        <div class="add-product-modal__image--preview">
+        <div class="add-product-modal__image--preview image-uploader__preview">
           <img [src]="imagePreview()" alt="Upload Preview">
           <button type="button" aria-label="Remove image preview" (click)="removePreview($event)">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -80,6 +80,9 @@
         </div>
       }
     </div>
+    @if (imageError()) {
+      <p class="image-uploader-error" role="alert">{{ imageError() }}</p>
+    }
 
     <fieldset class="add-product-modal__fieldset" [disabled]="isSubmitting()">
       <label class="add-product-modal__field">

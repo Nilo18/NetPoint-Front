@@ -42,13 +42,43 @@
     </div>
   } @else {
     <div class="personal-info__profile">
-      <div class="personal-info__avatar" aria-hidden="true">
-        {{ userInfo.name.charAt(0).toUpperCase() }}
-      </div>
-      <div class="personal-info__identity">
-        <p class="personal-info__name">{{ userInfo.name }}</p>
-        <p class="personal-info__role">{{ userInfo.role }}</p>
-      </div>
+      @if (imagePreview()) {
+        <div class="personal-info__image">
+          <img [src]="imagePreview()" alt="Profile Image">
+        </div>
+        <button
+          class="personal-info__remove-image-btn"
+          type="button"
+          aria-label="Remove profile image"
+          (click)="removeImage($event, profileImageInput)">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      } @else {
+        <div class="personal-info__avatar" aria-hidden="true">
+          {{ userInfo.name.charAt(0).toUpperCase() }}
+        </div>
+        <div class="personal-info__identity">
+          <p class="personal-info__name">{{ userInfo.name }}</p>
+          <p class="personal-info__role">{{ userInfo.role }}</p>
+        </div>
+      }
+      <input type="file" #profileImageInput
+        accept=".png,.jpg,.jpeg,.webp"
+        hidden
+        (change)="onImageSelected($event)">
+      <button
+        class="personal-info__edit-image-btn"
+        type="button"
+        aria-label="Change profile image"
+        (click)="profileImageInput.click()">
+        <svg _ngcontent-ng-c1261490062="" aria-hidden="true" viewBox="0 0 24 24">
+          <path _ngcontent-ng-c1261490062="" d="M12 20h9"></path>
+          <path _ngcontent-ng-c1261490062="" d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+        </svg>
+      </button>
     </div>
 
     <form class="personal-info__form" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">

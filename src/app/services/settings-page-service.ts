@@ -7,6 +7,7 @@ import { CompanyDTO } from './company-service';
 export interface User {
   id: number,
   name: string,
+  profileImage?: string
   email: string,
   role: string
 }
@@ -191,7 +192,8 @@ export class SettingsPageService {
     }
   }
 
-  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: VerificationCredentials, logo?: File) {
+  async updateCompanyBusinessInfo(newInfo: CompanyDTO, verificationInfo: VerificationCredentials, 
+    shouldRemoveImage: boolean, logo?: File) {
     const formData = new FormData();
 
     formData.append(
@@ -202,7 +204,8 @@ export class SettingsPageService {
           name: newInfo.name,
           email: newInfo.email,
           industry: newInfo.industry,
-          verificationInfo
+          verificationInfo,
+          removeLogo: shouldRemoveImage
         })],
         { type: 'application/json' }
       )
@@ -244,11 +247,11 @@ export class SettingsPageService {
     }
   }
 
-  async updatePersonalInfo(newInfo: User, verificationInfo: VerificationCredentials) {
+  async updatePersonalInfo(data: FormData) {
     try {
-      console.log('Sending: ', {newInfo, verificationInfo})
+      // console.log('Sending: ', {newInfo, verificationInfo})
       const res = await firstValueFrom(this.http.put<User>(`${this.baseUrl}/settings/account`,
-        {newInfo, verificationInfo}))
+        data))
       console.log(res)
       return res
     } catch (error) {

@@ -22,6 +22,7 @@ export class SettingsBusinessInfoValidatorModal {
   companyInfo!: CompanyDTO
   selectedImage!: File | null
   verificationForm!: FormGroup
+  shouldRemoveImage!: boolean
   gotBackendError: WritableSignal<boolean> = signal(false)
   errMsg: WritableSignal<string> = signal('')
   requestSent: WritableSignal<boolean> = signal(false)
@@ -59,9 +60,12 @@ export class SettingsBusinessInfoValidatorModal {
     this.gotBackendError.set(false)
     this.errMsg.set('')
 
+    // const formData =
+
     try {
       const logo = this.selectedImage ? this.selectedImage : undefined
-      const res = await this.settingsService.updateCompanyBusinessInfo(this.companyInfo, this.verificationForm.value, logo) 
+      const res = await this.settingsService.updateCompanyBusinessInfo(
+        this.companyInfo, this.verificationForm.value,  this.shouldRemoveImage, logo) 
 
       if (res) {
         this.requestSent.set(false)

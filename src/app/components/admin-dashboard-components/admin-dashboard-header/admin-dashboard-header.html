@@ -1,19 +1,34 @@
 <header class="admin-dashboard-header" aria-label="Admin dashboard header">
   <section class="admin-dashboard-header__brand" aria-label="Current store">
-    <img
-      class="admin-dashboard-header__logo"
-      ngSrc="/assets/netpoint-logo.png"
-      width="60"
-      height="60"
-      alt="NetPoint"
-      priority
-    />
+    @if (companyInfo.isLoading()) {
+      <div
+        class="admin-dashboard-header__logo admin-dashboard-header__logo--skeleton skeleton"
+        aria-hidden="true"
+      ></div>
+    } @else {
+      <img
+        class="admin-dashboard-header__logo"
+        [src]="companyInfo.value()?.logo ? companyInfo.value()?.logo : '/assets/netpoint-logo.png'"
+        width="48"
+        height="48"
+        priority
+        alt=""
+      />
+    }
 
     <div class="admin-dashboard-header__store">
-      <h1 class="admin-dashboard-header__title">{{ 
-        role === 'owner' || role === 'admin' ? 
-        'NetPoint Admin Dashboard' : 'NetPoint Catalog'}}
-      </h1>
+      @if (companyInfo.isLoading()) {
+        <div
+          class="admin-dashboard-header__title admin-dashboard-header__title--skeleton skeleton"
+          aria-hidden="true"
+        ></div>
+      } @else {
+        <h1 class="admin-dashboard-header__title">{{
+          role === 'owner' || role === 'admin'
+            ? `${companyInfo.value()?.name} Admin Dashboard`
+            : `${companyInfo.value()?.name} Catalog`
+        }}</h1>
+      }
       @if (companyInfo.isLoading()) {
         <div class="skeleton skeleton--subtitle"></div>
       } @else if (companyInfo.error()) {
@@ -60,7 +75,11 @@
       </div>
 
       <div class="admin-dashboard-header__avatar" aria-hidden="true">
-        <span>K</span>
+         @if (decodedToken.profileImage) {
+          <img [src]="decodedToken.profileImage" alt="Profile Image">
+         } @else {
+          <span>{{ decodedToken.name.charAt(0).toUpperCase() }}</span>
+         }
         <span class="admin-dashboard-header__status"></span>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SignupStateManagementService } from '../../services/signup-state-management-service';
 import { AuthService } from '../../services/auth-service';
@@ -6,12 +6,14 @@ import { Router } from '@angular/router';
 import { FormValidatorService } from '../../services/form-validator-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackendErrorHandlerService } from '../../services/backend-error-handler-service';
+import { ImageUploadProcessorService } from '../../services/image-upload-processor-service';
 
 @Component({
   selector: 'app-signup-second-stage-form',
   imports: [ReactiveFormsModule],
   templateUrl: './signup-second-stage-form.html',
   styleUrl: './signup-second-stage-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupSecondStageForm {
   signupFormStageTwo!: FormGroup
@@ -21,6 +23,11 @@ export class SignupSecondStageForm {
   private router = inject(Router)
   private formValidator = inject(FormValidatorService)
   private backendErrorHandler = inject(BackendErrorHandlerService)
+  private imageUploadProcessor = inject(ImageUploadProcessorService)
+  readonly isImageDragged = signal(false)
+  readonly imagePreview = signal<string | null>(null)
+  readonly imageError = signal('')
+  readonly selectedImage = signal<File | null>(null)
 
   ngOnInit() {
     // console.log('Checking the type: ', typeof this.signupFormStageTwo.value);
@@ -33,7 +40,12 @@ export class SignupSecondStageForm {
     })
 
     const saved = this.signupService.stageTwoData()
-    this.signupFormStageTwo.patchValue(saved)
+    if (saved) this.signupFormStageTwo.patchValue(saved)
+    const image = this.signupService.profileImage()
+    if (image) {
+      this.selectedImage.set(image)
+      this.imageUploadProcessor.previewFile(image, this.imagePreview)
+    }
   }
 
   async onFinalSubmit() {
@@ -110,6 +122,47 @@ export class SignupSecondStageForm {
 
   onBack() {
     this.signupService.setStageTwoData(this.signupFormStageTwo.value)
-    this.signupService.setShowNextStep(this.signupService.stageOneData(), false)
+    const stageOneData = this.signupService.stageOneData()
+    if (stageOneData) {
+      this.signupService.setShowNextStep(stageOneData, false)
+    }
+  }
+
+  onImageDragOver(event: DragEvent) {
+    this.imageUploadProcessor.onDragOver(event, this.isImageDragged)
+  }
+  onImageDragLeave() {
+    this.imageUploadProcessor.onDragLeave(undefined, this.isImageDragged)
+  }
+  onImageDrop(event: DragEvent) {
+    this.imageUploadProcessor.onDrop(event, this.imageUploadState, this.imageUploadOptions)
+  }
+  onImageSelected(event: Event) {
+    this.imageUploadProcessor.onFileSelected(event, this.imageUploadState, this.imageUploadOptions)
+  }
+  @ViewChild('profileImageInput') profileImageInput?: ElementRef<HTMLInputElement>
+  removeImage(event: MouseEvent) {
+    this.imageUploadProcessor.removeImage(
+      event,
+      this.imageUploadState,
+      this.profileImageInput?.nativeElement,
+      this.imageUploadOptions,
+    )
+  }
+
+  private get imageUploadState() {
+    return {
+      isDragged: this.isImageDragged,
+      selectedFile: this.selectedImage,
+      preview: this.imagePreview,
+      error: this.imageError,
+    }
+  }
+
+  private get imageUploadOptions() {
+    return {
+      onFileAccepted: (file: File) => this.signupService.setProfileImage(file),
+      onFileRemoved: () => this.signupService.setProfileImage(null),
+    }
   }
 }

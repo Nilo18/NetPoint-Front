@@ -5,6 +5,7 @@ import { FormValidatorService } from '../../../services/form-validator-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserInfoUpdateValidatorModal } from '../user-info-update-validator-modal/user-info-update-validator-modal';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
+import { ImageUploadProcessorService } from '../../../services/image-upload-processor-service';
 
 interface UserInfoFormValue extends User {
   newPassword: string | null
@@ -23,6 +24,7 @@ export class SettingsPersonalInfo {
   private formValidator = inject(FormValidatorService)
   private modalService = inject(NgbModal)
   private backendErrorHandler = inject(BackendErrorHandlerService)
+  public imageProcessor = inject(ImageUploadProcessorService)
   userInfoForm!: FormGroup
   userInfo: UserInfoFormValue = {
     id: -1,
@@ -35,6 +37,11 @@ export class SettingsPersonalInfo {
   errMsg: WritableSignal<string> = signal('')
   requestSent: WritableSignal<boolean> = signal(false)
   isLoading: WritableSignal<boolean> = signal(true)
+  selectedFile = signal<File | null>(null)
+  imagePreview = signal<string | null | undefined>(null)
+  readonly oldImagePreview = signal<string | null | undefined>(null)
+  imageError = signal('')
+  readonly shouldRemoveImage = signal(false)
 
   async ngOnInit() {
     this.userInfoForm = this.fb.group({
@@ -47,9 +54,16 @@ export class SettingsPersonalInfo {
 
     try {
       const res = await this.settingsService.getUserInfo()
+      // if (res.profileImage) {
+      this.oldImagePreview.set(res.profileImage)
+      this.imagePreview.set(res.profileImage)
+      // }
       this.isLoading.set(false)
+
+      const {profileImage, ...remainingData} = res
+
       this.userInfo = {
-        ...res,
+        ...remainingData,
         newPassword: null
       }
 
@@ -73,6 +87,26 @@ export class SettingsPersonalInfo {
     }
   }
 
+  public get imageUploadState() {
+    return {
+      isDragged: signal(false),
+      selectedFile: this.selectedFile,
+      preview: this.imagePreview,
+      error: this.imageError,
+    }
+  }
+
+  onImageSelected(event: Event) {
+    this.imageProcessor.onFileSelected(event, this.imageUploadState, {
+      onFileAccepted: () => this.shouldRemoveImage.set(false),
+    })
+  }
+
+  removeImage(event: MouseEvent, input: HTMLInputElement) {
+    this.imageProcessor.removeImage(event, this.imageUploadState, input)
+    this.shouldRemoveImage.set(Boolean(this.oldImagePreview()))
+  }
+
   getRequiredError(field: string, form: FormGroup): string {
     return this.formValidator.getRequiredError(field, form)
   }
@@ -94,7 +128,9 @@ export class SettingsPersonalInfo {
       return
     }
 
-    if (JSON.stringify(this.userInfo) === JSON.stringify(this.userInfoForm.value)) {
+    const imageChanged = this.selectedFile() !== null || this.shouldRemoveImage()
+    if (JSON.stringify(this.userInfo) === JSON.stringify(this.userInfoForm.value) &&
+        !imageChanged) {
       console.log('Form has not changed, avoiding request')
       return
     }
@@ -122,6 +158,8 @@ export class SettingsPersonalInfo {
         modalRef.componentInstance.tempToken = res.tempToken
         // modalRef.componentInstance.newPassword = newPassword || null
         modalRef.componentInstance.userInfo = this.userInfoForm.value
+        modalRef.componentInstance.selectedImage = this.selectedFile()
+        modalRef.componentInstance.shouldRemoveImage = this.shouldRemoveImage()
       }
     } catch (error: unknown) {
       this.requestSent.set(false)

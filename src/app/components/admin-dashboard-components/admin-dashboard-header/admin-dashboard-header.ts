@@ -7,7 +7,7 @@ import { CompanyDTO, CompanyService } from '../../../services/company-service';
 
 @Component({
   selector: 'app-admin-dashboard-header',
-  imports: [NgOptimizedImage],
+  imports: [],
   templateUrl: './admin-dashboard-header.html',
   styleUrl: './admin-dashboard-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +28,7 @@ export class AdminDashboardHeader {
 
     if (token) {
       this.decodedToken = token
+      console.log('Decoded token is: ', this.decodedToken)
       console.log(this.decodedToken.role)
       this.role = this.decodedToken.role.trim().toLowerCase()
     }

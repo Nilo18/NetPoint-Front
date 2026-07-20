@@ -36,7 +36,7 @@ export class AuthService {
   private baseUrl = this.baseUrlHolder.getBaseUrl()
   private router = inject(Router)
 
-  async signup(value: SignupData) {
+  async signup(value: SignupData | FormData) {
     try {
       const res = await firstValueFrom(this.http.post<any>(`${this.baseUrl}/auth/signup`, value))
       console.log(res)
