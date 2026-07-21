@@ -19,6 +19,7 @@ import { settingsChildGuard, settingsPageGuard } from './guards/settings-page-gu
 import { authGuard } from './guards/auth-guard';
 import { basicGuard } from './guards/basic-guard';
 import { inviteTokenGuard } from './guards/invite-token-guard';
+import { AuditLogPage } from './pages/audit-log-page/audit-log-page';
 
 export const routes: Routes = [
     {path: "", component: Home, canActivate: [authGuard]},
@@ -38,5 +39,6 @@ export const routes: Routes = [
         ],
     },
     {path: "setup-account", component: UserInviteTokenValidation, canActivate: [inviteTokenGuard]},
+    {path: "audit-logs", component: AuditLogPage},
     {path: "**", component: NotFoundPage}
 ];

@@ -1,0 +1,134 @@
+.audit-log-header {
+  width: 100%;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 34px 16px 40px;
+  color: #0f172a;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  &__content,
+  &__back,
+  &__export {
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    min-width: 0;
+    gap: 16px;
+  }
+
+  &__back,
+  &__export {
+    border: 0;
+    color: #111827;
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  &__back {
+    gap: 10px;
+    padding: 8px 2px;
+    border-radius: 6px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 32px;
+    flex: 0 0 1px;
+    background: #e5e7eb;
+  }
+
+  &__heading {
+    min-width: 0;
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    p {
+      margin-top: 2px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+  }
+
+  &__export {
+    flex: 0 0 auto;
+    gap: 8px;
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+  }
+
+  &__back:hover,
+  &__export:hover {
+    background: #f8fafc;
+  }
+
+  &__back:focus-visible,
+  &__export:focus-visible {
+    outline: 2px solid #6941e9;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 600px) {
+    align-items: flex-start;
+    padding: 14px 16px;
+
+    &__content {
+      gap: 10px;
+    }
+
+    &__back span,
+    &__export span {
+      display: none;
+    }
+
+    &__export {
+      min-width: 34px;
+      justify-content: center;
+      padding-inline: 8px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<header class="audit-log-header" aria-label="Audit log header">
+  <div class="audit-log-header__content">
+    <button
+      class="audit-log-header__back"
+      type="button"
+      aria-label="Back to dashboard"
+      (click)="navigateToDashboard()"
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      <span>Dashboard</span>
+    </button>
+
+    <div class="audit-log-header__divider" aria-hidden="true"></div>
+
+    <div class="audit-log-header__heading">
+      <h1>Audit Logs</h1>
+      <p>All actions across all roles</p>
+    </div>
+  </div>
+
+  <button class="audit-log-header__export" type="button">
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
+      <path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+    </svg>
+    <span>Export CSV</span>
+  </button>
+</header>
