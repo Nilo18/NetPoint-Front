@@ -169,6 +169,22 @@
     text-align: center;
   }
 
+  &__identity-skeleton {
+    display: block;
+    height: 12px;
+    margin-inline: auto;
+    border-radius: 4px;
+
+    &--name {
+      width: 82px;
+    }
+
+    &--role {
+      width: 50px;
+      height: 10px;
+    }
+  }
+
   &__email {
     color: #030712;
     font-size: 14px;
@@ -206,6 +222,10 @@
 
     span {
       font-size: 14px;
+    }
+
+    &--skeleton {
+      box-shadow: none;
     }
   }
 

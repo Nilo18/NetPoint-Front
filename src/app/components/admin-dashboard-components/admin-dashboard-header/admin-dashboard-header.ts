@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth-service';
 import { DecodedToken, TokenService } from '../../../services/token-service';
-import { CompanyDTO, CompanyService } from '../../../services/company-service';
+import { CompanyService } from '../../../services/company-service';
 
 @Component({
   selector: 'app-admin-dashboard-header',
@@ -17,8 +16,8 @@ export class AdminDashboardHeader {
   private authService = inject(AuthService)
   private tokenService = inject(TokenService)
   private companyService = inject(CompanyService)
-  companyInfo = resource({
-    loader: () => this.companyService.getCompanyInfo()
+  companyUserPayload = resource({
+    loader: () => this.companyService.getCompanyUserPayload()
   });
   decodedToken!: DecodedToken
   role!: string

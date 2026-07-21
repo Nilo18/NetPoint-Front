@@ -1,6 +1,6 @@
 <header class="admin-dashboard-header" aria-label="Admin dashboard header">
   <section class="admin-dashboard-header__brand" aria-label="Current store">
-    @if (companyInfo.isLoading()) {
+    @if (companyUserPayload.isLoading()) {
       <div
         class="admin-dashboard-header__logo admin-dashboard-header__logo--skeleton skeleton"
         aria-hidden="true"
@@ -8,7 +8,7 @@
     } @else {
       <img
         class="admin-dashboard-header__logo"
-        [src]="companyInfo.value()?.logo ? companyInfo.value()?.logo : '/assets/netpoint-logo.png'"
+        [src]="companyUserPayload.value()?.company?.logo || '/assets/netpoint-logo.png'"
         width="48"
         height="48"
         priority
@@ -17,24 +17,25 @@
     }
 
     <div class="admin-dashboard-header__store">
-      @if (companyInfo.isLoading()) {
+      @if (companyUserPayload.isLoading()) {
         <div
           class="admin-dashboard-header__title admin-dashboard-header__title--skeleton skeleton"
           aria-hidden="true"
         ></div>
       } @else {
         <h1 class="admin-dashboard-header__title">{{
-          role === 'owner' || role === 'admin'
-            ? `${companyInfo.value()?.name} Admin Dashboard`
-            : `${companyInfo.value()?.name} Catalog`
+          companyUserPayload.value()?.user?.role?.trim()?.toLowerCase() === 'owner' ||
+          companyUserPayload.value()?.user?.role?.trim()?.toLowerCase() === 'admin'
+            ? `${companyUserPayload.value()?.company?.name} Admin Dashboard`
+            : `${companyUserPayload.value()?.company?.name} Catalog`
         }}</h1>
       }
-      @if (companyInfo.isLoading()) {
+      @if (companyUserPayload.isLoading()) {
         <div class="skeleton skeleton--subtitle"></div>
-      } @else if (companyInfo.error()) {
+      } @else if (companyUserPayload.error()) {
         <p>Store</p>
       } @else {
-        <p class="admin-dashboard-header__subtitle">{{ companyInfo.value()?.name }}</p>
+        <p class="admin-dashboard-header__subtitle">{{ companyUserPayload.value()?.company?.name }}</p>
       }
     </div>
   </section>
@@ -68,20 +69,45 @@
 
     <div class="admin-dashboard-header__divider" aria-hidden="true"></div>
 
-    <div class="admin-dashboard-header__profile" aria-label="Signed in user">
+    <div
+      class="admin-dashboard-header__profile"
+      aria-label="Signed in user"
+      [attr.aria-busy]="companyUserPayload.isLoading()"
+    >
       <div class="admin-dashboard-header__identity">
-        <span class="admin-dashboard-header__email">{{ decodedToken.name }}</span>
-        <span class="admin-dashboard-header__role">{{ decodedToken.role }}</span>
+        @if (companyUserPayload.isLoading()) {
+          <span
+            class="admin-dashboard-header__identity-skeleton admin-dashboard-header__identity-skeleton--name skeleton"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="admin-dashboard-header__identity-skeleton admin-dashboard-header__identity-skeleton--role skeleton"
+            aria-hidden="true"
+          ></span>
+        } @else if (companyUserPayload.error()) {
+          <span class="admin-dashboard-header__email">User</span>
+          <span class="admin-dashboard-header__role">Unavailable</span>
+        } @else {
+          <span class="admin-dashboard-header__email">{{ companyUserPayload.value()?.user?.name }}</span>
+          <span class="admin-dashboard-header__role">{{ companyUserPayload.value()?.user?.role }}</span>
+        }
       </div>
 
-      <div class="admin-dashboard-header__avatar" aria-hidden="true">
-         @if (decodedToken.profileImage) {
-          <img [src]="decodedToken.profileImage" alt="Profile Image">
-         } @else {
-          <span>{{ decodedToken.name.charAt(0).toUpperCase() }}</span>
-         }
-        <span class="admin-dashboard-header__status"></span>
-      </div>
+      @if (companyUserPayload.isLoading()) {
+        <div
+          class="admin-dashboard-header__avatar admin-dashboard-header__avatar--skeleton skeleton"
+          aria-hidden="true"
+        ></div>
+      } @else {
+        <div class="admin-dashboard-header__avatar" aria-hidden="true">
+          @if (companyUserPayload.value()?.user?.profileImage; as profileImage) {
+          <img [src]="profileImage" alt="Profile Image">
+          } @else {
+            <span>{{ companyUserPayload.value()?.user?.name?.charAt(0)?.toUpperCase() || '?' }}</span>
+          }
+          <span class="admin-dashboard-header__status"></span>
+        </div>
+      }
     </div>
 
     <button class="admin-dashboard-header__logout" type="button" aria-label="Log out" (click)="logout()">
