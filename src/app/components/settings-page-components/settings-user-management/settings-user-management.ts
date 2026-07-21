@@ -8,6 +8,7 @@ import { DeleteRequestErrorDisplayModal } from '../../delete-request-error-displ
 import { SettingsRolePermissions } from '../settings-role-permissions/settings-role-permissions';
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
+import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-modal';
 
 @Component({
   selector: 'app-settings-user-management',
@@ -58,28 +59,36 @@ export class SettingsUserManagement {
     )
   }
 
-  async deleteUser(userId: number) {
+  deleteUser(userId: number) {
     this.settingsService.setIsLoading(true)
-    try {
-      await this.settingsService.deleteUser(userId)
-      this.userList.update(users => users.filter(user => user.id !== userId))
-      if (this.userList().length === 0) {
-        const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
-        if (res) {
-          this.userList.set(res.items)
-          // this.settingsService.setIsLoading(false)
-          // this.gotSearchError.set(false)
-          // this.backendErrMsg.set('')
-          // return
-        }
-      }
-      this.settingsService.setIsLoading(false)
-    } catch (error: unknown) {
-      const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
-        centered: true
-      })
+    const modalRef = this.modalService.open(ConfirmActionModal, {
+      centered: true
+    })
 
-      modalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(error, 'Could not delete user. Please try again.')
+    modalRef.componentInstance.title = 'Delete User Confirmation'
+    modalRef.componentInstance.description = 'Are you sure you want to remove this user from your company?'
+    modalRef.componentInstance.confirmAction = async () => {
+      try {
+        await this.settingsService.deleteUser(userId)
+        this.userList.update(users => users.filter(user => user.id !== userId))
+        if (this.userList().length === 0) {
+          const res = await this.settingsService.getUserlist(this.decodedTokenCompanyId()!, 1, 10)
+          if (res) {
+            this.userList.set(res.items)
+            // this.settingsService.setIsLoading(false)
+            // this.gotSearchError.set(false)
+            // this.backendErrMsg.set('')
+            // return
+          }
+        }
+        this.settingsService.setIsLoading(false)
+      } catch (error: unknown) {
+        const modalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
+          centered: true
+        })
+
+        modalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(error, 'Could not delete user. Please try again.')
+      }
     }
   }
 
