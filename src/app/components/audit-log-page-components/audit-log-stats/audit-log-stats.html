@@ -1,1 +1,8 @@
-<p>audit-log-stats works!</p>
+<section class="audit-log-stats">
+    @for (stat of stats; track stat.statName) {
+        <div class="audit-log-stats__stat">
+            <p>{{ stat.statName }}</p>
+            <p>{{ stat.statNumber }}</p>
+        </div>
+    }
+</section>
