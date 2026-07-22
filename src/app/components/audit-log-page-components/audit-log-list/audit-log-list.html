@@ -1,1 +1,150 @@
-<p>audit-log-list works!</p>
+<section class="audit-log-list" aria-label="Audit logs">
+  <div class="audit-log-list__filters">
+    <h2>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 5h16l-6.5 7.2V19l-3 1.5v-8.3L4 5Z" />
+      </svg>
+      Filter Logs
+    </h2>
+
+    <div class="audit-log-list__filter-fields">
+      <label class="audit-log-list__search">
+        <span class="audit-log-list__visually-hidden">Search audit logs</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="m16 16 4 4" />
+        </svg>
+        <input
+          type="search"
+          placeholder="Search by actor, event, or details..."
+          [value]="searchTerm()"
+          (input)="setSearchTerm($event)"
+        />
+      </label>
+
+      <label>
+        <span class="audit-log-list__visually-hidden">Filter by event type</span>
+        <select (change)="setEventType($event)">
+          <option value="">All event types</option>
+          @for (eventType of eventTypes; track eventType) {
+            <option [value]="eventType">{{ getEventMeta(eventType).label }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span class="audit-log-list__visually-hidden">Filter by role</span>
+        <select (change)="setRole($event)">
+          <option value="">All roles</option>
+          @for (role of roles; track role) {
+            <option [value]="role">{{ role }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="audit-log-list__logs">
+    @for (log of filteredLogs(); track log.id) {
+      @let meta = getEventMeta(log.eventType);
+      @let expanded = expandedLogId() === log.id;
+
+      <article class="audit-log-card" [class.audit-log-card--expanded]="expanded">
+        <button
+          class="audit-log-card__summary"
+          type="button"
+          [attr.aria-expanded]="expanded"
+          [attr.aria-controls]="'audit-log-details-' + log.id"
+          (click)="toggleLog(log.id)"
+        >
+          <span [class]="'audit-log-card__icon audit-log-card__icon--' + meta.tone">
+            @switch (meta.icon) {
+              @case ('sale') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 4h2l2 11h10l2-7H7" />
+                  <circle cx="9" cy="19" r="1" />
+                  <circle cx="17" cy="19" r="1" />
+                </svg>
+              }
+              @case ('product') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m12 3 7 4-7 4-7-4 7-4Z" />
+                  <path d="m5 7v8l7 4 7-4V7M12 11v8m4-10v4l3 2" />
+                </svg>
+              }
+              @case ('team') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 19v-2a5 5 0 0 1 10 0v2m2-14a3 3 0 0 1 0 6m2 2a5 5 0 0 1 4 5v1" />
+                </svg>
+              }
+              @case ('payment') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="M3 9h18m4-2h5" />
+                </svg>
+              }
+              @default {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="9" cy="8" r="3" />
+                  <path d="M3 19v-2a5 5 0 0 1 10 0v2m4-8v6m-3-3h6" />
+                </svg>
+              }
+            }
+          </span>
+
+          <span class="audit-log-card__content">
+            <span class="audit-log-card__badges">
+              <span [class]="'audit-log-card__event audit-log-card__event--' + meta.tone">{{
+                meta.label
+              }}</span>
+              <span class="audit-log-card__role">{{ log.actorRoleSnapshot }}</span>
+            </span>
+            <span class="audit-log-card__description">
+              <strong>{{ log.actorNameSnapshot }}</strong>
+              <span>{{ log.details }}</span>
+            </span>
+          </span>
+
+          <span class="audit-log-card__time">
+            {{ getRelativeTime(log.occurredAt) }}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg>
+          </span>
+        </button>
+
+        @if (expanded) {
+          <div class="audit-log-card__details" [id]="'audit-log-details-' + log.id">
+            <dl>
+              <div>
+                <dt>Log ID</dt>
+                <dd>#{{ log.id }}</dd>
+              </div>
+              <div>
+                <dt>Actor</dt>
+                <dd>{{ log.actorNameSnapshot }}</dd>
+              </div>
+              <div>
+                <dt>Role</dt>
+                <dd>{{ log.actorRoleSnapshot }}</dd>
+              </div>
+              <div>
+                <dt>Event Type</dt>
+                <dd class="audit-log-card__event-code">{{ getEventTypeName(log.eventType) }}</dd>
+              </div>
+              <div class="audit-log-card__detail-wide">
+                <dt>Timestamp</dt>
+                <dd>{{ log.occurredAt | date: "EEEE, MMMM d y 'at' HH:mm:ss" }}</dd>
+              </div>
+              <div class="audit-log-card__detail-full">
+                <dt>Details</dt>
+                <dd>{{ log.details }}</dd>
+              </div>
+            </dl>
+          </div>
+        }
+      </article>
+    } @empty {
+      <p class="audit-log-list__empty">No audit logs match your filters.</p>
+    }
+  </div>
+</section>
