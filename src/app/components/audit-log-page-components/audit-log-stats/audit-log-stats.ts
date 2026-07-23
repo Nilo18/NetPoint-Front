@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, resource } from '@angular/core';
+import { AuditLogService, AuiditLogStatsQuery } from '../../../services/audit-log-service';
 
 interface AuditLogStat {
   statName: string,
@@ -12,6 +13,23 @@ interface AuditLogStat {
   styleUrl: './audit-log-stats.scss',
 })
 export class AuditLogStats {
+  private auditLogService = inject(AuditLogService)
+  // auditLogStatsQuery: AuiditLogStatsQuery = {
+  //   eventType: this.auditLogService.getAuditLogQuery()().eventType,
+  //   role: this.auditLogService.getAuditLogQuery()().role,
+  //   search: this.auditLogService.getAuditLogQuery()().search
+  // }
+  auditLogStats = resource({
+    params: () => {
+      const currentQuery = this.auditLogService.getAuditLogQuery()()
+      return {
+        eventType: currentQuery.eventType,
+        role: currentQuery.role,
+        search: currentQuery.search
+      }
+    },
+    loader: ({ params }) => this.auditLogService.getAuditLogStats(params)
+  })
   stats: AuditLogStat[] = [
     {
       statName: 'TOTAL EVENTS',

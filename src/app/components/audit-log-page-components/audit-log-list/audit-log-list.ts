@@ -1,31 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-
-enum EventType {
-  SALE_COMPLETED,
-  PRODUCT_ADDED,
-  PRODUCT_DELETED,
-  USER_INVITED,
-  TEAM_MEMBER_ADDED,
-  TEAM_MEMBER_REMOVED,
-  COMPANY_DELETED,
-  PAYMENT_METHOD_ADDED,
-  PAYMENT_METHOD_UPDATED,
-  PAYMENT_METHOD_REMOVED,
-  PAYMENT_PLAN_CHANGED,
-  SUBSCRIPTION_CANCELLED,
-  ACCOUNT_INFO_UPDATED,
-  COMPANY_INFO_UPDATED,
-}
-
-interface AuditLog {
-  id: number;
-  eventType: EventType;
-  details: string;
-  actorNameSnapshot: string;
-  actorRoleSnapshot: string;
-  occurredAt: Date;
-}
+import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
+import { AuditLog, AuditLogQuery, AuditLogResponse, AuditLogService, EventType } from '../../../services/audit-log-service';
 
 type EventTone = 'green' | 'purple' | 'blue' | 'orange' | 'red';
 
@@ -43,123 +18,32 @@ interface EventMeta {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuditLogList {
-  readonly auditLogs: AuditLog[] = [
-    {
-      id: 1,
-      eventType: EventType.SALE_COMPLETED,
-      details: 'Sale #1042 — $128.50 — 4 items (Wireless Mouse, USB-C Hub, Notebook, Pen Set)',
-      actorNameSnapshot: 'Maria Santos',
-      actorRoleSnapshot: 'Cashier',
-      occurredAt: new Date(),
-    },
-    {
-      id: 2,
-      eventType: EventType.PRODUCT_ADDED,
-      details: 'Added product "Ergonomic Keyboard Pro" — Retail $89.99, Wholesale $42.00, Stock 50',
-      actorNameSnapshot: 'James Reyes',
-      actorRoleSnapshot: 'Admin',
-      occurredAt: new Date(Date.now() - 18 * 60_000),
-    },
-    {
-      id: 3,
-      eventType: EventType.ACCOUNT_INFO_UPDATED,
-      details: 'Updated email from alex.old@demo.com to alex@demo.com',
-      actorNameSnapshot: 'Alex Kim',
-      actorRoleSnapshot: 'Owner',
-      occurredAt: new Date(Date.now() - 35 * 60_000),
-    },
-    {
-      id: 4,
-      eventType: EventType.SALE_COMPLETED,
-      details: 'Sale #1041 — $47.00 — 2 items (HDMI Cable, Screen Cleaner)',
-      actorNameSnapshot: 'Maria Santos',
-      actorRoleSnapshot: 'Cashier',
-      occurredAt: new Date(Date.now() - 60 * 60_000),
-    },
-    {
-      id: 5,
-      eventType: EventType.TEAM_MEMBER_ADDED,
-      details: 'Added cashier Priya Nair (priya@demo.com) to the team',
-      actorNameSnapshot: 'Alex Kim',
-      actorRoleSnapshot: 'Owner',
-      occurredAt: new Date(Date.now() - 2 * 60 * 60_000),
-    },
-    {
-      id: 6,
-      eventType: EventType.PAYMENT_METHOD_ADDED,
-      details: 'Added Visa card ending in 4242 as default payment method',
-      actorNameSnapshot: 'Alex Kim',
-      actorRoleSnapshot: 'Owner',
-      occurredAt: new Date(Date.now() - 3 * 60 * 60_000),
-    },
-    {
-      id: 7,
-      eventType: EventType.PRODUCT_DELETED,
-      details: 'Deleted product "Legacy Barcode Reader" (SKU: BR-001)',
-      actorNameSnapshot: 'James Reyes',
-      actorRoleSnapshot: 'Admin',
-      occurredAt: new Date(Date.now() - 5 * 60 * 60_000),
-    },
-    {
-      id: 8,
-      eventType: EventType.SALE_COMPLETED,
-      details: 'Sale #1040 — $215.00 — 1 item (Standing Desk Mat)',
-      actorNameSnapshot: 'Priya Nair',
-      actorRoleSnapshot: 'Cashier',
-      occurredAt: new Date(Date.now() - 6 * 60 * 60_000),
-    },
-  ];
-
-  readonly eventTypes = Object.values(EventType).filter(
-    (value): value is EventType => typeof value === 'number',
-  );
-  readonly roles = [...new Set(this.auditLogs.map((log) => log.actorRoleSnapshot))];
-  readonly searchTerm = signal('');
-  readonly selectedEventType = signal<EventType | null>(null);
-  readonly selectedRole = signal('');
-  readonly expandedLogId = signal<number | null>(null);
-
-  readonly filteredLogs = computed(() => {
-    const query = this.searchTerm().trim().toLowerCase();
-    const eventType = this.selectedEventType();
-    const role = this.selectedRole();
-
-    return this.auditLogs.filter((log) => {
-      const matchesQuery =
-        !query ||
-        [
-          log.actorNameSnapshot,
-          log.actorRoleSnapshot,
-          log.details,
-          this.getEventMeta(log.eventType).label,
-        ].some((value) => value.toLowerCase().includes(query));
-
-      return (
-        matchesQuery &&
-        (eventType === null || log.eventType === eventType) &&
-        (!role || log.actorRoleSnapshot === role)
-      );
-    });
+  private auditLogService = inject(AuditLogService)
+  auditLogsData = resource({
+    params: () => this.auditLogService.auditLogQuery(),
+    loader: ({ params }) => this.auditLogService.getAuditLogs(params)
   });
 
-  setSearchTerm(event: Event): void {
-    this.searchTerm.set((event.target as HTMLInputElement).value);
+  onEventTypeChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value
+    this.auditLogService.updateQuery({ eventType: value })
   }
 
-  setEventType(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    this.selectedEventType.set(value === '' ? null : (Number(value) as EventType));
+  onRoleChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value
+    this.auditLogService.updateQuery({ role: value })
   }
 
-  setRole(event: Event): void {
-    this.selectedRole.set((event.target as HTMLSelectElement).value);
-  }
+  readonly eventTypes = Object.values(EventType)
+  readonly roles = [...new Set(this.auditLogsData.value()?.items.map((log) => log.actorRoleSnapshot))];
+  readonly expandedLogId = signal<number | null>(null);
 
   toggleLog(id: number): void {
     this.expandedLogId.update((expandedId) => (expandedId === id ? null : id));
   }
 
   getEventMeta(eventType: EventType): EventMeta {
+    console.log('Looking for eventType: ', eventType)
     const metadata: Record<EventType, EventMeta> = {
       [EventType.SALE_COMPLETED]: { label: 'Sale Completed', tone: 'green', icon: 'sale' },
       [EventType.PRODUCT_ADDED]: { label: 'Product Added', tone: 'purple', icon: 'product' },
@@ -177,6 +61,7 @@ export class AuditLogList {
       [EventType.COMPANY_INFO_UPDATED]: { label: 'Company Info Updated', tone: 'blue', icon: 'account' },
     };
 
+    console.log('Returning metadata[eventType]: ', metadata[eventType])
     return metadata[eventType];
   }
 
@@ -184,8 +69,18 @@ export class AuditLogList {
     return EventType[eventType];
   }
 
-  getRelativeTime(date: Date): string {
-    const elapsedMinutes = Math.max(0, Math.floor((Date.now() - date.getTime()) / 60_000));
+  getRelativeTime(value: Date | string): string {
+    const date = value instanceof Date ? value : new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return 'Unknown date';
+    }
+
+    const elapsedMinutes = Math.max(
+      0,
+      Math.floor((Date.now() - date.getTime()) / 60_000),
+    );
+
 
     if (elapsedMinutes < 1) return 'just now';
     if (elapsedMinutes < 60) return `${elapsedMinutes} minute${elapsedMinutes === 1 ? '' : 's'} ago`;

@@ -14,17 +14,12 @@
           <circle cx="11" cy="11" r="6.5" />
           <path d="m16 16 4 4" />
         </svg>
-        <input
-          type="search"
-          placeholder="Search by actor, event, or details..."
-          [value]="searchTerm()"
-          (input)="setSearchTerm($event)"
-        />
+        <input type="search" placeholder="Search by actor, event, or details..." />
       </label>
 
       <label>
         <span class="audit-log-list__visually-hidden">Filter by event type</span>
-        <select (change)="setEventType($event)">
+        <select (change)="onEventTypeChange($event)">
           <option value="">All event types</option>
           @for (eventType of eventTypes; track eventType) {
             <option [value]="eventType">{{ getEventMeta(eventType).label }}</option>
@@ -34,7 +29,7 @@
 
       <label>
         <span class="audit-log-list__visually-hidden">Filter by role</span>
-        <select (change)="setRole($event)">
+        <select (change)="onRoleChange($event)">
           <option value="">All roles</option>
           @for (role of roles; track role) {
             <option [value]="role">{{ role }}</option>
@@ -45,7 +40,7 @@
   </div>
 
   <div class="audit-log-list__logs">
-    @for (log of filteredLogs(); track log.id) {
+    @for (log of auditLogsData.value()?.items; track log.id) {
       @let meta = getEventMeta(log.eventType);
       @let expanded = expandedLogId() === log.id;
 
@@ -57,8 +52,15 @@
           [attr.aria-controls]="'audit-log-details-' + log.id"
           (click)="toggleLog(log.id)"
         >
-          <span [class]="'audit-log-card__icon audit-log-card__icon--' + meta.tone">
-            @switch (meta.icon) {
+          <span
+            class="audit-log-card__icon"
+            [class.audit-log-card__icon--green]="meta?.tone === 'green'"
+            [class.audit-log-card__icon--purple]="meta?.tone === 'purple'"
+            [class.audit-log-card__icon--blue]="meta?.tone === 'blue'"
+            [class.audit-log-card__icon--orange]="meta?.tone === 'orange'"
+            [class.audit-log-card__icon--red]="meta?.tone === 'red'"
+          >
+            @switch (meta?.icon) {
               @case ('sale') {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 4h2l2 11h10l2-7H7" />
@@ -95,9 +97,16 @@
 
           <span class="audit-log-card__content">
             <span class="audit-log-card__badges">
-              <span [class]="'audit-log-card__event audit-log-card__event--' + meta.tone">{{
-                meta.label
-              }}</span>
+              <span
+                class="audit-log-card__event"
+                [class.audit-log-card__event--green]="meta?.tone === 'green'"
+                [class.audit-log-card__event--purple]="meta?.tone === 'purple'"
+                [class.audit-log-card__event--blue]="meta?.tone === 'blue'"
+                [class.audit-log-card__event--orange]="meta?.tone === 'orange'"
+                [class.audit-log-card__event--red]="meta?.tone === 'red'"
+              >
+                {{ meta?.label ?? log.eventType }}
+              </span>
               <span class="audit-log-card__role">{{ log.actorRoleSnapshot }}</span>
             </span>
             <span class="audit-log-card__description">
@@ -108,7 +117,9 @@
 
           <span class="audit-log-card__time">
             {{ getRelativeTime(log.occurredAt) }}
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 10 5 5 5-5" />
+            </svg>
           </span>
         </button>
 
@@ -129,7 +140,7 @@
               </div>
               <div>
                 <dt>Event Type</dt>
-                <dd class="audit-log-card__event-code">{{ getEventTypeName(log.eventType) }}</dd>
+                <dd class="audit-log-card__event-code">{{ log.eventType }}</dd>
               </div>
               <div class="audit-log-card__detail-wide">
                 <dt>Timestamp</dt>
