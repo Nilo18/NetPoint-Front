@@ -14,12 +14,21 @@
           <circle cx="11" cy="11" r="6.5" />
           <path d="m16 16 4 4" />
         </svg>
-        <input type="search" placeholder="Search by actor, event, or details..." />
+        <input
+          type="search"
+          placeholder="Search by actor or details..."
+          [formControl]="searchValue"
+          [attr.aria-busy]="auditLogsData.isLoading()"
+
+        />
       </label>
 
       <label>
         <span class="audit-log-list__visually-hidden">Filter by event type</span>
-        <select (change)="onEventTypeChange($event)">
+        <select
+          [disabled]="auditLogsData.isLoading()"
+          (change)="onEventTypeChange($event)"
+        >
           <option value="">All event types</option>
           @for (eventType of eventTypes; track eventType) {
             <option [value]="eventType">{{ getEventMeta(eventType).label }}</option>
@@ -29,7 +38,10 @@
 
       <label>
         <span class="audit-log-list__visually-hidden">Filter by role</span>
-        <select (change)="onRoleChange($event)">
+        <select
+          [disabled]="auditLogsData.isLoading()"
+          (change)="onRoleChange($event)"
+        >
           <option value="">All roles</option>
           @for (role of roles; track role) {
             <option [value]="role">{{ role }}</option>
@@ -39,8 +51,20 @@
     </div>
   </div>
 
-  <div class="audit-log-list__logs">
-    @for (log of auditLogsData.value()?.items; track log.id) {
+  <div class="audit-log-list__logs" [attr.aria-busy]="auditLogsData.isLoading()">
+    @if (auditLogsData.error()) {
+      <div class="audit-log-list__state audit-log-list__state--error" role="alert">
+        <strong>Audit logs could not be loaded.</strong>
+        <span>Please check your connection or try again.</span>
+        <button type="button" (click)="retryLoad()">Try again</button>
+      </div>
+    } @else if (auditLogsData.isLoading()) {
+      <div class="audit-log-list__state" role="status">
+        <span class="audit-log-list__spinner" aria-hidden="true"></span>
+        <span>Loading audit logs…</span>
+      </div>
+    } @else {
+      @for (log of auditLogsData.value()?.items; track log.id) {
       @let meta = getEventMeta(log.eventType);
       @let expanded = expandedLogId() === log.id;
 
@@ -154,8 +178,17 @@
           </div>
         }
       </article>
-    } @empty {
-      <p class="audit-log-list__empty">No audit logs match your filters.</p>
+      } @empty {
+        <p class="audit-log-list__empty">No audit logs match your filters.</p>
+      }
     }
   </div>
+  @if (!auditLogsData.error() && (auditLogsData.value()?.totalPages ?? 0) > 0) {
+    <app-audit-log-pagination
+      [totalPages]="auditLogsData.value()?.totalPages ?? 0"
+      [currentPage]="(auditLogsData.value()?.currentPage ?? 0) + 1"
+      [loading]="auditLogsData.isLoading()"
+      (pageChange)="handlePageChange($event)"
+    />
+  }
 </section>

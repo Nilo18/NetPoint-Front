@@ -11,13 +11,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   ]
 
   const isPublic = publicUrls.some(url => {
-    console.log('req.url is: ', req.url)
-    console.log('being compared to: ', url)
+    // console.log('req.url is: ', req.url)
+    // console.log('being compared to: ', url)
     return req.url.includes(url)
   })
 
   if (isPublic) {
-    console.log('Public url detected, skipping token check')
+    // console.log('Public url detected, skipping token check')
     return next(req)
   }
 

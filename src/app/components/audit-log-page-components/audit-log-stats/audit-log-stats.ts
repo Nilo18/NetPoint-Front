@@ -1,4 +1,4 @@
-import { Component, inject, resource } from '@angular/core';
+import { Component, computed, inject, resource } from '@angular/core';
 import { AuditLogService, AuiditLogStatsQuery } from '../../../services/audit-log-service';
 
 interface AuditLogStat {
@@ -30,30 +30,32 @@ export class AuditLogStats {
     },
     loader: ({ params }) => this.auditLogService.getAuditLogStats(params)
   })
-  stats: AuditLogStat[] = [
-    {
+  stats = computed(() => {
+    const logStats = this.auditLogStats.value()
+
+    return [{
       statName: 'TOTAL EVENTS',
-      statNumber: 20
+      statNumber: logStats?.totalEvents
     },
     {
       statName: 'SALES',
-      statNumber: 6
+      statNumber: logStats?.sales
     },
     {
       statName: 'PRODUCT CHANGES',
-      statNumber: 3
+      statNumber: logStats?.productChanges
     },
     {
       statName: 'TEAM CHANGES',
-      statNumber: 3
+      statNumber: logStats?.teamChanges
     },
     {
       statName: 'PAYMENT CHANGES',
-      statNumber: 4
+      statNumber: logStats?.paymentChanges
     },
     {
       statName: 'ACCOUNT CHANGES',
-      statNumber: 4
+      statNumber: logStats?.accountChanges
     },
-  ]
+  ]})
 }

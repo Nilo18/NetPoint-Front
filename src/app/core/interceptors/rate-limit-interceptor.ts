@@ -6,7 +6,7 @@ import { RateLimitErrorModal } from '../../components/rate-limit-error-modal/rat
 
 export const rateLimitInterceptor: HttpInterceptorFn = (req, next) => {
   const modal = inject(NgbModal)
-  console.log('RATE LIMIT INTERCEPTOR IS RUNNING')
+  // console.log('RATE LIMIT INTERCEPTOR IS RUNNING')
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {

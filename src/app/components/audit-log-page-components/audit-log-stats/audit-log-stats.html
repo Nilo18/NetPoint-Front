@@ -1,8 +1,18 @@
-<section class="audit-log-stats">
-    @for (stat of stats; track stat.statName) {
+<section class="audit-log-stats" [attr.aria-busy]="auditLogStats.isLoading()">
+  @if (auditLogStats.isLoading()) {
+    @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+      <div class="audit-log-stats__stat audit-log-stats__stat--loading" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </div>
+    }
+    <span class="audit-log-stats__loading-label">Loading audit log statistics…</span>
+  } @else {
+    @for (stat of stats(); track stat.statName) {
         <div class="audit-log-stats__stat">
             <p>{{ stat.statName }}</p>
             <p>{{ stat.statNumber }}</p>
         </div>
     }
+  }
 </section>

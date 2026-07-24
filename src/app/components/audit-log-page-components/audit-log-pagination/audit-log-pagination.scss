@@ -1,0 +1,35 @@
+@use '../../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables' as *;
+
+.audit-log-pagination {
+  @include FlexContainerColumn;
+  margin-top: 18px;
+
+  .pagination {
+    gap: 1px;
+    margin-bottom: 6px;
+
+    .page-link {
+      color: $primary-color;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .loading {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}
+
+.selected-page {
+  border-color: $primary-color-hover !important;
+  background: #f2efff;
+  color: $primary-color-hover !important;
+  font-weight: 700;
+}

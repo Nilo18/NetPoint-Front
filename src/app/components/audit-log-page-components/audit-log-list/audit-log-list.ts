@@ -1,6 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
-import { AuditLog, AuditLogQuery, AuditLogResponse, AuditLogService, EventType } from '../../../services/audit-log-service';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { AuditLogService, EventType } from '../../../services/audit-log-service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuditLogPagination } from '../audit-log-pagination/audit-log-pagination';
 
 type EventTone = 'green' | 'purple' | 'blue' | 'orange' | 'red';
 
@@ -12,17 +16,32 @@ interface EventMeta {
 
 @Component({
   selector: 'app-audit-log-list',
-  imports: [DatePipe],
+  imports: [DatePipe, ReactiveFormsModule, AuditLogPagination],
   templateUrl: './audit-log-list.html',
   styleUrl: './audit-log-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuditLogList {
-  private auditLogService = inject(AuditLogService)
-  auditLogsData = resource({
+  private readonly auditLogService = inject(AuditLogService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly auditLogsData = rxResource({
     params: () => this.auditLogService.auditLogQuery(),
-    loader: ({ params }) => this.auditLogService.getAuditLogs(params)
+    stream: ({ params }) => this.auditLogService.getAuditLogs(params),
   });
+  readonly searchValue = new FormControl('', { nonNullable: true });
+
+  ngOnInit(): void {
+    this.searchValue.valueChanges
+      .pipe(
+        map(query => query.trim()),
+        debounceTime(250),
+        distinctUntilChanged(),
+        tap(search => this.auditLogService.updateQuery({ search })),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
 
   onEventTypeChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value
@@ -35,7 +54,7 @@ export class AuditLogList {
   }
 
   readonly eventTypes = Object.values(EventType)
-  readonly roles = [...new Set(this.auditLogsData.value()?.items.map((log) => log.actorRoleSnapshot))];
+  readonly roles = ['Owner', 'Admin', 'Cashier']
   readonly expandedLogId = signal<number | null>(null);
 
   toggleLog(id: number): void {
@@ -43,7 +62,7 @@ export class AuditLogList {
   }
 
   getEventMeta(eventType: EventType): EventMeta {
-    console.log('Looking for eventType: ', eventType)
+    // console.log('Looking for eventType: ', eventType)
     const metadata: Record<EventType, EventMeta> = {
       [EventType.SALE_COMPLETED]: { label: 'Sale Completed', tone: 'green', icon: 'sale' },
       [EventType.PRODUCT_ADDED]: { label: 'Product Added', tone: 'purple', icon: 'product' },
@@ -61,7 +80,7 @@ export class AuditLogList {
       [EventType.COMPANY_INFO_UPDATED]: { label: 'Company Info Updated', tone: 'blue', icon: 'account' },
     };
 
-    console.log('Returning metadata[eventType]: ', metadata[eventType])
+    // console.log('Returning metadata[eventType]: ', metadata[eventType])
     return metadata[eventType];
   }
 
@@ -90,5 +109,13 @@ export class AuditLogList {
 
     const days = Math.floor(hours / 24);
     return `${days} day${days === 1 ? '' : 's'} ago`;
+  }
+
+  handlePageChange(displayPage: number): void {
+    this.auditLogService.updateQuery({ page: displayPage - 1 });
+  }
+
+  retryLoad(): void {
+    this.auditLogsData.reload();
   }
 }

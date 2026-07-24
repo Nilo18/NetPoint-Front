@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 
 export enum EventType {
   SALE_COMPLETED = 'SALE_COMPLETED',
@@ -45,6 +45,16 @@ export interface AuditLogResponse {
   totalPages: number
 }
 
+export interface AuditLogStatsResponse {
+  totalEvents: number;
+  sales: number;
+  productChanges: number;
+  teamChanges: number;
+  paymentChanges: number;
+  accountChanges: number;
+  companyChanges: number;
+}
+
 export interface AuiditLogStatsQuery {
   eventType: string,
   role: string,
@@ -78,23 +88,32 @@ export class AuditLogService {
     }))
   }
   
-  async getAuditLogs(auditLogQuery: AuditLogQuery) {
-    const httpParams = new HttpParams()
+   getAuditLogs(auditLogQuery: AuditLogQuery): Observable<AuditLogResponse> {
+    const params = new HttpParams()
     .set("page", auditLogQuery.page)
     .set("size", auditLogQuery.size)
     .set("eventType", auditLogQuery.eventType)
     .set("role", auditLogQuery.role)
     .set("search", auditLogQuery.search)
-    try {
-      const res = await firstValueFrom(this.http.get<AuditLogResponse>(`${this.baseUrl}/api/audit-logs`, {
-        params: httpParams
-      }))
-      console.log(res)
-      return res
-    } catch (error) {
-      console.log("Couldn't get audit logs: ", error)
-      throw error
-    }
+    // try {
+    const res = this.http.get<AuditLogResponse>(
+      `${this.baseUrl}/api/audit-logs`,
+      { params },
+    ).pipe(
+      tap({
+        next: response => {
+          console.log(response)
+          console.log([...new Set(response.items.map((log) => log.actorRoleSnapshot))])
+        },
+        error: error => console.log("Couldn't get audit logs: ", error)
+      })
+    );
+    // console.log(res.subscribe(value => console.log(value)))
+    return res
+    // } catch (error) {
+      // console.log("Couldn't get audit logs: ", error)
+      // throw error
+    // }
   }
 
   async getAuditLogStats(auditLogStatsQuery: AuiditLogStatsQuery) {
@@ -103,7 +122,7 @@ export class AuditLogService {
     .set("role", auditLogStatsQuery.role)
     .set("search", auditLogStatsQuery.search)
     try {
-      const res = await firstValueFrom(this.http.get(`${this.baseUrl}/api/audit-logs/stats`, {
+      const res = await firstValueFrom(this.http.get<AuditLogStatsResponse>(`${this.baseUrl}/api/audit-logs/stats`, {
         params: httpParams
       }))
       console.log(res)
