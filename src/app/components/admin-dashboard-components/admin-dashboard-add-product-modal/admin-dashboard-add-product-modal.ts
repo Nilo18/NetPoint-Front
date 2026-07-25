@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, resource, signal, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAttributeValue, ProductAttribute, ProductDTO, ProductService } from '../../../services/product-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
@@ -47,7 +47,10 @@ export class AdminDashboardAddProductModal {
 
         this.productForm.addControl(
           attr.attributeName,
-          this.formBuilder.nonNullable.control(savedValue ?? defaultValue, Validators.required)
+          this.formBuilder.nonNullable.control(
+            savedValue ?? defaultValue,
+            this.getCustomAttributeValidators(attr.attributeType),
+          )
         )
 
       })
@@ -214,6 +217,42 @@ export class AdminDashboardAddProductModal {
     const stdAttributeType = attributeType.trim().toLowerCase()
 
     return stdAttributeType === 'boolean'
+  }
+
+  getCustomAttributeError(attribute: ProductAttribute): string {
+    const control = this.productForm.get(attribute.attributeName)
+
+    if (!control?.touched) return ''
+    if (control.hasError('required') || control.hasError('whitespace')) {
+      return `${attribute.attributeName} is required.`
+    }
+    if (control.hasError('maxlength')) {
+      return `${attribute.attributeName} must be at most 255 characters long.`
+    }
+    if (control.hasError('invalidNumber')) {
+      return `${attribute.attributeName} must be a valid number.`
+    }
+    if (control.hasError('invalidDate')) {
+      return `${attribute.attributeName} must be a valid date.`
+    }
+
+    return ''
+  }
+
+  private getCustomAttributeValidators(attributeType: string): ValidatorFn[] {
+    const type = attributeType.trim().toLowerCase()
+
+    if (type === 'boolean') {
+      return [Validators.required]
+    }
+    if (type === 'number') {
+      return [Validators.required, this.formValidator.finiteNumberValidator]
+    }
+    if (type === 'date') {
+      return [Validators.required, this.formValidator.validDateValidator]
+    }
+
+    return [Validators.required, Validators.maxLength(255), this.formValidator.nonWhitespaceValidator]
   }
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>

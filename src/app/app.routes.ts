@@ -39,6 +39,6 @@ export const routes: Routes = [
         ],
     },
     {path: "setup-account", component: UserInviteTokenValidation, canActivate: [inviteTokenGuard]},
-    {path: "audit-logs", component: AuditLogPage},
+    {path: "audit-logs", component: AuditLogPage, canActivate: [adminDashboardGuard]},
     {path: "**", component: NotFoundPage}
 ];

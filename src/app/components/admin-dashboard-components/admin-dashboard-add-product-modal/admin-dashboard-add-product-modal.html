@@ -149,17 +149,34 @@
         } @else {
           @for (attribute of customAttributes.value(); track attribute.id) {
             <label class="add-product-modal__field">
-              <span>{{ attribute.attributeName }}</span>
+              <span>
+                {{ attribute.attributeName }}
+                <span class="add-product-modal__required">*</span>
+              </span>
               @if (isInputTypeBoolean(attribute.attributeType)) {
-                <select [formControlName]="attribute.attributeName">
+                <select
+                  [formControlName]="attribute.attributeName"
+                  [attr.aria-invalid]="productForm.get(attribute.attributeName)?.invalid"
+                >
                   <option [ngValue]="true">True</option>
                   <option [ngValue]="false">False</option>
                 </select>
               } @else if (attribute.attributeType.trim().toLowerCase() === 'number') {
-                <input type="number" [formControlName]="attribute.attributeName">
+                <input
+                  type="number"
+                  inputmode="decimal"
+                  [formControlName]="attribute.attributeName"
+                  [attr.aria-invalid]="productForm.get(attribute.attributeName)?.invalid"
+                >
               } @else {
-                <input [type]="attribute.attributeType" [formControlName]="attribute.attributeName">
+                <input
+                  [type]="attribute.attributeType.trim().toLowerCase()"
+                  [formControlName]="attribute.attributeName"
+                  [attr.maxlength]="attribute.attributeType.trim().toLowerCase() === 'text' || attribute.attributeType.trim().toLowerCase() === 'string' ? 255 : null"
+                  [attr.aria-invalid]="productForm.get(attribute.attributeName)?.invalid"
+                >
               }
+              <p class="error" role="alert">{{ getCustomAttributeError(attribute) }}</p>
             </label>
           }
         }
