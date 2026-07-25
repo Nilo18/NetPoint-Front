@@ -1,43 +1,35 @@
-import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth-service';
-import { DecodedToken, TokenService } from '../../../services/token-service';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, resource, signal, viewChild } from '@angular/core';
 import { CompanyService } from '../../../services/company-service';
+import { AdminDashboardHeaderDropdown } from '../admin-dashboard-header-dropdown/admin-dashboard-header-dropdown';
 
 @Component({
   selector: 'app-admin-dashboard-header',
-  imports: [],
+  imports: [AdminDashboardHeaderDropdown],
   templateUrl: './admin-dashboard-header.html',
   styleUrl: './admin-dashboard-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:click)': 'closeDropdownOnOutsideClick($event)',
+  },
 })
 export class AdminDashboardHeader {
-  private router = inject(Router)
-  private authService = inject(AuthService)
-  private tokenService = inject(TokenService)
   private companyService = inject(CompanyService)
+  private readonly profile = viewChild<ElementRef<HTMLElement>>('profile')
+
   companyUserPayload = resource({
     loader: () => this.companyService.getCompanyUserPayload()
   });
-  decodedToken!: DecodedToken
-  role!: string
+  readonly showDropdown = signal(false)
 
-  ngOnInit() {
-    const token = this.tokenService.getDecodedToken()
+  setShowDropdown(val: boolean): void {
+    this.showDropdown.set(val)
+  }
 
-    if (token) {
-      this.decodedToken = token
-      console.log('Decoded token is: ', this.decodedToken)
-      console.log(this.decodedToken.role)
-      this.role = this.decodedToken.role.trim().toLowerCase()
+  closeDropdownOnOutsideClick(event: MouseEvent): void {
+    const target = event.target
+
+    if (target instanceof Node && !this.profile()?.nativeElement.contains(target)) {
+      this.showDropdown.set(false)
     }
-  }
-
-  logout() {
-    this.authService.logout()
-  }
-
-  navToSettings() {
-    this.router.navigate(['/settings'])
   }
 }

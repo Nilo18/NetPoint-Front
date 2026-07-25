@@ -1,0 +1,79 @@
+.admin-dashboard-dropdown {
+  width: 224px;
+  overflow: hidden;
+  border: 1px solid #e1e4e8;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
+  color: #111827;
+
+  &__identity {
+    display: grid;
+    gap: 3px;
+    padding: 13px 13px 10px;
+  }
+
+  &__name {
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__role {
+    overflow: hidden;
+    color: #6941e9;
+    font-size: 12px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__menu {
+    display: grid;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 13px;
+    border: 0;
+    border-top: 1px solid #eceef1;
+    background: transparent;
+    color: #1f2937;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.25;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: #f7f5ff;
+      color: #6941e9;
+      outline: none;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.7;
+    }
+
+    &--logout {
+      color: #ef2b2d;
+    }
+  }
+}

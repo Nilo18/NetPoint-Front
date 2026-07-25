@@ -41,40 +41,14 @@
   </section>
 
   <nav class="admin-dashboard-header__actions" aria-label="Admin actions">
-    <a class="admin-dashboard-header__settings" type="button" aria-label="Settings" href="/settings">
-      <svg
-        class="admin-dashboard-header__settings-icon"
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        width="22"
-        height="22"
-      >
-        <path
-          d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        />
-        <path
-          d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.06.06a2.1 2.1 0 0 1-2.97 2.97l-.06-.06a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V21.4a2.1 2.1 0 0 1-4.2 0v-.09a1.8 1.8 0 0 0-1.18-1.66 1.8 1.8 0 0 0-1.98.36l-.06.06a2.1 2.1 0 0 1-2.97-2.97l.06-.06a1.8 1.8 0 0 0 .36-1.98 1.8 1.8 0 0 0-1.66-1.1H1.9a2.1 2.1 0 0 1 0-4.2h.09a1.8 1.8 0 0 0 1.66-1.18 1.8 1.8 0 0 0-.36-1.98l-.06-.06a2.1 2.1 0 0 1 2.97-2.97l.06.06a1.8 1.8 0 0 0 1.98.36h.08a1.8 1.8 0 0 0 1.1-1.66V1.9a2.1 2.1 0 0 1 4.2 0v.09a1.8 1.8 0 0 0 1.1 1.66 1.8 1.8 0 0 0 1.98-.36l.06-.06a2.1 2.1 0 0 1 2.97 2.97l-.06.06a1.8 1.8 0 0 0-.36 1.98v.08a1.8 1.8 0 0 0 1.66 1.1h.09a2.1 2.1 0 0 1 0 4.2h-.09A1.8 1.8 0 0 0 19.4 15Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-        />
-      </svg>
-      <span>Settings</span>
-    </a>
-
-    <div class="admin-dashboard-header__divider" aria-hidden="true"></div>
-
     <div
+      #profile
       class="admin-dashboard-header__profile"
       aria-label="Signed in user"
       [attr.aria-busy]="companyUserPayload.isLoading()"
+      (click)="setShowDropdown(!showDropdown())"
     >
-      <div class="admin-dashboard-header__identity">
+      <!-- <div class="admin-dashboard-header__identity">
         @if (companyUserPayload.isLoading()) {
           <span
             class="admin-dashboard-header__identity-skeleton admin-dashboard-header__identity-skeleton--name skeleton"
@@ -91,7 +65,7 @@
           <span class="admin-dashboard-header__email">{{ companyUserPayload.value()?.user?.name }}</span>
           <span class="admin-dashboard-header__role">{{ companyUserPayload.value()?.user?.role }}</span>
         }
-      </div>
+      </div> -->
 
       @if (companyUserPayload.isLoading()) {
         <div
@@ -108,27 +82,14 @@
           <span class="admin-dashboard-header__status"></span>
         </div>
       }
+    @if (showDropdown()){
+      <app-admin-dashboard-header-dropdown
+        class="admin-dashboard-header__dropdown-wrapper"
+        [name]="companyUserPayload.value()?.user?.name || ''"
+        [role]="companyUserPayload.value()?.user?.role || ''"
+      >
+      </app-admin-dashboard-header-dropdown>
+    }
     </div>
-
-    <button class="admin-dashboard-header__logout" type="button" aria-label="Log out" (click)="logout()">
-      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-        <path
-          d="M15 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-        />
-        <path
-          d="M10 17l5-5-5-5M15 12H3"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-        />
-      </svg>
-    </button>
   </nav>
 </header>
