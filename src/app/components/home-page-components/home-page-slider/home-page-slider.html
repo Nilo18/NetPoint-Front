@@ -1,0 +1,48 @@
+<section class="home-page-slider" aria-labelledby="testimonial-heading">
+  <div class="home-page-slider__heading">
+    <h2 id="testimonial-heading">Loved by Businesses Everywhere</h2>
+    <p>See what our customers are saying about NetPoint</p>
+  </div>
+
+  <div class="home-page-slider__viewport" aria-live="polite">
+    <div class="home-page-slider__cards">
+      @for (card of visibleCards(); track card.name) {
+        <article class="home-page-slider__card">
+          <div class="home-page-slider__rating" aria-label="5 out of 5 stars">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <span aria-hidden="true">★</span>
+            }
+          </div>
+
+          <span class="home-page-slider__quote" aria-hidden="true">”</span>
+          <p class="home-page-slider__description">{{ card.description }}</p>
+
+          <div class="home-page-slider__customer">
+            <img
+              [ngSrc]="card.profile"
+              width="48"
+              height="48"
+              [alt]="card.name + ' profile photo'"
+            />
+            <div>
+              <p class="home-page-slider__name">{{ card.name }}</p>
+              <p class="home-page-slider__position">{{ card.position }}</p>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+
+  <div class="home-page-slider__pagination" aria-label="Testimonial pages">
+    @for (page of pages; track page) {
+      <button
+        type="button"
+        [class.home-page-slider__dot--active]="activePage() === page"
+        [attr.aria-label]="'Show testimonial page ' + (page + 1)"
+        [attr.aria-current]="activePage() === page ? 'true' : null"
+        (click)="selectPage(page)"
+      ></button>
+    }
+  </div>
+</section>

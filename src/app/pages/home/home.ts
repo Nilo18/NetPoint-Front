@@ -5,6 +5,7 @@ import { FeaturesSection } from '../../components/features-section/features-sect
 import { CallToActionComponent } from '../../components/call-to-action-component/call-to-action-component';
 import { Footer } from '../../components/footer/footer';
 import { PartnerCompanies } from '../../components/partner-companies/partner-companies';
+import { HomePageSlider } from '../../components/home-page-components/home-page-slider/home-page-slider';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { PartnerCompanies } from '../../components/partner-companies/partner-com
     Header,
     Banner,
     FeaturesSection,
+    HomePageSlider,
     PartnerCompanies,
     CallToActionComponent,
     Footer
