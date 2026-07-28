@@ -77,5 +77,12 @@ export const routes: Routes = [
                 ({PricingPage}) => PricingPage
             )
     },
+    {
+        path: "compliance",
+        loadComponent: () =>
+            import('./pages/compliance-page/compliance-page').then(
+                ({ CompliancePage }) => CompliancePage
+            ),
+    },
     {path: "**", component: NotFoundPage}
 ];
