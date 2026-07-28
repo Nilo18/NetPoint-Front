@@ -40,5 +40,13 @@ export const routes: Routes = [
     },
     {path: "setup-account", component: UserInviteTokenValidation, canActivate: [inviteTokenGuard]},
     {path: "audit-logs", component: AuditLogPage, canActivate: [adminDashboardGuard]},
+    {
+        path: "security",
+        canActivate: [authGuard],
+        loadComponent: () =>
+            import('./pages/security-details-page/security-details-page').then(
+                ({ SecurityDetailsPage }) => SecurityDetailsPage
+            ),
+    },
     {path: "**", component: NotFoundPage}
 ];
