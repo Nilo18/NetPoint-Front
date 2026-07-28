@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.comparison {
+  padding: 98px 0;
+  background: #fff;
+
+  &__inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 64px;
+  }
+
+  &__header {
+    max-width: 670px;
+    margin: 0 auto 45px;
+    text-align: center;
+
+    > span {
+      color: #5b50f0;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 12px 0 0;
+      color: #11121c;
+      font-size: clamp(29px, 3.2vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    p {
+      margin: 14px 0 0;
+      color: #737683;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+  }
+
+  &__scroll {
+    overflow-x: auto;
+    border: 1px solid #e2e3e8;
+    border-radius: 14px;
+    box-shadow: 0 12px 34px rgba(27, 26, 59, .06);
+  }
+
+  table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 17px 20px;
+    border-bottom: 1px solid #ececf0;
+    text-align: center;
+  }
+
+  thead th {
+    background: #f7f7fa;
+    color: #252630;
+    font-size: 12px;
+    font-weight: 750;
+
+    &:nth-child(3) {
+      background: #f1efff;
+      color: #4e43dd;
+    }
+
+    span {
+      display: block;
+      width: fit-content;
+      margin: 5px auto 0;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #5b50f0;
+      color: #fff;
+      font-size: 7px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+  }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  tbody th {
+    color: #353743;
+    font-weight: 650;
+    text-align: left;
+  }
+
+  tbody td {
+    color: #686b78;
+
+    &:nth-child(3) {
+      background: rgba(245, 243, 255, .52);
+    }
+  }
+
+  &__yes {
+    width: 21px;
+    height: 21px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e7f8ee;
+    color: #288f55;
+    font-size: 11px;
+    font-weight: 800;
+  }
+}
+
+@media (max-width: 650px) {
+  .comparison {
+    padding: 78px 0;
+
+    &__inner {
+      padding: 0 24px;
+    }
+  }
+}

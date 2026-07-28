@@ -1,0 +1,70 @@
+<section class="plan-cards">
+  <div class="plan-cards__inner">
+    <div class="plan-cards__grid">
+      @for (plan of plans; track plan.name) {
+        <article
+          class="plan-cards__card"
+          [class.plan-cards__card--featured]="plan.name === 'Professional'"
+        >
+          @if (plan.name === 'Professional') {
+            <span class="plan-cards__badge">Most popular</span>
+          }
+
+          <div class="plan-cards__content">
+            <h2>{{ plan.name }}</h2>
+            <p class="plan-cards__intent">{{ plan.customerIntent }}</p>
+
+            <div class="plan-cards__price">
+              @if (cardPriceMode() === 'Monthly') {
+                <strong>${{ plan.pricePerMonth }}</strong>
+                <span>/ month</span>
+              } @else {
+                <strong>${{ plan.pricePerYear }}</strong>
+                <span>/ year</span>
+              }
+            </div>
+
+            <div class="plan-cards__divider"></div>
+
+            <ul>
+              @for (condition of plan.conditions; track condition) {
+                <li>
+                  <span class="plan-cards__check">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </span>
+                  {{ condition }}
+                </li>
+              }
+            </ul>
+          </div>
+
+          <a
+            class="plan-cards__action"
+            [class.plan-cards__action--featured]="plan.name === 'Professional'"
+            href="/signup"
+          >
+            Get started
+          </a>
+        </article>
+      }
+    </div>
+
+    <div class="plan-cards__included">
+      <strong>
+        <span class="plan-cards__included-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 5 6v5c0 4.7 2.8 8.1 7 10 4.2-1.9 7-5.3 7-10V6l-7-3Z" />
+            <path d="m9 12 2 2 4-5" />
+          </svg>
+        </span>
+        Included with every plan
+      </strong>
+      <span>Custom product schema</span>
+      <span>Cashier-first workspace</span>
+      <span>Role-based access</span>
+      <span>Secure business workspace</span>
+    </div>
+  </div>
+</section>

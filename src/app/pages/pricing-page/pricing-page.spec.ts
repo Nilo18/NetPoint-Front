@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { Footer } from './footer';
+import { PricingPage } from './pricing-page';
 
-describe('Footer', () => {
-  let component: Footer;
-  let fixture: ComponentFixture<Footer>;
+describe('PricingPage', () => {
+  let component: PricingPage;
+  let fixture: ComponentFixture<PricingPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Footer],
-      providers: [provideRouter([])],
+      imports: [PricingPage],
+      providers: [provideRouter([])]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Footer);
+    fixture = TestBed.createComponent(PricingPage);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

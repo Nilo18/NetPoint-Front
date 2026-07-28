@@ -1,0 +1,11 @@
+<div class="pricing-page-container">
+    <app-header/>
+    <main class="pricing-page">
+        <app-pricing-page-heading (priceModeChange)="handlePriceModeChange($event)"/>
+        <app-pricing-page-plan-cards [cardPriceMode]="priceMode()"/>
+        <app-pricing-page-plan-comparison-table/>
+        <app-pricing-page-billing-faq/>
+        <app-pricing-page-signup-cta/>
+    </main>
+    <app-footer class="footer"/>
+</div>

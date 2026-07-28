@@ -56,5 +56,26 @@ export const routes: Routes = [
                 ({ SolutionsPage }) => SolutionsPage
             ),
     },
+    {
+        path: "privacy",
+        loadComponent: () =>
+            import('./pages/privacy-page/privacy-page').then(
+                ({ PrivacyPage }) => PrivacyPage
+            ),
+    },
+    {
+        path: "terms",
+        loadComponent: () =>
+            import('./pages/terms-page/terms-page').then(
+                ({ TermsPage }) => TermsPage
+            ),
+    },
+    {
+        path: "pricing",
+        loadComponent: () =>
+            import('./pages/pricing-page/pricing-page').then(
+                ({PricingPage}) => PricingPage
+            )
+    },
     {path: "**", component: NotFoundPage}
 ];

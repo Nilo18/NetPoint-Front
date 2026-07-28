@@ -1,0 +1,25 @@
+<section class="pricing-page-heading">
+  <div class="pricing-page-heading__glow" aria-hidden="true"></div>
+  <div class="pricing-page-heading__inner">
+    <p class="pricing-page-heading__pricing-p">Simple, transparent pricing</p>
+    <h1>Choose the plan that fits your business</h1>
+    <p class="pricing-page-heading__pricing-offer">
+      Start free, upgrade as you grow, and change or cancel whenever your needs change.
+    </p>
+
+    <div class="pricing-page-heading__price-mode" aria-label="Billing period">
+      <p [class.pricing-page-heading__mode-active]="inputValue() === 'Monthly'">Monthly</p>
+      <label class="switch">
+        <span class="visually-hidden">Use yearly billing</span>
+        <input
+          type="checkbox"
+          [ngModel]="inputValue() !== 'Monthly'"
+          (ngModelChange)="changePriceMode($event ? 'Yearly' : 'Monthly')"
+        />
+        <span class="slider"></span>
+      </label>
+      <p [class.pricing-page-heading__mode-active]="inputValue() === 'Yearly'">Yearly</p>
+      <span class="pricing-page-heading__yearly-note">12-month total</span>
+    </div>
+  </div>
+</section>

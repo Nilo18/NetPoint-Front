@@ -16,4 +16,8 @@ export class Header {
   onScroll() {
     this.scrolled.set(window.scrollY > 10);
   }
+
+  scrollToSection(sectionId: string) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }

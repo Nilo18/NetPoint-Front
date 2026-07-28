@@ -1,0 +1,13 @@
+.pricing-page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f5f6f8;
+}
+
+.pricing-page {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
