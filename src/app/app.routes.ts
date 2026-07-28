@@ -48,5 +48,13 @@ export const routes: Routes = [
                 ({ SecurityDetailsPage }) => SecurityDetailsPage
             ),
     },
+    {
+        path: "solutions",
+        canActivate: [authGuard],
+        loadComponent: () =>
+            import('./pages/solutions-page/solutions-page').then(
+                ({ SolutionsPage }) => SolutionsPage
+            ),
+    },
     {path: "**", component: NotFoundPage}
 ];

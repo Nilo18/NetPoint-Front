@@ -1,0 +1,91 @@
+<section class="solutions-hero" aria-labelledby="solutions-title">
+  <div class="solutions-hero__glow" aria-hidden="true"></div>
+
+  <div class="solutions-hero__inner">
+    <div class="solutions-hero__content">
+      <span class="solutions-hero__eyebrow">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 5h7v6H4zM13 5h7v10h-7zM4 13h7v6H4zM13 17h7v2h-7z" />
+        </svg>
+        One connected business workspace
+      </span>
+
+      <h1 id="solutions-title">
+        Run the counter.<br />
+        <span>Understand the business.</span>
+      </h1>
+
+      <p>
+        NetPoint connects product setup, checkout, inventory, performance insights, and team
+        controls—so daily operations produce a clearer picture of your business.
+      </p>
+
+      <div class="solutions-hero__actions">
+        <a routerLink="/signup" class="solutions-hero__primary">
+          Start with NetPoint
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+        <button type="button" class="solutions-hero__secondary" (click)="scrollToSolutions()">
+          See how it works
+        </button>
+      </div>
+
+      <ul class="solutions-hero__proof" aria-label="NetPoint benefits">
+        <li><i></i> Configurable</li>
+        <li><i></i> Cashier-friendly</li>
+        <li><i></i> Insight-driven</li>
+      </ul>
+    </div>
+
+    <div class="solutions-hero__visual" aria-label="NetPoint business overview illustration">
+      <div class="solutions-hero__window">
+        <div class="solutions-hero__window-bar">
+          <span><i></i><i></i><i></i></span>
+          <small>Business overview</small>
+          <span class="solutions-hero__live"><i></i> Live</span>
+        </div>
+
+        <div class="solutions-hero__dashboard">
+          <div class="solutions-hero__metric">
+            <span class="solutions-hero__metric-icon solutions-hero__metric-icon--purple">
+              <svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19V2" /></svg>
+            </span>
+            <span><small>Revenue</small><strong>Clear trends</strong></span>
+          </div>
+          <div class="solutions-hero__metric">
+            <span class="solutions-hero__metric-icon solutions-hero__metric-icon--green">
+              <svg viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-8M15 7h5v5" /></svg>
+            </span>
+            <span><small>Profit</small><strong>Margin aware</strong></span>
+          </div>
+
+          <div class="solutions-hero__chart">
+            <div class="solutions-hero__chart-head">
+              <span><small>Performance</small><strong>Sales &amp; profit</strong></span>
+              <span class="solutions-hero__range">This month</span>
+            </div>
+            <svg viewBox="0 0 420 150" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="solutionChartFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#5b50f0" stop-opacity=".25" />
+                  <stop offset="100%" stop-color="#5b50f0" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <path class="area" d="M0 125C50 112 68 80 110 91s58-50 100-37 60 56 101 14 70-37 109-53v135H0Z" />
+              <path class="line" d="M0 125C50 112 68 80 110 91s58-50 100-37 60 56 101 14 70-37 109-53" />
+              <path class="line line--green" d="M0 137c55-10 68-30 111-26s62-34 104-24 59 35 105 5 69-25 100-39" />
+            </svg>
+          </div>
+
+          <div class="solutions-hero__stock">
+            <span class="solutions-hero__stock-icon">
+              <svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4-8 4-8-4ZM4 7v10l8 4 8-4V7M12 11v10" /></svg>
+            </span>
+            <span><small>Inventory status</small><strong>Stock stays visible</strong></span>
+            <span class="solutions-hero__stock-state">Tracked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
