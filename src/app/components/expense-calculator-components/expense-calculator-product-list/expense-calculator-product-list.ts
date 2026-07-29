@@ -5,6 +5,11 @@ import { AdminDashboardSorting } from '../../admin-dashboard-components/admin-da
 import { AdminDashboardFiltering } from '../../admin-dashboard-components/admin-dashboard-filtering/admin-dashboard-filtering';
 import { ProductPagination } from '../../product-components/product-pagination/product-pagination';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ExpenseCalculatorProductDetailsModal,
+  ProductDetailsModalResult,
+} from '../expense-calculator-product-details-modal/expense-calculator-product-details-modal';
 
 @Component({
   selector: 'app-expense-calculator-product-list',
@@ -16,6 +21,7 @@ import { BackendErrorHandlerService } from '../../../services/backend-error-hand
 export class ExpenseCalculatorProductList {
   private productService = inject(ProductService)
   private backendErrorHandler = inject(BackendErrorHandlerService)
+  private modalService = inject(NgbModal)
   // productItems = signal<ProductDTO[]>([]);
   protected readonly tableIsLoading = signal(false);
   protected readonly backendError = signal<string | null>(null);
@@ -73,15 +79,15 @@ export class ExpenseCalculatorProductList {
     this.updateProductStock(productId, amount);
   }
 
-  decreaseProductStock(productId: number) {
+  decreaseProductStock(productId: number, amount = 1) {
     const product = this.products.value()?.items.find(prod => prod.id === productId)
 
-    if (!product || product.stock === 0) {
+    if (!product || product.stock < amount) {
       console.log("Product is out of stock")
       return false
     }
 
-    this.updateProductStock(productId, -1);
+    this.updateProductStock(productId, -amount);
     return true
   }
 
@@ -102,4 +108,25 @@ export class ExpenseCalculatorProductList {
     });
   }
 
+  openDetailsModal(productId: number) {
+    const modalRef = this.modalService.open(ExpenseCalculatorProductDetailsModal, {
+      centered: true,
+      modalDialogClass: 'product-details-modal-dialog',
+    })
+
+    modalRef.componentInstance.productId.set(productId)
+    modalRef.result
+      .then((result: ProductDetailsModalResult) => {
+        if (!this.decreaseProductStock(result.product.id, result.quantity)) {
+          return
+        }
+
+        this.productToAdd.emit({
+          ...result.product,
+          quantity: result.quantity,
+          stock: Math.max(result.product.stock - result.quantity, 0),
+        })
+      })
+      .catch(() => undefined)
+  }
 }

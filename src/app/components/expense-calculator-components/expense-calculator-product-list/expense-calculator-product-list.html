@@ -57,7 +57,11 @@
       </section>
     } @else {
       @for (product of products.value()?.items; track product.id) {
-        <article class="expense-products__card" tabindex="0">
+        <article
+          class="expense-products__card"
+          tabindex="0"
+          (click)="openDetailsModal(product.id)"
+          (keydown.enter)="openDetailsModal(product.id)">
           <div class="expense-products__image" aria-hidden="true">
             @if (product.imageUrl) {
               <img [src]="product.imageUrl" alt="Product Image">
@@ -81,7 +85,7 @@
           <button
             type="button"
             [disabled]="product.stock === 0"
-            (click)="addProductToCart(product)"
+            (click)="$event.stopPropagation(); addProductToCart(product)"
           >
             {{ product.stock === 0 ? 'Out of Stock' : 'Add To Cart' }}
           </button>

@@ -1,0 +1,128 @@
+<div class="product-details-modal">
+  <header class="product-details-modal__header">
+    <div>
+      <!-- <p>Cashier product view</p> -->
+      <h2>Product details</h2>
+    </div>
+    <button type="button" class="product-details-modal__close" aria-label="Close product details" (click)="modal.dismiss()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+  </header>
+
+  @if (productData.isLoading()) {
+    <div class="product-details-modal__loading" aria-label="Loading product details">
+      <span class="product-details-modal__skeleton product-details-modal__skeleton--image"></span>
+      <div>
+        <span class="product-details-modal__skeleton product-details-modal__skeleton--title"></span>
+        <span class="product-details-modal__skeleton product-details-modal__skeleton--line"></span>
+        <span class="product-details-modal__skeleton product-details-modal__skeleton--panel"></span>
+      </div>
+    </div>
+  } @else if (productData.error()) {
+    <section class="product-details-modal__error" aria-live="assertive">
+      <span aria-hidden="true">!</span>
+      <h3>Product details could not be loaded</h3>
+      <p>Please close this window and try opening the product again.</p>
+    </section>
+  } @else if (productData.value(); as product) {
+    <div class="product-details">
+      <section class="product-details__image-section">
+        @if (product.imageUrl) {
+          <img [src]="product.imageUrl" [alt]="product.name">
+        } @else {
+          <div class="product-details__image-placeholder">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="10" y="12" width="44" height="34" rx="7" />
+              <circle cx="43" cy="23" r="4" />
+              <path d="M16 40 27 29l8 8 6-6 7 9" />
+              <path d="M22 49h20l5-9H27l-5 9Z" />
+            </svg>
+            <span>No product image</span>
+          </div>
+        }
+      </section>
+
+      <section class="product-details__data-section">
+        <div class="product-details__summary">
+          <div>
+            <h3>{{ product.name }}</h3>
+            <p class="product-details__price">${{ product.retailPrice.toFixed(2) }}</p>
+          </div>
+          <div
+            class="product-details__stock"
+            [class.product-details__stock--out]="product.stock === 0">
+            <strong>{{ product.stock === 0 ? 'Out of stock' : 'In stock' }}</strong>
+            <span>{{ product.stock }} {{ product.stock === 1 ? 'unit' : 'units' }} available</span>
+          </div>
+        </div>
+
+        <div class="product-details__divider"></div>
+
+        <section class="product-details__information" aria-labelledby="product-information-heading">
+          <h4 id="product-information-heading">Product information</h4>
+          <dl>
+            <div>
+              <dt>Wholesale price</dt>
+              <dd>${{ product.wholesalePrice.toFixed(2) }}</dd>
+            </div>
+            <div>
+              <dt>Margin</dt>
+              <dd>{{ product.marginPercent.toFixed(1) }}%</dd>
+            </div>
+            <div>
+              <dt>Profit per unit</dt>
+              <dd>${{ product.profitability.toFixed(2) }}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <div class="product-details__divider"></div>
+
+        <section class="product-details__custom-attributes" aria-labelledby="custom-attributes-heading">
+          <div class="product-details__section-heading">
+            <h4 id="custom-attributes-heading">Custom attributes</h4>
+            <span>Custom fields</span>
+          </div>
+
+          @if (customAttributes().length) {
+            <dl>
+              @for (attribute of customAttributes(); track attribute[0]) {
+                <div>
+                  <dt>{{ formatAttributeName(attribute[0]) }}</dt>
+                  <dd>{{ formatAttributeValue(attribute[1]) }}</dd>
+                </div>
+              }
+            </dl>
+          } @else {
+            <p class="product-details__empty-attributes">No custom attributes are set for this product.</p>
+          }
+        </section>
+
+        <div class="product-details__add-to-cart">
+          <div class="product-details__quantity">
+            <span>Quantity</span>
+            <div>
+              <button type="button" aria-label="Decrease quantity" [disabled]="quantity() === 1" (click)="decreaseQuantity()">−</button>
+              <strong aria-live="polite">{{ quantity() }}</strong>
+              <button type="button" aria-label="Increase quantity" [disabled]="quantity() >= product.stock" (click)="increaseQuantity()">+</button>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="product-details__cart-button"
+            [disabled]="product.stock === 0"
+            (click)="addToCart()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="19" cy="20" r="1" />
+              <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6" />
+            </svg>
+            {{ product.stock === 0 ? 'Out of stock' : 'Add to cart' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+</div>

@@ -300,6 +300,18 @@ export class ProductService {
     }
   }
 
+  async getProductById(productId: number) {
+    try {
+      const res = await firstValueFrom(this.http.get<ProductDTO>(`${this.baseUrl}/api/products/${productId}`))
+      console.log(res)
+      // this._productChartData.set(res)
+      return res
+    } catch (error) {
+      console.log("Couldn't get product chart data: ", error)
+      throw error
+    }
+  }
+
   async getProductStats(statsQuery: ProductStatsQuery) {
     try {
       let httpParams = new HttpParams()

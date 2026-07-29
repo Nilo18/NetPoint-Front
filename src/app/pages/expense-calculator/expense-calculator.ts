@@ -25,6 +25,7 @@ export class ExpenseCalculator {
 
   handleCartAddition(product: ProductDTO) {
     console.log(product)
+    const quantityToAdd = product.quantity ?? 1
     const existingProduct = this.cart().find(prod => prod.id === product.id)
     // console.log("Product stock is: ", existingProduct?.stock)
 
@@ -33,7 +34,7 @@ export class ExpenseCalculator {
       this.cart.update(currentCart => 
       currentCart.map(item => 
         item.id === product.id 
-          ? { ...item, quantity: (item.quantity || 0) + 1, stock: product.stock } 
+          ? { ...item, quantity: (item.quantity || 0) + quantityToAdd, stock: product.stock }
           : item
         )
       );
@@ -41,7 +42,7 @@ export class ExpenseCalculator {
       return
     }
 
-    const newProduct = { ...product, quantity: 1 };
+    const newProduct = { ...product, quantity: quantityToAdd };
     this.cart.update(currentCart => ([...currentCart, newProduct]))
     console.log("Product added to cart: ", this.cart())
   }
