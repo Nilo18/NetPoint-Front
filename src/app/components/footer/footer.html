@@ -24,8 +24,9 @@
       <div class="footer__col">
         <h4 class="footer__col-title">Product</h4>
         <nav class="footer__nav">
-          <a routerLink="/product" class="footer__link">Features</a>
-          <a routerLink="/pricing" class="footer__link" routerLink="/pricing">Pricing</a>
+          <a routerLink="/" fragment="features-section" (click)="pageUtilities.scrollToSection('features-section')"
+          class="footer__link">Features</a>
+          <a (click)="pageUtilities.navigateToPage('/pricing')" class="footer__link">Pricing</a>
           <a class="footer__link"
           href="https://drive.google.com/file/d/11Vo2N4SQqrIKlWSL8gKPp0RRB_PjDdIr/view?usp=sharing"
           target="_blank">Demo</a>
@@ -36,9 +37,9 @@
       <div class="footer__col">
         <h4 class="footer__col-title">Security</h4>
         <nav class="footer__nav">
-          <a routerLink="/privacy" class="footer__link">Privacy Policy</a>
-          <a routerLink="/terms" class="footer__link">Terms of Service</a>
-          <a routerLink="/compliance" class="footer__link">Compliance</a>
+          <a (click)="pageUtilities.navigateToPage('/privacy')" class="footer__link">Privacy Policy</a>
+          <a (click)="pageUtilities.navigateToPage('/terms')" class="footer__link">Terms of Service</a>
+          <a (click)="pageUtilities.navigateToPage('/compliance')" class="footer__link">Compliance</a>
         </nav>
       </div>
     </div>

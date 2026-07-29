@@ -24,7 +24,7 @@
         <span class="legal__sidebar-label">On this page</span>
         <nav aria-label="Document sections">
           @for (section of content().sections; track section.id) {
-            <button type="button" (click)="scrollToSection(section.id)">
+            <button type="button" (click)="pageUtilities.scrollToSection(section.id)">
               {{ section.title }}
             </button>
           }

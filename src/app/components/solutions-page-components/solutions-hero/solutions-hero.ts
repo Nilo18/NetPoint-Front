@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PageUtilitiesService } from '../../../services/page-utilities-service';
 
 @Component({
   selector: 'app-solutions-hero',
@@ -9,9 +10,5 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SolutionsHero {
-  protected scrollToSolutions(): void {
-    document
-      .getElementById('solutions-capabilities')
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  protected readonly pageUtilities = inject(PageUtilitiesService);
 }

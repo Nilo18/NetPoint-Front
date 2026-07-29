@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PageUtilitiesService } from '../../services/page-utilities-service';
 
 @Component({
   selector: 'app-footer',
@@ -10,4 +11,5 @@ import { RouterLink } from '@angular/router';
 })
 export class Footer {
   protected readonly currentYear = new Date().getFullYear();
+  protected readonly pageUtilities = inject(PageUtilitiesService);
 }

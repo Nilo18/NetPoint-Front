@@ -2,7 +2,7 @@
   <div class="header__inner">
 
     <!-- Logo -->
-    <a class="header__logo" routerLink="/">
+    <a class="header__logo" (click)="pageUtilities.navigateToPage('/')">
         
         <!-- Icon mark -->
         <div class="header__logo-icon">
@@ -19,9 +19,11 @@
 
     <!-- Nav -->
     <nav class="header__nav">
-      <a class="header__nav-link" routerLink="/" fragment="features-section" (click)="scrollToSection('features-section')">Features</a>
-      <a class="header__nav-link" routerLink="/security">Security</a>
-      <a class="header__nav-link" routerLink="/solutions">Solutions</a>
+      <a class="header__nav-link" routerLink="/" fragment="features-section" (click)="pageUtilities.scrollToSection('features-section')">
+        Features
+      </a>
+      <a class="header__nav-link" (click)="pageUtilities.navigateToPage('/security')">Security</a>
+      <a class="header__nav-link" (click)="pageUtilities.navigateToPage('/solutions')">Solutions</a>
     </nav>
 
     <!-- Actions -->

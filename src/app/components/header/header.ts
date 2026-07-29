@@ -1,23 +1,22 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { PageUtilitiesService } from '../../services/page-utilities-service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './header.html',
-  styleUrl: './header.scss'
+  styleUrl: './header.scss',
+  host: {
+    '(window:scroll)': 'onScroll()',
+  },
 })
 export class Header {
+  protected readonly pageUtilities = inject(PageUtilitiesService);
   scrolled = signal(false);
 
-  @HostListener('window:scroll')
   onScroll() {
     this.scrolled.set(window.scrollY > 10);
-  }
-
-  scrollToSection(sectionId: string) {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 }

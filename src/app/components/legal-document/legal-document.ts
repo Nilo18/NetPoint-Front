@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { PageUtilitiesService } from '../../services/page-utilities-service';
 
 export type LegalDocumentKind = 'privacy' | 'terms';
 
@@ -191,10 +192,7 @@ export class LegalDocument {
   readonly kind = input.required<LegalDocumentKind>();
   protected readonly content = computed(() => (this.kind() === 'privacy' ? PRIVACY : TERMS));
   protected readonly lastUpdated = 'July 28, 2026';
-
-  protected scrollToSection(sectionId: string): void {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  protected readonly pageUtilities = inject(PageUtilitiesService);
 
   protected printDocument(): void {
     window.print();
