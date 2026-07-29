@@ -190,7 +190,9 @@ export class AdminDashboardAddProductModal {
       const removeImage = Boolean(
         this.productToEdit.imageUrl && !this.imagePreview() && !this.selectedFile()
       )
-      formData.append('removeImage', String(removeImage));
+      if (removeImage) {
+        formData.append('removeImage', 'true');
+      }
     }
 
     const file = this.selectedFile();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 
 @Component({
   selector: 'app-banner',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './banner.scss',
 })
 export class Banner {
+  // showDemo: WritableSignal<boolean> = signal(false)
 
+  // setShowDemo(val: boolean) {
+  //   this.showDemo.set(val)
+  // }
 }

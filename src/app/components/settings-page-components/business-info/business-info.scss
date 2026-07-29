@@ -244,7 +244,7 @@
         border: 1px solid #fecaca;
         border-radius: 12px;
         background-color: white;
-        @include FlexContainer;
+        @include FlexContainerColumn;
         // align-items: center;
 
         &--content {
@@ -303,7 +303,10 @@
 
         &--error,
         &--success {
-            margin: 0.75rem 0 0;
+            margin-bottom: 0.5rem;
+            // justify-self: start;
+            margin-left: 45px;
+            align-self: flex-start;
             font-size: 14px;
             font-weight: 500;
         }

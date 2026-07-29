@@ -65,7 +65,8 @@ export class AuditLogList {
     // console.log('Looking for eventType: ', eventType)
     const metadata: Record<EventType, EventMeta> = {
       [EventType.SALE_COMPLETED]: { label: 'Sale Completed', tone: 'green', icon: 'sale' },
-      [EventType.PRODUCT_ADDED]: { label: 'Product Added', tone: 'purple', icon: 'product' },
+      [EventType.PRODUCT_ADDED]: { label: 'Product Added', tone: 'green', icon: 'product' },
+      [EventType.PRODUCT_UPDATED]: { label: 'Product Updated', tone: 'purple', icon: 'product' },
       [EventType.PRODUCT_DELETED]: { label: 'Product Deleted', tone: 'red', icon: 'product' },
       [EventType.USER_INVITED]: { label: 'User Invited', tone: 'purple', icon: 'team' },
       [EventType.TEAM_MEMBER_ADDED]: { label: 'Team Member Added', tone: 'purple', icon: 'team' },

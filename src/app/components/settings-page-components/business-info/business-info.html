@@ -119,6 +119,14 @@
 </section>
 <app-settings-business-info-schema-customization></app-settings-business-info-schema-customization>
 <section class="business-form__danger-zone" aria-labelledby="danger-zone-title">
+    @if (deleteErrMsg()) {
+      <p class="business-form__danger-zone--error">{{ deleteErrMsg() }}</p>
+    }
+
+    @if (deleteSuccessMsg()) {
+      <p class="business-form__danger-zone--success">{{ deleteSuccessMsg() }}</p>
+    }
+
     <div class="business-form__danger-zone--content">
       <div class="business-form__danger-zone--text">
         <h3 id="danger-zone-title">Danger Zone</h3>
@@ -133,12 +141,4 @@
         {{ deleteRequestSent() ? 'Deleting...' : 'Delete Business Account' }}
       </button>
     </div>
-
-    @if (deleteErrMsg()) {
-      <p class="business-form__danger-zone--error">{{ deleteErrMsg() }}</p>
-    }
-
-    @if (deleteSuccessMsg()) {
-      <p class="business-form__danger-zone--success">{{ deleteSuccessMsg() }}</p>
-    }
 </section>
