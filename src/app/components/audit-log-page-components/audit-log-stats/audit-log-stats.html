@@ -1,6 +1,6 @@
 <section class="audit-log-stats" [attr.aria-busy]="auditLogStats.isLoading()">
   @if (auditLogStats.isLoading()) {
-    @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+    @for (placeholder of [1, 2, 3, 4, 5, 6, 7]; track placeholder) {
       <div class="audit-log-stats__stat audit-log-stats__stat--loading" aria-hidden="true">
         <span></span>
         <span></span>

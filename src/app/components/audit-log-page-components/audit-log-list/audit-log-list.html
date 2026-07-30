@@ -83,6 +83,7 @@
             [class.audit-log-card__icon--blue]="meta?.tone === 'blue'"
             [class.audit-log-card__icon--orange]="meta?.tone === 'orange'"
             [class.audit-log-card__icon--red]="meta?.tone === 'red'"
+            [class.audit-log-card__icon--pink]="meta?.tone === 'pink'"
           >
             @switch (meta?.icon) {
               @case ('sale') {
@@ -128,6 +129,7 @@
                 [class.audit-log-card__event--blue]="meta?.tone === 'blue'"
                 [class.audit-log-card__event--orange]="meta?.tone === 'orange'"
                 [class.audit-log-card__event--red]="meta?.tone === 'red'"
+                [class.audit-log-card__event--pink]="meta?.tone === 'pink'"
               >
                 {{ meta?.label ?? log.eventType }}
               </span>

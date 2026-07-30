@@ -9,6 +9,14 @@ export interface SignupData {
   email: string
   password: string
   industry: string
+  owner_email: string
+  owner_name: string
+  owner_password: string
+  role: string
+  companyOtpCode: string
+  companyTempToken: string
+  userOtpCode: string
+  userTempToken: string
 }
 
 export interface LoginData {
@@ -27,6 +35,17 @@ export interface AuthResponse {
   token: string
 }
 
+export interface SignupFirstStageCredentials {
+  companyEmail: string,
+  userEmail: string
+}
+
+export interface SignupAuthResponse {
+  status: string
+  companyTempToken: string
+  userTempToken: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,9 +55,24 @@ export class AuthService {
   private baseUrl = this.baseUrlHolder.getBaseUrl()
   private router = inject(Router)
 
-  async signup(value: SignupData | FormData) {
+  async signup2fa(credentials: SignupFirstStageCredentials): Promise<SignupAuthResponse> {
     try {
-      const res = await firstValueFrom(this.http.post<any>(`${this.baseUrl}/auth/signup`, value))
+      const res = await firstValueFrom(
+        this.http.post<SignupAuthResponse>(`${this.baseUrl}/auth/signup/verify`, credentials)
+      )
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log('Failed to verify signup attempt: ', error)
+      throw error
+    }
+  }
+
+  async signup(value: SignupData | FormData): Promise<string> {
+    try {
+      const res = await firstValueFrom(
+        this.http.post<{ access_token: string }>(`${this.baseUrl}/auth/signup`, value)
+      )
       console.log(res)
       return res.access_token
     } catch (error) {

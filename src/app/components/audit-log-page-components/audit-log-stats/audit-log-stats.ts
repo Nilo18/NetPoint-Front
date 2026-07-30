@@ -57,5 +57,9 @@ export class AuditLogStats {
       statName: 'ACCOUNT CHANGES',
       statNumber: logStats?.accountChanges
     },
+    {
+      statName: 'COMPANY CHANGES',
+      statNumber: logStats?.companyChanges
+    },
   ]})
 }

@@ -15,6 +15,13 @@ export interface SignupStageTwoData {
   role: string
 }
 
+export interface SignupVerificationData {
+  companyOtpCode: string
+  companyTempToken: string
+  userOtpCode: string
+  userTempToken: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -74,15 +81,25 @@ export class SignupStateManagementService {
     this._profileImage.set(file)
   }
 
-  buildFinalPayload(stageTwoData: SignupStageTwoData) {
-    const stageOneData = this._stageOneData()
+  buildFinalPayload(
+    stageTwoData: SignupStageTwoData,
+    verificationData?: SignupVerificationData,
+    suppliedStageOneData?: SignupStageOneData,
+  ) {
+    const stageOneData = suppliedStageOneData ?? this._stageOneData()
     if (!stageOneData) {
       throw new Error('Signup stage one data is missing.')
     }
 
     // const { confirm_password: _confirmPassword, ...stageOne } = stageOneData
     const formData = new FormData()
-    formData.append('data', new Blob([JSON.stringify({ ...stageOneData, ...stageTwoData })], { type: 'application/json' }))
+    formData.append(
+      'data',
+      new Blob(
+        [JSON.stringify({ ...stageOneData, ...stageTwoData, ...verificationData })],
+        { type: 'application/json' },
+      ),
+    )
 
     const companyImage = this._companyImage()
     const profileImage = this._profileImage()

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SignupStateManagementService } from '../../services/signup-state-management-service';
-import { AuthService } from '../../services/auth-service';
-import { Router } from '@angular/router';
+import { AuthService, SignupAuthResponse } from '../../services/auth-service';
 import { FormValidatorService } from '../../services/form-validator-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackendErrorHandlerService } from '../../services/backend-error-handler-service';
 import { ImageUploadProcessorService } from '../../services/image-upload-processor-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SignupVerificationModal } from '../signup-verification-modal/signup-verification-modal';
 
 @Component({
   selector: 'app-signup-second-stage-form',
@@ -20,7 +21,7 @@ export class SignupSecondStageForm {
   private fb = inject(FormBuilder)
   public signupService = inject(SignupStateManagementService)
   private authService = inject(AuthService)
-  private router = inject(Router)
+  private modalService = inject(NgbModal)
   private formValidator = inject(FormValidatorService)
   private backendErrorHandler = inject(BackendErrorHandlerService)
   private imageUploadProcessor = inject(ImageUploadProcessorService)
@@ -59,13 +60,27 @@ export class SignupSecondStageForm {
       this.signupService.setRequestSent(true)
       this.signupService.setGotBackendError(false)
       // const { confirm_password, ...payload } = this.signupForm.value
-      const finalFormValue = this.signupService.buildFinalPayload(this.signupFormStageTwo.value) /*{ ...payload, ...this.signupFormStageTwo.value }*/
-      console.log(finalFormValue)
-      // return
+      const stageOneData = this.signupService.stageOneData()
+      if (!stageOneData) {
+        this.signupService.setRequestSent(false)
+        this.signupService.setGotBackendError(true)
+        this.signupService.setBackendErrorMsg('Signup details are missing. Please return to the previous step.')
+        return
+      }
+
       try {
-        const res = await this.authService.signup(finalFormValue)
-        localStorage.setItem('net_token', res)
-        this.router.navigate(['/admin'])
+        const res = await this.authService.signup2fa({
+          companyEmail: stageOneData.email,
+          userEmail: this.signupFormStageTwo.value.owner_email,
+        })
+
+        if (this.isSuccessfulSignupAuthResponse(res)) {
+          this.signupService.setStageTwoData(this.signupFormStageTwo.value)
+          this.signupService.setRequestSent(false)
+          this.openVerificationModal(res)
+        } else {
+          throw new Error(res.status || 'Verification codes could not be sent.')
+        }
       } catch (error: unknown) {
         console.log(error)
         console.log('catch block reached')
@@ -90,9 +105,30 @@ export class SignupSecondStageForm {
         console.log('requestSent:', this.signupService.requestSent)
         console.log('gotBackendError:', this.signupService.gotBackendError)
         console.log('backendErrorMsg:', this.signupService.backendErrorMsg)
-        console.log(this.signupService.backendErrorMsg)
+        console.log(this.signupService.backendErrorMsg())
       }      
     }
+  }
+
+  private isSuccessfulSignupAuthResponse(response: SignupAuthResponse): boolean {
+    return response.status.toLowerCase() === '2fa_required'
+      && Boolean(response.companyTempToken)
+      && Boolean(response.userTempToken)
+  }
+
+  private openVerificationModal(response: SignupAuthResponse) {
+    const stageOneData = this.signupService.stageOneData()
+    if (!stageOneData) return
+
+    const modalRef = this.modalService.open(SignupVerificationModal, {
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+    })
+
+    modalRef.componentInstance.stageOneData = stageOneData
+    modalRef.componentInstance.stageTwoData = this.signupFormStageTwo.getRawValue()
+    modalRef.componentInstance.authResponse = response
   }
 
   getRequiredError(field: string, form: FormGroup): string {

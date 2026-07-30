@@ -1,0 +1,55 @@
+<div class="modal-content verification-modal">
+  <div class="modal-header verification-modal__header">
+    <h5 class="modal-title">Verify Your Accounts</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body verification-modal__body">
+    <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+      <div class="verification-modal__field">
+        <label for="companyOtpCode">Company verification code</label>
+        <input
+          id="companyOtpCode"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          placeholder="Enter the company code"
+          formControlName="companyOtpCode"
+          class="form-control verification-modal__otp-input"
+        >
+        <p class="error">{{ getOtpCodeError('companyOtpCode') }}</p>
+      </div>
+
+      <div class="verification-modal__field">
+        <label for="userOtpCode">User verification code</label>
+        <input
+          id="userOtpCode"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          placeholder="Enter the user code"
+          formControlName="userOtpCode"
+          class="form-control verification-modal__otp-input"
+        >
+        <p class="error">{{ getOtpCodeError('userOtpCode') }}</p>
+      </div>
+
+      <div class="verification-modal__body--btn-section">
+        @if (requestSent() && !gotBackendError()) {
+          <p class="verification-modal__msg loading">Processing...</p>
+        }
+        @if (!requestSent() && gotBackendError()) {
+          <p class="verification-modal__msg error">{{ errMsg() }}</p>
+        }
+        <button
+          type="submit"
+          class="btn btn-primary verification-modal__submit-btn"
+          [disabled]="requestSent()"
+        >
+          Verify
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

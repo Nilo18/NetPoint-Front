@@ -6,7 +6,7 @@ import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs';
 import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuditLogPagination } from '../audit-log-pagination/audit-log-pagination';
 
-type EventTone = 'green' | 'purple' | 'blue' | 'orange' | 'red';
+type EventTone = 'green' | 'purple' | 'blue' | 'orange' | 'red' | 'pink';
 
 interface EventMeta {
   label: string;
@@ -71,14 +71,14 @@ export class AuditLogList {
       [EventType.USER_INVITED]: { label: 'User Invited', tone: 'purple', icon: 'team' },
       [EventType.TEAM_MEMBER_ADDED]: { label: 'Team Member Added', tone: 'purple', icon: 'team' },
       [EventType.TEAM_MEMBER_REMOVED]: { label: 'Team Member Removed', tone: 'red', icon: 'team' },
-      [EventType.COMPANY_DELETED]: { label: 'Company Deleted', tone: 'red', icon: 'account' },
+      [EventType.COMPANY_DELETED]: { label: 'Company Deleted', tone: 'pink', icon: 'account' },
       [EventType.PAYMENT_METHOD_ADDED]: { label: 'Payment Method Added', tone: 'orange', icon: 'payment' },
       [EventType.PAYMENT_METHOD_UPDATED]: { label: 'Payment Method Updated', tone: 'orange', icon: 'payment' },
       [EventType.PAYMENT_METHOD_REMOVED]: { label: 'Payment Method Removed', tone: 'red', icon: 'payment' },
       [EventType.PAYMENT_PLAN_CHANGED]: { label: 'Payment Plan Changed', tone: 'orange', icon: 'payment' },
       [EventType.SUBSCRIPTION_CANCELLED]: { label: 'Subscription Cancelled', tone: 'red', icon: 'payment' },
       [EventType.ACCOUNT_INFO_UPDATED]: { label: 'Account Info Updated', tone: 'blue', icon: 'account' },
-      [EventType.COMPANY_INFO_UPDATED]: { label: 'Company Info Updated', tone: 'blue', icon: 'account' },
+      [EventType.COMPANY_INFO_UPDATED]: { label: 'Company Info Updated', tone: 'pink', icon: 'account' },
     };
 
     // console.log('Returning metadata[eventType]: ', metadata[eventType])
