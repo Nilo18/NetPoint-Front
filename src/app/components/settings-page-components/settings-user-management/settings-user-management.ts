@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { SettingsPageService, User } from '../../../services/settings-page-service';
+import { AccountStatus, SettingsPageService, User } from '../../../services/settings-page-service';
 import { jwtDecode } from 'jwt-decode';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsAddUserModal } from '../settings-add-user-modal/settings-add-user-modal';
@@ -9,6 +9,7 @@ import { SettingsRolePermissions } from '../settings-role-permissions/settings-r
 import { BackendErrorOverlay } from '../../backend-error-overlay/backend-error-overlay';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
 import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-modal';
+import { UserInviteService } from '../../../services/user-invite-service';
 
 @Component({
   selector: 'app-settings-user-management',
@@ -19,6 +20,7 @@ import { ConfirmActionModal } from '../../confirm-action-modal/confirm-action-mo
 })
 export class SettingsUserManagement {
   public settingsService = inject(SettingsPageService)
+  private userInviteService = inject(UserInviteService)
   private modalService = inject(NgbModal)
   private backendErrorHandler = inject(BackendErrorHandlerService)
   userList = signal<User[]>([])
@@ -26,6 +28,7 @@ export class SettingsUserManagement {
   gotSearchError = signal(false)
   backendErrMsg = signal('')
   decodedTokenCompanyId = signal<number | null>(null)
+  approvingUserId = signal<number | null>(null)
 
   async ngOnInit() {
     const token = localStorage.getItem('net_token') 
@@ -57,6 +60,49 @@ export class SettingsUserManagement {
       (result) => console.log('Confirmed!'),
       (reason) => console.log('Dismissed!')
     )
+  }
+
+  approveUser(userToApproveId: number) {
+    if (this.approvingUserId() !== null) {
+      return
+    }
+
+    const modalRef = this.modalService.open(ConfirmActionModal, {
+      centered: true
+    })
+
+    modalRef.componentInstance.title = 'Approve User Confirmation'
+    modalRef.componentInstance.description = 'Are you sure you want to approve this user?'
+    modalRef.componentInstance.confirmAction = async () => {
+      if (this.approvingUserId() !== null) {
+        return
+      }
+
+      this.approvingUserId.set(userToApproveId)
+      this.settingsService.setIsLoading(true)
+
+      try {
+        await this.userInviteService.approveUser(userToApproveId)
+        this.userList.update(users => users.map(user =>
+          user.id === userToApproveId
+            ? { ...user, status: AccountStatus.ACTIVE }
+            : user
+        ))
+      } catch (error: unknown) {
+        const errorModalRef = this.modalService.open(DeleteRequestErrorDisplayModal, {
+          centered: true
+        })
+
+        errorModalRef.componentInstance.errTitle = 'Could Not Approve User'
+        errorModalRef.componentInstance.errMsg = this.backendErrorHandler.getErrorMessage(
+          error,
+          'Could not approve user. Please try again.'
+        )
+      } finally {
+        this.approvingUserId.set(null)
+        this.settingsService.setIsLoading(false)
+      }
+    }
   }
 
   deleteUser(userId: number) {

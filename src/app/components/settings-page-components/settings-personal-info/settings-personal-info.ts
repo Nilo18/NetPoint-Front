@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
-import { SettingsPageService, User } from '../../../services/settings-page-service';
+import { AccountStatus, SettingsPageService, User } from '../../../services/settings-page-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +31,7 @@ export class SettingsPersonalInfo {
     name: '',
     email: '',
     role: '',
+    status: AccountStatus.ACTIVE,
     newPassword: null
   }
   gotBackendError: WritableSignal<boolean> = signal(false)
@@ -49,6 +50,7 @@ export class SettingsPersonalInfo {
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       role: ['', [Validators.required]],
+      status: ['', [Validators.required]],
       newPassword: [null, [Validators.minLength(8)]]
     })
 
@@ -75,6 +77,7 @@ export class SettingsPersonalInfo {
         name: res.name,
         email: res.email,
         role: res.role,
+        status: res.status,
         newPassword: null
       })
       // console.log('userInfoForm after patching new values: ', this.userInfoForm.value)

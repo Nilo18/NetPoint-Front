@@ -101,10 +101,18 @@
         </div>
       </div>
 
-      <div class="personal-info__field form__field-container">
-        <label for="personal-email">Email Address</label>
-        <input id="personal-email" class="form-control" type="email" formControlName="email">
-        <p class="error">{{ getEmailError('email', userInfoForm) }}</p>
+      <div class="personal-info__row personal-info__row--two-columns">
+        <div class="personal-info__field form__field-container">
+          <label for="personal-email">Email Address</label>
+          <input id="personal-email" class="form-control" type="email" formControlName="email">
+          <p class="error">{{ getEmailError('email', userInfoForm) }}</p>
+        </div>
+
+        <div class="personal-info__field form__field-container">
+          <label for="personal-status">Status</label>
+          <input id="personal-status" class="form-control" type="text" readonly formControlName="status">
+          <p class="error">{{ getRequiredError('status', userInfoForm) }}</p>
+        </div>
       </div>
 
       <div class="personal-info__field form__field-container">

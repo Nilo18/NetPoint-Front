@@ -1,0 +1,25 @@
+<section class="invite-success-modal" aria-labelledby="invite-success-modal-title">
+  <button
+    class="invite-success-modal__close"
+    type="button"
+    aria-label="Close"
+    (click)="modal.dismiss()"
+  >
+    &times;
+  </button>
+
+  <div class="invite-success-modal__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" focusable="false">
+      <path d="m7.5 12.5 3 3 6-7" />
+    </svg>
+  </div>
+
+  <header class="invite-success-modal__header">
+    <h2 id="invite-success-modal-title">Registration successful</h2>
+    <p>{{ message }}</p>
+  </header>
+
+  <button class="invite-success-modal__button" type="button" (click)="modal.close()">
+    Got it
+  </button>
+</section>

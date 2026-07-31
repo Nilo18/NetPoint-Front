@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BackendUrlHolderService } from './backend-url-holder-service';
 import { firstValueFrom } from 'rxjs';
-import { AuthResponse } from './auth-service';
 
 export interface UserInviteEndpointResponse {
   status: number,
@@ -39,13 +38,26 @@ export class UserInviteService {
 
   async completeRegistration(token: string, credentials: UserRegistrationCredentials) {
     try {
-      const res = await firstValueFrom(this.http.post<AuthResponse>(
+      const res = await firstValueFrom(this.http.post<UserInviteEndpointResponse>(
         `${this.baseUrl}/complete?token=${token}`, credentials
       ))
       console.log(res)
       return res
     } catch (error) {
       console.error('Failed to send invitation verification: ', error)
+      throw error
+    }
+  }
+
+  async approveUser(userToApproveId: number) {
+    try {
+      const res = await firstValueFrom(this.http.patch<UserInviteEndpointResponse>(
+        `${this.baseUrl}/approve/${userToApproveId}`, {}
+      ),)
+      console.log(res)
+      return res
+    } catch (error) {
+      console.error('Failed to approve user: ', error)
       throw error
     }
   }

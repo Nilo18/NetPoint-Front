@@ -4,12 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { first, firstValueFrom } from 'rxjs';
 import { CompanyDTO } from './company-service';
 
+export enum AccountStatus {
+  ACTIVE = 'ACTIVE',
+  PENDING_APPROVAL = 'PENDING_APPROVAL'
+}
+
 export interface User {
   id: number,
   name: string,
   profileImage?: string
   email: string,
   role: string
+  status: AccountStatus
 }
 
 export interface GetUserListResponse {

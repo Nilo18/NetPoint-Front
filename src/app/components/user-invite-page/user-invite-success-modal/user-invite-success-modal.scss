@@ -1,0 +1,87 @@
+:host {
+  display: block;
+}
+
+.invite-success-modal {
+  position: relative;
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 10px;
+
+  &__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: #5f6368;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__icon {
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: #eeecff;
+    color: #554ce7;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+
+  &__header {
+    h2 {
+      margin: 0 0 10px;
+      color: #111111;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    p {
+      max-width: 480px;
+      margin: 0 auto;
+      color: #71738a;
+      line-height: 1.5;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 28px;
+    border: 1px solid #554ce7;
+    border-radius: 9px;
+    background: #554ce7;
+    color: #ffffff;
+    font-weight: 600;
+    line-height: 1.1;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 560px) {
+  .invite-success-modal {
+    padding: 28px 18px 24px;
+  }
+}

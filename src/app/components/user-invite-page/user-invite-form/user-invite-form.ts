@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UserInviteService } from '../../../services/user-invite-service';
 import { FormValidatorService } from '../../../services/form-validator-service';
 import { BackendErrorHandlerService } from '../../../services/backend-error-handler-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserInviteSuccessModal } from '../user-invite-success-modal/user-invite-success-modal';
 
 @Component({
   selector: 'app-user-invite-form',
@@ -20,6 +22,7 @@ export class UserInviteForm {
   private userInviteService = inject(UserInviteService)
   private formValidator = inject(FormValidatorService)
   private backendErrorHandler = inject(BackendErrorHandlerService)
+  private modalService = inject(NgbModal)
 
   ngOnInit() {
     if (this.userInviteStateService.shouldShowForm()) {
@@ -49,8 +52,13 @@ export class UserInviteForm {
       const res = await this.userInviteService.completeRegistration(
         this.userInviteStateService.invitationToken(), this.signupForm.value
       )
-      localStorage.setItem('net_token', res.token)
-      this.router.navigate(['/admin'])    
+      this.userInviteStateService.setRequestSent(false)
+      const modalRef = this.modalService.open(UserInviteSuccessModal, {
+        centered: true,
+      })
+      modalRef.componentInstance.message = res.message
+      // localStorage.setItem('net_token', res.token)
+      // this.router.navigate(['/admin'])
     } catch (error: unknown) {
       this.userInviteStateService.setGotError(true)
       this.userInviteStateService.setBackendErrorMsg(this.backendErrorHandler.getErrorMessage(error, 'Could not complete registration. Please try again.'))
