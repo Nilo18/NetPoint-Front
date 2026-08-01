@@ -1,0 +1,35 @@
+@use '../../../../styles/mixins.scss' as *;
+@use '../../../../styles/variables' as *;
+
+.sales-pagination {
+  @include FlexContainerColumn;
+
+  padding-top: 22px;
+
+  .pagination {
+    gap: 1px;
+    margin-bottom: 0;
+
+    .page-item {
+      .page-link {
+        color: $primary-color;
+        cursor: pointer;
+
+        &:disabled {
+          color: #98a2b3;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  &__total {
+    margin: 8px 0 0;
+  }
+}
+
+.selected-page {
+  color: $primary-color-hover !important;
+  border: 1px solid $primary-color-hover;
+  border-color: $primary-color-hover !important;
+}

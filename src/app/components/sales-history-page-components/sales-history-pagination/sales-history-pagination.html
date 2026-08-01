@@ -1,0 +1,45 @@
+@if (pageCount() > 1) {
+  <nav class="sales-pagination" aria-label="Sales page navigation">
+    <ul class="pagination">
+      <li class="page-item">
+        <button
+          type="button"
+          class="page-link"
+          aria-label="Previous"
+          [disabled]="page() === 1"
+          (click)="selectPage(page() - 1)"
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
+
+      @for (pageNumber of visiblePages(); track pageNumber) {
+        <li class="page-item">
+          <button
+            type="button"
+            class="page-link"
+            [class.selected-page]="page() === pageNumber"
+            [attr.aria-current]="page() === pageNumber ? 'page' : null"
+            (click)="selectPage(pageNumber)"
+          >
+            {{ pageNumber }}
+          </button>
+        </li>
+      }
+
+      <li class="page-item">
+        <button
+          type="button"
+          class="page-link"
+          aria-label="Next"
+          [disabled]="page() === pageCount()"
+          (click)="selectPage(page() + 1)"
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
+    </ul>
+
+    <p class="sales-pagination__total">Total Pages: {{ pageCount() }}</p>
+  </nav>
+}

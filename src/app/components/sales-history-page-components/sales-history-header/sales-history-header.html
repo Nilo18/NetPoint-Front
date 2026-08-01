@@ -1,0 +1,32 @@
+<header class="history-header">
+  <div class="history-header__inner">
+    <a
+      href="/admin"
+      class="history-header__back"
+      aria-label="Back to dashboard"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m15 18-6-6 6-6" />
+        <path d="M9 12h10" />
+      </svg>
+      <span>Dashboard</span>
+    </a>
+
+    <div class="history-header__title">
+      <h1>Sales History</h1>
+      <p>All completed transactions — Demo Store</p>
+    </div>
+
+    <button
+      type="button"
+      class="history-header__export"
+      (click)="exportRequested.emit()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
+        <path d="M5 15v4h14v-4" />
+      </svg>
+      Export CSV
+    </button>
+  </div>
+</header>

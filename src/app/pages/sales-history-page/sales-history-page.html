@@ -1,0 +1,21 @@
+<app-sales-history-header (exportRequested)="exportCsv()" />
+
+<main class="history-page">
+  <app-sales-history-stats [sales]="allSales" />
+
+  <app-sales-history-controls
+    (queryChanged)="setQuery($event)"
+    (sortByChanged)="setSortBy($event)"
+    (sortDirectionChanged)="setDirection($event)"
+    (filterByChanged)="setFilterBy($event)"
+    (filterFromChanged)="setFrom($event)"
+    (filterToChanged)="setTo($event)"
+  />
+
+  <app-sales-history-list [sales]="visibleSales()" />
+  <app-sales-history-pagination
+    [page]="page()"
+    [pageCount]="pageCount()"
+    (pageChanged)="page.set($event)"
+  />
+</main>

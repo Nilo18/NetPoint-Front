@@ -1,0 +1,25 @@
+<section class="stats" aria-label="Sales summary">
+  <article>
+    <span>Total sales</span>
+    <strong>{{ sales().length }}</strong>
+    <i class="neutral">▣</i>
+  </article>
+
+  <article>
+    <span>Total revenue</span>
+    <strong class="purple">{{ revenue() | currency }}</strong>
+    <i class="purple-bg">$</i>
+  </article>
+
+  <article>
+    <span>Total profit</span>
+    <strong class="green">{{ profit() | currency }}</strong>
+    <i class="green-bg">↗</i>
+  </article>
+
+  <article>
+    <span>Profit margin</span>
+    <strong class="violet">{{ margin() | number: '1.1-1' }}%</strong>
+    <i class="violet-bg">%</i>
+  </article>
+</section>

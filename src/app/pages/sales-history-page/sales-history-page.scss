@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: Inter, Arial, sans-serif;
+  color: #101828;
+  background: #f7f8fa;
+}
+
+.history-page {
+  max-width: 1232px;
+  padding: 32px 24px 40px;
+  margin: auto;
+}
+
+@media (max-width: 650px) {
+  .history-page {
+    padding: 20px 14px;
+  }
+}

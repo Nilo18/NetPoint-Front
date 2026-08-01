@@ -1,0 +1,70 @@
+<section class="controls" aria-label="Search, sort, and filter sales">
+  <label class="controls__search">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-4-4" />
+    </svg>
+    <span class="controls__sr-only">Search sales</span>
+    <input
+      type="search"
+      placeholder="Search by sale ID, cashier, or product..."
+      [formControl]="queryControl"
+    />
+  </label>
+
+  <div class="controls__groups">
+    <div class="controls__group">
+      <div class="controls__field">
+        <label for="sort-by">Sort by</label>
+        <select id="sort-by" (change)="onSortByChange($event)">
+          <option value="date">Date</option>
+          <option value="revenue">Revenue</option>
+          <option value="profit">Profit</option>
+          <option value="margin">Margin</option>
+        </select>
+      </div>
+
+      <div class="controls__field">
+        <label for="direction">Direction</label>
+        <select id="direction" (change)="onSortDirectionChange($event)">
+          <option value="desc">Descending</option>
+          <option value="asc">Ascending</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="controls__group">
+      <div class="controls__field">
+        <label for="filter-by">Filter by</label>
+        <select id="filter-by" (change)="onFilterByChange($event)">
+          <option value="revenue">Revenue</option>
+          <option value="cost">Cost</option>
+          <option value="profit">Profit</option>
+          <option value="margin">Margin %</option>
+        </select>
+      </div>
+
+      <div class="controls__field controls__field--number">
+        <label for="filter-from">From</label>
+        <input
+          id="filter-from"
+          type="number"
+          min="0"
+          placeholder="Min"
+          (input)="onFilterFromChange($event)"
+        />
+      </div>
+
+      <div class="controls__field controls__field--number">
+        <label for="filter-to">To</label>
+        <input
+          id="filter-to"
+          type="number"
+          min="0"
+          placeholder="Max"
+          (input)="onFilterToChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+</section>
