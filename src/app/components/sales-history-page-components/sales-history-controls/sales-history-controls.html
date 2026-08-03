@@ -8,7 +8,7 @@
     <input
       type="search"
       placeholder="Search by sale ID, cashier, or product..."
-      [formControl]="queryControl"
+      [formControl]="searchControl"
     />
   </label>
 
@@ -16,7 +16,7 @@
     <div class="controls__group">
       <div class="controls__field">
         <label for="sort-by">Sort by</label>
-        <select id="sort-by" (change)="onSortByChange($event)">
+        <select id="sort-by" [disabled]="loading()" (change)="onSortByChange($event)">
           <option value="date">Date</option>
           <option value="revenue">Revenue</option>
           <option value="profit">Profit</option>
@@ -26,7 +26,7 @@
 
       <div class="controls__field">
         <label for="direction">Direction</label>
-        <select id="direction" (change)="onSortDirectionChange($event)">
+        <select id="direction" [disabled]="loading()" (change)="onSortDirectionChange($event)">
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
         </select>
@@ -36,11 +36,12 @@
     <div class="controls__group">
       <div class="controls__field">
         <label for="filter-by">Filter by</label>
-        <select id="filter-by" (change)="onFilterByChange($event)">
-          <option value="revenue">Revenue</option>
-          <option value="cost">Cost</option>
-          <option value="profit">Profit</option>
-          <option value="margin">Margin %</option>
+        <select id="filter-by" [disabled]="loading()" (change)="onFilterByChange($event)">
+          <option value="totalRevenue">Revenue</option>
+          <option value="totalCost">Cost</option>
+          <option value="totalProfit">Profit</option>
+          <option value="marginPercent">Margin %</option>
+          <option value="date">Date</option>
         </select>
       </div>
 
@@ -48,10 +49,11 @@
         <label for="filter-from">From</label>
         <input
           id="filter-from"
-          type="number"
-          min="0"
-          placeholder="Min"
-          (input)="onFilterFromChange($event)"
+          [type]="filterRange().filterBy === 'date' ? 'date' : 'number'"
+          [attr.min]="filterRange().filterBy === 'date' ? null : 0"
+          [placeholder]="filterRange().filterBy === 'date' ? '' : 'Min'"
+          [disabled]="loading()"
+          (change)="onFilterFromChange($event)"
         />
       </div>
 
@@ -59,10 +61,11 @@
         <label for="filter-to">To</label>
         <input
           id="filter-to"
-          type="number"
-          min="0"
-          placeholder="Max"
-          (input)="onFilterToChange($event)"
+          [type]="filterRange().filterBy === 'date' ? 'date' : 'number'"
+          [attr.min]="filterRange().filterBy === 'date' ? null : 0"
+          [placeholder]="filterRange().filterBy === 'date' ? '' : 'Max'"
+          [disabled]="loading()"
+          (change)="onFilterToChange($event)"
         />
       </div>
     </div>

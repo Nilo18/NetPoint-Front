@@ -1,4 +1,4 @@
-@if (pageCount() > 1) {
+@if (pageCount() > 1 || loading()) {
   <nav class="sales-pagination" aria-label="Sales page navigation">
     <ul class="pagination">
       <li class="page-item">
@@ -6,7 +6,7 @@
           type="button"
           class="page-link"
           aria-label="Previous"
-          [disabled]="page() === 1"
+          [disabled]="loading() || page() === 1"
           (click)="selectPage(page() - 1)"
         >
           <span aria-hidden="true">&laquo;</span>
@@ -20,6 +20,7 @@
             class="page-link"
             [class.selected-page]="page() === pageNumber"
             [attr.aria-current]="page() === pageNumber ? 'page' : null"
+            [disabled]="loading()"
             (click)="selectPage(pageNumber)"
           >
             {{ pageNumber }}
@@ -32,7 +33,7 @@
           type="button"
           class="page-link"
           aria-label="Next"
-          [disabled]="page() === pageCount()"
+          [disabled]="loading() || page() === pageCount()"
           (click)="selectPage(page() + 1)"
         >
           <span aria-hidden="true">&raquo;</span>

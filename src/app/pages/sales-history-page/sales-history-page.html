@@ -1,21 +1,31 @@
 <app-sales-history-header (exportRequested)="exportCsv()" />
 
 <main class="history-page">
-  <app-sales-history-stats [sales]="allSales" />
-
-  <app-sales-history-controls
-    (queryChanged)="setQuery($event)"
-    (sortByChanged)="setSortBy($event)"
-    (sortDirectionChanged)="setDirection($event)"
-    (filterByChanged)="setFilterBy($event)"
-    (filterFromChanged)="setFrom($event)"
-    (filterToChanged)="setTo($event)"
+  <app-sales-history-stats
+    [stats]="stats.value()"
+    [isLoading]="stats.isLoading()"
+    [error]="stats.error()"
   />
 
-  <app-sales-history-list [sales]="visibleSales()" />
+  <app-sales-history-controls
+    (searchChanged)="setSearch($event)"
+    (sortByChanged)="setSortBy($event)"
+    (sortDirectionChanged)="setSortDirection($event)"
+    (filterByChanged)="setFilterBy($event)"
+    (filterRangeChanged)="setFilterRange($event)"
+    [loading]="sales.isLoading() || stats.isLoading()"
+  />
+
+  <app-sales-history-list
+    [sales]="sales.value()?.items ?? []"
+    [isLoading]="sales.isLoading()"
+    [error]="sales.error()"
+  />
+
   <app-sales-history-pagination
-    [page]="page()"
-    [pageCount]="pageCount()"
-    (pageChanged)="page.set($event)"
+    [page]="displayedPage()"
+    [pageCount]="displayedPageCount()"
+    [loading]="sales.isLoading()"
+    (pageChanged)="setPage($event)"
   />
 </main>

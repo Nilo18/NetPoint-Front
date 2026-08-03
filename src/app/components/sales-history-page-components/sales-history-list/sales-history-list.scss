@@ -25,6 +25,28 @@
   border-radius: 15px;
   box-shadow: 0 1px 2px #10182812;
 
+  &--skeleton {
+    display: grid;
+    grid-template-columns: 38px 1fr 110px 110px;
+    gap: 15px;
+    align-items: center;
+    min-height: 72px;
+    padding: 12px 19px;
+
+    span {
+      height: 16px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #eef0f3 25%, #f8f9fb 50%, #eef0f3 75%);
+      background-size: 200% 100%;
+      animation: sales-skeleton 1.2s infinite linear;
+
+      &:first-child {
+        height: 38px;
+        border-radius: 10px;
+      }
+    }
+  }
+
   &__summary {
     display: flex;
     gap: 15px;
@@ -230,6 +252,10 @@
       color: #00a66a;
     }
   }
+}
+
+@keyframes sales-skeleton {
+  to { background-position: -200% 0; }
 }
 
 @media (max-width: 720px) {

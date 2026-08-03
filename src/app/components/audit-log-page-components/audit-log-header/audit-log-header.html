@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <button class="audit-log-header__export" type="button">
+  <button class="audit-log-header__export" type="button" (click)="exportRequested.emit()">
     <svg aria-hidden="true" viewBox="0 0 24 24">
       <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
       <path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />

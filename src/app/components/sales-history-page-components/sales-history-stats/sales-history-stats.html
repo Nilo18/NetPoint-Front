@@ -1,25 +1,68 @@
 <section class="stats" aria-label="Sales summary">
+  @if (error()) {
+    <div class="stats__state" role="alert">Unable to load sales statistics.</div>
+  } @else if (isLoading()) {
+    @for (placeholder of [1, 2, 3, 4, 5]; track placeholder) {
+      <article class="stats__skeleton" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <i></i>
+      </article>
+    }
+    <span class="stats__loading-label" role="status">Loading sales statistics…</span>
+  } @else {
   <article>
     <span>Total sales</span>
-    <strong>{{ sales().length }}</strong>
+    <strong>{{ stats()?.totalSales ?? '...' }}</strong>
     <i class="neutral">▣</i>
   </article>
 
   <article>
     <span>Total revenue</span>
-    <strong class="purple">{{ revenue() | currency }}</strong>
+    <strong class="purple">
+      @if (stats(); as value) {
+        {{ value.totalRevenue | currency }}
+      } @else {
+        ...
+      }
+    </strong>
     <i class="purple-bg">$</i>
   </article>
 
   <article>
+    <span>Total cost</span>
+    <strong class="orange">
+      @if (stats(); as value) {
+        {{ value.totalCost | currency }}
+      } @else {
+        ...
+      }
+    </strong>
+    <i class="orange-bg">$</i>
+  </article>
+
+  <article>
     <span>Total profit</span>
-    <strong class="green">{{ profit() | currency }}</strong>
+    <strong class="green">
+      @if (stats(); as value) {
+        {{ value.totalProfit | currency }}
+      } @else {
+        ...
+      }
+    </strong>
     <i class="green-bg">↗</i>
   </article>
 
   <article>
     <span>Profit margin</span>
-    <strong class="violet">{{ margin() | number: '1.1-1' }}%</strong>
+    <strong class="violet">
+      @if (stats(); as value) {
+        {{ value.marginPercent | number: '1.1-1' }}%
+      } @else {
+        ...
+      }
+    </strong>
     <i class="violet-bg">%</i>
   </article>
+  }
 </section>

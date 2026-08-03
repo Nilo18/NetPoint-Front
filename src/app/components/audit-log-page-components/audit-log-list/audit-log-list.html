@@ -18,6 +18,7 @@
           type="search"
           placeholder="Search by actor or details..."
           [formControl]="searchValue"
+          [disabled]="auditLogsData.isLoading()"
           [attr.aria-busy]="auditLogsData.isLoading()"
 
         />
@@ -59,10 +60,11 @@
         <button type="button" (click)="retryLoad()">Try again</button>
       </div>
     } @else if (auditLogsData.isLoading()) {
-      <div class="audit-log-list__state" role="status">
-        <span class="audit-log-list__spinner" aria-hidden="true"></span>
-        <span>Loading audit logs…</span>
-      </div>
+      @for (placeholder of [1, 2, 3, 4, 5]; track placeholder) {
+        <article class="audit-log-card audit-log-card--skeleton" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </article>
+      }
     } @else {
       @for (log of auditLogsData.value()?.items; track log.id) {
       @let meta = getEventMeta(log.eventType);
@@ -185,10 +187,10 @@
       }
     }
   </div>
-  @if (!auditLogsData.error() && (auditLogsData.value()?.totalPages ?? 0) > 0) {
+  @if (!auditLogsData.error()) {
     <app-audit-log-pagination
-      [totalPages]="auditLogsData.value()?.totalPages ?? 0"
-      [currentPage]="(auditLogsData.value()?.currentPage ?? 0) + 1"
+      [totalPages]="displayedTotalPages()"
+      [currentPage]="displayedPage()"
       [loading]="auditLogsData.isLoading()"
       (pageChange)="handlePageChange($event)"
     />

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { AuditLogService, EventType } from '../../../services/audit-log-service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs';
@@ -30,6 +30,19 @@ export class AuditLogList {
     stream: ({ params }) => this.auditLogService.getAuditLogs(params),
   });
   readonly searchValue = new FormControl('', { nonNullable: true });
+  readonly displayedPage = signal(1);
+  readonly displayedTotalPages = signal(1);
+
+  constructor() {
+    effect(() => {
+      if (!this.auditLogsData.hasValue()) return;
+      const response = this.auditLogsData.value();
+      if (response) {
+        this.displayedPage.set(response.currentPage + 1);
+        this.displayedTotalPages.set(Math.max(response.totalPages, 1));
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.searchValue.valueChanges
@@ -37,18 +50,22 @@ export class AuditLogList {
         map(query => query.trim()),
         debounceTime(250),
         distinctUntilChanged(),
-        tap(search => this.auditLogService.updateQuery({ search })),
+        tap(search => {
+          if (!this.auditLogsData.isLoading()) this.auditLogService.updateQuery({ search });
+        }),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
   }
 
   onEventTypeChange(event: Event) {
+    if (this.auditLogsData.isLoading()) return;
     const value = (event.target as HTMLSelectElement).value
     this.auditLogService.updateQuery({ eventType: value })
   }
 
   onRoleChange(event: Event) {
+    if (this.auditLogsData.isLoading()) return;
     const value = (event.target as HTMLSelectElement).value
     this.auditLogService.updateQuery({ role: value })
   }
@@ -113,10 +130,28 @@ export class AuditLogList {
   }
 
   handlePageChange(displayPage: number): void {
+    if (this.auditLogsData.isLoading()) return;
     this.auditLogService.updateQuery({ page: displayPage - 1 });
   }
 
   retryLoad(): void {
     this.auditLogsData.reload();
+  }
+
+  exportCsv(): void {
+    const logs = this.auditLogsData.hasValue() ? this.auditLogsData.value().items : [];
+    const rows = logs.map((log) => [
+      log.id, log.eventType, log.actorNameSnapshot, log.actorRoleSnapshot, log.occurredAt, log.details,
+    ]);
+    const csv = [
+      ['Log ID', 'Event Type', 'Actor', 'Role', 'Occurred At', 'Details'], ...rows,
+    ].map((row) => row.map((value) => `"${String(value ?? '').replaceAll('"', '""')}"`).join(','))
+      .join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'audit-logs.csv';
+    link.click();
+    URL.revokeObjectURL(url);
   }
 }

@@ -15,6 +15,7 @@ import {
 export class SalesHistoryPagination {
   readonly page = input(1);
   readonly pageCount = input(1);
+  readonly loading = input(false);
   readonly pageChanged = output<number>();
 
   readonly visiblePages = computed(() => {
@@ -33,7 +34,7 @@ export class SalesHistoryPagination {
   });
 
   selectPage(page: number) {
-    if (page < 1 || page > this.pageCount() || page === this.page()) {
+    if (this.loading() || page < 1 || page > this.pageCount() || page === this.page()) {
       return;
     }
 
