@@ -176,10 +176,24 @@
 // Smaller tablets
 @media (min-width: 600px) and (max-width: 899.98px) {
 .header {
+        &__inner {
+            justify-content: space-between;
+        }
+
         &__nav {
             .header__nav-link {
                 display: none;
             }
+        }
+
+        &__sign-in,
+        &__cta {
+            display: none;
+        }
+
+        &__burger-menu {
+            display: block;
+            cursor: pointer;
         }
     }
 }

@@ -1,0 +1,45 @@
+<aside class="burger-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <button
+    class="burger-menu__backdrop"
+    type="button"
+    aria-label="Close mobile navigation"
+    (click)="closeMenu()"
+  ></button>
+
+  <div class="burger-menu__panel">
+    <header class="burger-menu__header">
+      <a class="burger-menu__brand" routerLink="/" (click)="closeMenu()">
+        <span class="burger-menu__logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="7"></circle>
+            <path d="M12 8v4l2.5 1.5"></path>
+          </svg>
+        </span>
+        <span>NetPoint</span>
+      </a>
+
+      <button class="burger-menu__close" type="button" aria-label="Close menu" (click)="closeMenu()">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+    </header>
+
+    <nav class="burger-menu__nav" aria-label="Mobile navigation links">
+      <a routerLink="/" fragment="features-section" 
+      (click)="closeMenu(); pageUtilities.scrollToSection('features-section')">Features</a>
+      <a routerLink="/security" (click)="closeMenu()">Security</a>
+      <a routerLink="/privacy" (click)="closeMenu()">Privacy</a>
+    </nav>
+
+    <div class="burger-menu__actions">
+      <a class="burger-menu__sign-in" routerLink="/login" (click)="closeMenu()">Sign In</a>
+      <a class="burger-menu__sign-up" routerLink="/signup" (click)="closeMenu()">
+        <span>Sign Up</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</aside>

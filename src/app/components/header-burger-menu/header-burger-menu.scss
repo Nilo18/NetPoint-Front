@@ -1,0 +1,183 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: block;
+}
+
+.burger-menu {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(15, 23, 42, 0.38);
+    cursor: default;
+  }
+
+  &__panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 360px);
+    min-height: 100%;
+    background: #ffffff;
+    box-shadow: -12px 0 32px rgba(15, 23, 42, 0.16);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 7px 10px;
+    border-bottom: 1px solid #dedede;
+  }
+
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #151821;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__logo {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: #5548ed;
+
+    svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+  }
+
+  &__close {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #586174;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-width: 1.8;
+    }
+  }
+
+  &__nav {
+    display: grid;
+    padding: 8px 8px 4px;
+    border-bottom: 1px solid #dedede;
+
+    a {
+      display: flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px;
+      border-radius: 6px;
+      color: #586174;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        background: #f5f4ff;
+        color: #4f46e5;
+      }
+    }
+  }
+
+  &__actions {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  &__sign-in,
+  &__sign-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  &__sign-in {
+    border: 1px solid #d9dce2;
+    color: #22252d;
+    background: #ffffff;
+
+    &:hover,
+    &:focus-visible {
+      background: #f8fafc;
+    }
+  }
+
+  &__sign-up {
+    gap: 10px;
+    border: 1px solid #5548ed;
+    background: #5548ed;
+    color: #ffffff;
+
+    &:hover,
+    &:focus-visible {
+      border-color: #493ed4;
+      background: #493ed4;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899.98px) {
+  .burger-menu {
+    &__panel {
+      width: min(72vw, 360px);
+    }
+  }
+}

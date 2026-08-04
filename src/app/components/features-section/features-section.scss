@@ -99,21 +99,27 @@
 // Phones
 @media (min-width: 280px) and (max-width: 599.98px) {
 .features {
-// ── Grid ──────────────────────────────────────────
-  &__grid {
-grid-template-columns: 1fr;
+    &__grid {
+      grid-template-columns: 1fr;
       max-width: 480px;
-}
-}
+    }
+
+    &__inner {
+      padding: 0 16px;
+    }
+  }
 }
 
 // Smaller tablets
 @media (min-width: 600px) and (max-width: 899.98px) {
-.features {
-// ── Grid ──────────────────────────────────────────
-  &__grid {
-grid-template-columns: 1fr;
+  .features {
+    &__grid {
+      grid-template-columns: 1fr;
       max-width: 480px;
-}
-}
+    }
+
+    &__inner {
+      padding: 0 28px;
+    }
+  }
 }

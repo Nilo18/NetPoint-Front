@@ -1,13 +1,16 @@
 @use '../../../../styles/variables.scss' as *;
 
 :host {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     min-width: 0;
     max-width: 100%;
 }
 
 .personal-info {
+    // background-color: red;
     width: 100%;
     min-width: 0;
     max-width: 1058px;

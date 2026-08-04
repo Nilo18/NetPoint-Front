@@ -19,7 +19,8 @@
 
     <!-- Nav -->
     <nav class="header__nav">
-      <a class="header__nav-link" routerLink="/" fragment="features-section" (click)="pageUtilities.scrollToSection('features-section')">
+      <a class="header__nav-link" routerLink="/" fragment="features-section"
+      (click)="pageUtilities.scrollToSection('features-section')">
         Features
       </a>
       <a class="header__nav-link" (click)="pageUtilities.navigateToPage('/security')">Security</a>
@@ -36,8 +37,8 @@
         </svg>
       </a>
 
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
-        class="header__burger-menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+        class="header__burger-menu" (click)="setShowBurgerMenu(!showBurgerMenu())">
             <line x1="3" y1="6"  x2="21" y2="6"  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -46,3 +47,6 @@
 
   </div>
 </header>
+@if (showBurgerMenu()) {
+  <app-header-burger-menu (closed)="setShowBurgerMenu(false)" />
+}
