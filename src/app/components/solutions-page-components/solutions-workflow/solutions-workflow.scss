@@ -64,13 +64,23 @@
   small { display: block; margin-top: 7px; color: #777a87; font-size: 11px; line-height: 1.55; }
 }
 
-@media (max-width: 900px) {
-  .workflow__inner { grid-template-columns: 1fr; gap: 50px; }
-  .workflow__content { max-width: 650px; }
-}
+// Phones
 
-@media (max-width: 650px) {
-  .workflow { padding: 85px 0; }
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.workflow__inner { grid-template-columns: 1fr; gap: 50px; }
+  .workflow__content { max-width: 650px; }
+
+.workflow { padding: 85px 0; }
   .workflow__inner { padding: 0 24px; }
   .workflow__steps { grid-template-columns: 1fr; }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.workflow__inner { grid-template-columns: 1fr; gap: 50px; }
+  .workflow__content { max-width: 650px; }
 }

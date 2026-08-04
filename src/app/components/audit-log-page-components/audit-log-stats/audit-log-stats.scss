@@ -106,14 +106,21 @@
   }
 }
 
-@media (max-width: 1100px) {
-  .audit-log-stats {
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.audit-log-stats {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
 
-@media (max-width: 640px) {
-  .audit-log-stats {
+.audit-log-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     padding-inline: 12px;
@@ -122,10 +129,22 @@
   .audit-log-stats__stat {
     padding-inline: 16px;
   }
+
+.audit-log-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media (max-width: 380px) {
-  .audit-log-stats {
-    grid-template-columns: 1fr;
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.audit-log-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.audit-log-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

@@ -1,14 +1,17 @@
-<article class="chart-card" aria-labelledby="product-performance-title">
-  <h2 id="product-performance-title" class="chart-card__title">Product Performance</h2>
+<article class="product-performance-chart" aria-labelledby="product-performance-title">
+  <h2 id="product-performance-title" class="product-performance-chart__title">Product Performance</h2>
 
-  <div class="chart-card__canvas">
+  <div class="product-performance-chart__canvas">
     @if (loading()) {
-      <div class="chart-card__state" role="status" aria-live="polite">
-        <span class="chart-card__spinner" aria-hidden="true"></span>
+      <div class="product-performance-chart__state" role="status" aria-live="polite">
+        <span class="product-performance-chart__spinner" aria-hidden="true"></span>
         <span>Loading chart data...</span>
       </div>
     } @else if (errorMessage()) {
-      <div class="chart-card__state chart-card__state--error" role="alert">
+      <div
+        class="product-performance-chart__state product-performance-chart__state--error"
+        role="alert"
+      >
         {{ errorMessage() }}
       </div>
     } @else {

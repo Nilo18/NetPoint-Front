@@ -1,6 +1,10 @@
 .inventory-management {
   min-width: 0;
+  width: 100%;
+  // max-width: 900px;
+  overflow-x: auto;
   padding: 28px 30px 30px;
+  // background-color: red;
   border: 1px solid #dedede;
   border-radius: 17px;
   background: #ffffff;
@@ -52,11 +56,15 @@
   }
 
   &__filters {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    
-    app-admin-dashboard-sorting, app-admin-dashboard-filtering {
-      width: 50%;
+
+    app-admin-dashboard-sorting,
+    app-admin-dashboard-filtering {
+      display: block;
+      min-width: 0;
+      width: 100%;
     }
   }
 
@@ -155,6 +163,8 @@
   }
 
   &__table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
     border: 1px solid #dedede;
     border-radius: 11px;
   }
@@ -172,8 +182,10 @@
   }
 
   &__table {
-    min-width: 820px;
+    max-width: 100%;
+    overflow-x: auto;
     color: #000000;
+    // background-color: red;
     font-size: 18px;
 
     th,
@@ -416,8 +428,48 @@
   }
 }
 
-@media (max-width: 720px) {
-  .inventory-management {
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.inventory-management {
+    padding: 24px 18px;
+
+    &__filters {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+      margin-bottom: 28px;
+
+      &--top {
+        // width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+        // text-align: center;
+      }
+    }
+
+    &__add-button {
+      width: 100%;
+    }
+
+    &__subtitle {
+      font-size: 16px;
+    }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.inventory-management {
     padding: 24px 18px;
 
     &__header {
@@ -426,9 +478,9 @@
       margin-bottom: 28px;
     }
 
-    &__add-button {
-      width: 100%;
-    }
+    // &__add-button {
+    //   width: 100%;
+    // }
 
     &__subtitle {
       font-size: 16px;

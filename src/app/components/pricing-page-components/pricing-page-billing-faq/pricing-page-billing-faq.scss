@@ -94,8 +94,11 @@
   }
 }
 
-@media (max-width: 650px) {
-  .billing-faq {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.billing-faq {
     padding: 78px 0;
 
     &__inner {

@@ -723,8 +723,31 @@
   }
 }
 
-@media (max-width: 960px) {
-  .security-hero {
+
+
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .security-hero__primary,
+  .security-card,
+  .security-cta a {
+    transition: none;
+  }
+}
+
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.security-hero {
     &__inner {
       grid-template-columns: 1fr;
       padding-top: 80px;
@@ -775,10 +798,140 @@
       max-width: 620px;
     }
   }
+
+.security-hero {
+    &__inner {
+      padding: 70px 24px 80px;
+      gap: 48px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 12vw, 52px);
+      letter-spacing: -1.7px;
+    }
+
+    &__lead {
+      font-size: 16px;
+    }
+
+    &__visual {
+      min-height: 380px;
+      transform: scale(0.84);
+    }
+  }
+
+  .security-principles__inner,
+  .security-controls__inner,
+  .security-access__inner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .security-controls {
+    padding: 85px 0;
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .security-access {
+    padding: 85px 0;
+  }
+
+.security-hero {
+    &__actions {
+      flex-direction: column;
+    }
+
+    &__orbit--outer {
+      width: 390px;
+      height: 390px;
+    }
+
+    &__orbit--inner {
+      width: 280px;
+      height: 280px;
+    }
+
+    &__status--access {
+      right: -55px;
+    }
+
+    &__status--activity {
+      left: -55px;
+    }
+  }
+
+  .security-card,
+  .security-access__panel {
+    padding: 24px;
+  }
+
+  .security-access__role {
+    grid-template-columns: auto 1fr;
+  }
+
+  .security-access__badge {
+    display: none;
+  }
 }
 
-@media (max-width: 700px) {
-  .security-hero {
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.security-hero {
+    &__inner {
+      grid-template-columns: 1fr;
+      padding-top: 80px;
+      text-align: center;
+    }
+
+    &__content {
+      margin: 0 auto;
+    }
+
+    &__eyebrow,
+    &__actions {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+
+    &__visual {
+      width: min(100%, 520px);
+      margin: -20px auto 0;
+    }
+  }
+
+  .security-principles {
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 600px;
+    }
+
+    &__item {
+      padding: 20px 0;
+
+      &:not(:last-child) {
+        border-right: 0;
+        border-bottom: 1px solid #e8e9ed;
+      }
+    }
+  }
+
+  .security-access {
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: 55px;
+    }
+
+    &__content {
+      max-width: 620px;
+    }
+  }
+
+.security-hero {
     &__inner {
       padding: 70px 24px 80px;
       gap: 48px;
@@ -819,49 +972,57 @@
   }
 }
 
-@media (max-width: 480px) {
-  .security-hero {
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.security-hero {
+    &__inner {
+      grid-template-columns: 1fr;
+      padding-top: 80px;
+      text-align: center;
+    }
+
+    &__content {
+      margin: 0 auto;
+    }
+
+    &__eyebrow,
     &__actions {
-      flex-direction: column;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
     }
 
-    &__orbit--outer {
-      width: 390px;
-      height: 390px;
-    }
-
-    &__orbit--inner {
-      width: 280px;
-      height: 280px;
-    }
-
-    &__status--access {
-      right: -55px;
-    }
-
-    &__status--activity {
-      left: -55px;
+    &__visual {
+      width: min(100%, 520px);
+      margin: -20px auto 0;
     }
   }
 
-  .security-card,
-  .security-access__panel {
-    padding: 24px;
+  .security-principles {
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 600px;
+    }
+
+    &__item {
+      padding: 20px 0;
+
+      &:not(:last-child) {
+        border-right: 0;
+        border-bottom: 1px solid #e8e9ed;
+      }
+    }
   }
 
-  .security-access__role {
-    grid-template-columns: auto 1fr;
-  }
+  .security-access {
+    &__inner {
+      grid-template-columns: 1fr;
+      gap: 55px;
+    }
 
-  .security-access__badge {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .security-hero__primary,
-  .security-card,
-  .security-cta a {
-    transition: none;
+    &__content {
+      max-width: 620px;
+    }
   }
 }

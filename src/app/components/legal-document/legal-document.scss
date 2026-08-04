@@ -254,22 +254,9 @@
   }
 }
 
-@media (max-width: 850px) {
-  .legal {
-    &__layout { grid-template-columns: 1fr; gap: 45px; }
-    &__sidebar-inner { position: static; }
-    &__sidebar nav { grid-template-columns: repeat(2, 1fr); }
-  }
-}
 
-@media (max-width: 600px) {
-  .legal {
-    &__hero-inner { padding: 72px 24px 68px; }
-    &__layout { padding: 55px 24px 85px; }
-    &__sidebar nav { grid-template-columns: 1fr; }
-    &__section h2 { font-size: 21px; }
-  }
-}
+
+
 
 @media print {
   .legal {
@@ -279,5 +266,35 @@
     &__hero p { margin-left: 0; }
     &__layout { display: block; max-width: none; padding: 20px 0; }
     &__section { break-inside: avoid; }
+  }
+}
+
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.legal {
+    &__layout { grid-template-columns: 1fr; gap: 45px; }
+    &__sidebar-inner { position: static; }
+    &__sidebar nav { grid-template-columns: repeat(2, 1fr); }
+  }
+
+.legal {
+    &__hero-inner { padding: 72px 24px 68px; }
+    &__layout { padding: 55px 24px 85px; }
+    &__sidebar nav { grid-template-columns: 1fr; }
+    &__section h2 { font-size: 21px; }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.legal {
+    &__layout { grid-template-columns: 1fr; gap: 45px; }
+    &__sidebar-inner { position: static; }
+    &__sidebar nav { grid-template-columns: repeat(2, 1fr); }
   }
 }

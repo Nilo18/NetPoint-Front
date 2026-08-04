@@ -120,8 +120,11 @@
   }
 }
 
-@media (max-width: 650px) {
-  .comparison {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.comparison {
     padding: 78px 0;
 
     &__inner {

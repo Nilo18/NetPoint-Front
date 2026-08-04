@@ -113,18 +113,22 @@
   }
 }
 
-@media (max-width: 900px) {
-  .controls {
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.controls {
     &__groups {
       flex-direction: column;
       gap: 10px;
       align-items: stretch;
     }
   }
-}
 
-@media (max-width: 650px) {
-  .controls {
+.controls {
     &__group {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -145,6 +149,17 @@
 
     &__group:last-child &__field:first-of-type {
       grid-column: 1 / -1;
+    }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.controls {
+    &__groups {
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
     }
   }
 }

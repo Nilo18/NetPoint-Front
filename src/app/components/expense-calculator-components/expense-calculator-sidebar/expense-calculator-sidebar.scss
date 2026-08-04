@@ -437,8 +437,57 @@
   border: 0;
 }
 
-@media (max-width: 1120px) {
-  .sale-sidebar {
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.sale-sidebar {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    border-left: 0;
+    border-top: 1px solid #dedede;
+    position: static;
+
+    &__top {
+      min-height: auto;
+    }
+
+    &__cart {
+      max-height: 50vh;
+    }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.sale-sidebar {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    border-left: 0;
+    border-top: 1px solid #dedede;
+    position: static;
+
+    &__top {
+      min-height: auto;
+    }
+
+    &__cart {
+      max-height: 50vh;
+    }
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.sale-sidebar {
     width: 100%;
     height: auto;
     min-height: auto;

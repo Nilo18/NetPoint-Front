@@ -162,8 +162,11 @@
     }
 }
 
-@media (max-width: 575.98px) {
-    .schema-customizer-modal {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.schema-customizer-modal {
         padding: 24px 20px 26px;
 
         &__header {

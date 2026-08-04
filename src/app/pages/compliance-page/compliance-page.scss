@@ -348,8 +348,14 @@
   }
 }
 
-@media (max-width: 900px) {
-  .compliance-controls__grid {
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.compliance-controls__grid {
     grid-template-columns: 1fr;
   }
 
@@ -358,10 +364,8 @@
     grid-template-columns: 1fr;
     gap: 48px;
   }
-}
 
-@media (max-width: 640px) {
-  .compliance-shell {
+.compliance-shell {
     width: min(100% - 32px, 1120px);
   }
 
@@ -390,5 +394,18 @@
     time {
       display: none;
     }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.compliance-controls__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compliance-audit__layout,
+  .compliance-payment__panel {
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 }

@@ -1,7 +1,7 @@
-<nav aria-label="Page navigation example" class="product-pagination">
-  <ul class="pagination">
-    <li class="page-item">
-      <button type="button" class="page-link" aria-label="Previous" (click)="onPageClick(currentPage() - 1)" [disabled]="pageIsLoading()">
+<nav aria-label="Product pagination" class="product-pagination">
+  <ul class="pagination product-pagination__list">
+    <li class="page-item product-pagination__item">
+      <button type="button" class="page-link product-pagination__button" aria-label="Previous" (click)="onPageClick(currentPage() - 1)" [disabled]="pageIsLoading()">
         <span aria-hidden="true">&laquo;</span>
       </button>
     </li>
@@ -11,28 +11,29 @@
             <p>currentPage === page</p>
           } -->
 
-            <li class="page-item">
-                <button type="button" class="page-link" [class.selected-page]="currentPage() === page" (click)="onPageClick(page)" [disabled]="pageIsLoading()">{{ page }}</button>
+            <li class="page-item product-pagination__item">
+                <button type="button" class="page-link product-pagination__button" [class.product-pagination__button--selected]="currentPage() === page" (click)="onPageClick(page)" [disabled]="pageIsLoading()">{{ page }}</button>
             </li>
         }
     } @else {
       <!-- <p class="loading">Number of pages is greater than 10</p> -->
         @for (page of trimemdPageArray; track page) {
-            <li class="page-item">
-                <button type="button" class="page-link" [class.selected-page]="currentPage() === page" (click)="onPageClick(page)" [disabled]="pageIsLoading()">{{ page }}</button>
+            <li class="page-item product-pagination__item">
+                <button type="button" class="page-link product-pagination__button" [class.product-pagination__button--selected]="currentPage() === page" (click)="onPageClick(page)" [disabled]="pageIsLoading()">{{ page }}</button>
             </li>
         }
-        <li class="page-item">
-            <button type="button" class="page-link" [class.selected-page]="currentPage() >= 10" (click)="onPageClick(currentPage() > 10 ? currentPage() : 10)" [disabled]="pageIsLoading()">{{ 
-              currentPage() > 10 ? currentPage() : 10 }}</button>
+        <li class="page-item product-pagination__item">
+            <button type="button" class="page-link product-pagination__button" [class.product-pagination__button--selected]="currentPage() >= 10" (click)="onPageClick(currentPage() > 10 ? currentPage() : 10)" [disabled]="pageIsLoading()">
+              {{ currentPage() > 10 ? currentPage() : 10 }}
+            </button>
         </li>
     }
 
-    <li class="page-item">
-      <button type="button" class="page-link" aria-label="Next" (click)="onPageClick(currentPage() + 1)" [disabled]="pageIsLoading()">
+    <li class="page-item product-pagination__item">
+      <button type="button" class="page-link product-pagination__button" aria-label="Next" (click)="onPageClick(currentPage() + 1)" [disabled]="pageIsLoading()">
         <span aria-hidden="true">&raquo;</span>
       </button>
     </li>
   </ul>
-  <p class="loading">Total Pages: {{ totalPages() }}</p>
+  <p class="loading product-pagination__summary">Total Pages: {{ totalPages() }}</p>
 </nav>

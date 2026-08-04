@@ -22,6 +22,12 @@ body {
     flex-direction: column;
 }
 
+app-root {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .billing-plan-modal-window {
     .modal-dialog {
         max-width: min(920px, calc(100vw - 32px));

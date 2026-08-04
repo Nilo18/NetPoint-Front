@@ -514,8 +514,28 @@ $green: #10B981;
   }
 }
 
-@media (max-width: 760px) {
-  .billing {
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.billing {
+    &__payment-empty {
+      align-items: flex-start;
+      flex-wrap: wrap;
+
+      .billing__btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.billing {
     &__payment-empty {
       align-items: flex-start;
       flex-wrap: wrap;

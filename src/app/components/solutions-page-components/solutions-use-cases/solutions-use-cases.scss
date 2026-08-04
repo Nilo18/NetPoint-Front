@@ -128,12 +128,22 @@
   }
 }
 
-@media (max-width: 900px) {
-  .use-cases__grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.use-cases__grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
   .use-case { min-height: auto; }
+
+.use-cases { padding: 85px 0; }
+  .use-cases__inner { padding: 0 24px; }
 }
 
-@media (max-width: 650px) {
-  .use-cases { padding: 85px 0; }
-  .use-cases__inner { padding: 0 24px; }
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.use-cases__grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+  .use-case { min-height: auto; }
 }

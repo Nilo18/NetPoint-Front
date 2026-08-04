@@ -12,8 +12,11 @@
   margin: auto;
 }
 
-@media (max-width: 650px) {
-  .history-page {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.history-page {
     padding: 20px 14px;
   }
 }

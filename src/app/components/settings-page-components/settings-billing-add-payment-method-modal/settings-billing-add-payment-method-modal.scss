@@ -190,8 +190,11 @@
   }
 }
 
-@media (max-width: 560px) {
-  .payment-method-modal {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.payment-method-modal {
     padding: 26px 20px 24px;
 
     &__row {

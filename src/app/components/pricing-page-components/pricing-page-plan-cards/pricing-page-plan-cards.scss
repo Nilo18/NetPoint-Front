@@ -211,8 +211,14 @@
     }
 }
 
-@media (max-width: 900px) {
-    .plan-cards {
+// Phones
+
+
+// Smaller tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.plan-cards {
         &__grid {
             grid-template-columns: 1fr;
             max-width: 540px;
@@ -230,10 +236,8 @@
             margin-right: auto;
         }
     }
-}
 
-@media (max-width: 650px) {
-    .plan-cards {
+.plan-cards {
         padding-bottom: 75px;
 
         &__inner {
@@ -242,6 +246,28 @@
 
         &__included {
             grid-template-columns: 1fr;
+        }
+    }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.plan-cards {
+        &__grid {
+            grid-template-columns: 1fr;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        &__card {
+            min-height: 410px;
+        }
+
+        &__included {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
         }
     }
 }

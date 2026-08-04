@@ -80,8 +80,11 @@
   }
 }
 
-@media (max-width: 560px) {
-  .invite-success-modal {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.invite-success-modal {
     padding: 28px 18px 24px;
   }
 }

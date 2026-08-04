@@ -1,6 +1,14 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
 .admin-dashboard {
   display: grid;
   gap: 30px;
+  width: 100%;
+  min-width: 0;
   min-height: calc(100vh - 100px);
   padding: 28px 0;
   background: #f6f7f9;
@@ -10,7 +18,22 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 30px;
+  min-width: 0;
   padding: 0 30px;
+}
+
+app-admin-dashboard-stats {
+  display: block;
+  min-width: 0;
+}
+
+app-admin-dashboard-revenue-chart,
+app-admin-dashboard-product-performance-chart {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 app-admin-dashboard-inventory-management {
@@ -19,14 +42,21 @@ app-admin-dashboard-inventory-management {
   padding: 0 30px;
 }
 
-@media (max-width: 1180px) {
-  .admin-dashboard__charts {
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.admin-dashboard__charts {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 640px) {
-  .admin-dashboard {
+.admin-dashboard {
     gap: 18px;
   }
 
@@ -37,5 +67,19 @@ app-admin-dashboard-inventory-management {
 
   app-admin-dashboard-inventory-management {
     padding-inline: 18px;
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.admin-dashboard__charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.admin-dashboard__charts {
+    grid-template-columns: 1fr;
   }
 }

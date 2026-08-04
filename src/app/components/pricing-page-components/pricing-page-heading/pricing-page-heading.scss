@@ -141,8 +141,11 @@
     }
 }
 
-@media (max-width: 520px) {
-    .pricing-page-heading {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.pricing-page-heading {
         padding: 62px 20px 48px;
 
         &__price-mode {

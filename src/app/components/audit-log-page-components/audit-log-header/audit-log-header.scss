@@ -115,8 +115,13 @@
     outline-offset: 2px;
   }
 
-  @media (max-width: 600px) {
-    align-items: flex-start;
+
+}
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.audit-log-header {
+align-items: flex-start;
     padding: 14px 16px;
 
     &__content {
@@ -133,5 +138,5 @@
       justify-content: center;
       padding-inline: 8px;
     }
-  }
+}
 }

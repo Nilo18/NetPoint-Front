@@ -291,16 +291,23 @@
   }
 }
 
-@media (max-width: 1180px) {
-  .expense-products {
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.expense-products {
     &__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-}
 
-@media (max-width: 640px) {
-  .expense-products {
+.expense-products {
     &__grid {
       grid-template-columns: 1fr;
     }
@@ -311,6 +318,24 @@
 
     &__image {
       height: 240px;
+    }
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.expense-products {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.expense-products {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 }

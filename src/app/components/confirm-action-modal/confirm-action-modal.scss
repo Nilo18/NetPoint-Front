@@ -105,8 +105,11 @@
   }
 }
 
-@media (max-width: 560px) {
-  .confirm-action-modal {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.confirm-action-modal {
     padding: 24px 18px;
 
     &__actions {

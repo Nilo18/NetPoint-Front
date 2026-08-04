@@ -75,7 +75,7 @@
   &__image-label {
     font-size: 14px;
   }
-  
+
   &__image {
     width: 100%;
     min-height: 163.99px;
@@ -365,8 +365,11 @@
   }
 }
 
-@media (max-width: 575.98px) {
-  .add-product-modal {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.add-product-modal {
     padding: 24px 20px 26px;
 
     &__row {

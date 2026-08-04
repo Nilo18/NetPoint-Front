@@ -133,24 +133,47 @@
   color: #8b5cf6;
 }
 
-@media (max-width: 1100px) {
-  .stats {
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.stats {
     grid-template-columns: repeat(3, 1fr);
   }
-}
 
-@media (max-width: 850px) {
-  .stats {
+.stats {
     grid-template-columns: repeat(2, 1fr);
   }
-}
 
-@media (max-width: 480px) {
-  .stats {
+.stats {
     grid-template-columns: 1fr;
   }
 
   .stats article {
     min-height: 86px;
+  }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+.stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.stats {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

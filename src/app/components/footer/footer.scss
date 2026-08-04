@@ -18,13 +18,9 @@
     gap: 48px;
     padding-bottom: 56px;
 
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr 1fr;
-    }
 
-    @media (max-width: 560px) {
-      grid-template-columns: 1fr;
-    }
+
+
   }
 
   // ── Brand ─────────────────────────────────────────
@@ -182,8 +178,25 @@
   }
 }
 
-@media (max-width: 468px) {
-    .footer {
+// Phones
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.footer {
+// ── Top grid ──────────────────────────────────────
+  &__grid {
+grid-template-columns: 1fr 1fr;
+}
+}
+
+.footer {
+// ── Top grid ──────────────────────────────────────
+  &__grid {
+grid-template-columns: 1fr;
+}
+}
+
+.footer {
         &__newsletter {
             flex-direction: column;
 
@@ -192,4 +205,14 @@
             }
         }
     }
+}
+
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.footer {
+// ── Top grid ──────────────────────────────────────
+  &__grid {
+grid-template-columns: 1fr 1fr;
+}
+}
 }

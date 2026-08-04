@@ -8,12 +8,12 @@
   width: 100%; /* Fixes 100vw overflow bugs */
   min-height: 100vh; /* Fill screen minus your header height */
   // height: 100vh;
-  
+
   /* 1. Change layout mode to Grid */
   display: grid;
-  
+
   /* 2. Left side takes remaining space, right side locks to sidebar width */
-  grid-template-columns: minmax(0, 1fr) 24rem; 
+  grid-template-columns: minmax(0, 1fr) 24rem;
 
   &__products {
     padding: 30px;
@@ -22,10 +22,35 @@
 }
 
 /* 3. Fix the responsive stack query */
-@media (max-width: 1120px) {
-  .expense-calculator {
+
+// Phones
+
+
+// Smaller tablets
+
+
+// Tablets
+
+// Phones
+@media (min-width: 280px) and (max-width: 599.98px) {
+.expense-calculator {
     grid-template-columns: 1fr; /* Correctly updates layout to single vertical stack */
     height: auto;
   }
 }
 
+// Smaller tablets
+@media (min-width: 600px) and (max-width: 899.98px) {
+.expense-calculator {
+    grid-template-columns: 1fr; /* Correctly updates layout to single vertical stack */
+    height: auto;
+  }
+}
+
+// Tablets
+@media (min-width: 900px) and (max-width: 1199.98px) {
+.expense-calculator {
+    grid-template-columns: 1fr; /* Correctly updates layout to single vertical stack */
+    height: auto;
+  }
+}
