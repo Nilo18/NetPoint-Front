@@ -9,8 +9,9 @@
 .login {
     @include mixins.FlexContainer;
     min-height: 100dvh;
+    height: auto;
     align-items: stretch;
-    overflow-x: hidden;
+    overflow-x: clip;
     // height: 100%;
     display: flex;
     width: 100%;
@@ -32,6 +33,36 @@
         // border-radius: 0.650rem;
         // margin-left: 1rem;
         // margin-right: 1rem;
+    }
+
+    &__home-link {
+        display: grid;
+        place-items: center;
+        align-self: flex-start;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #e2e4e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #263244;
+        text-decoration: none;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: #f3f1ff;
+            color: #5548ed;
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2;
+        }
     }
 
     &__header {
@@ -114,5 +145,63 @@
 
     &__option:hover {
         background-color: rgb(238, 238, 238);
+    }
+}
+
+@media (max-width: 1099.98px) {
+    .login {
+        position: relative;
+        justify-content: center;
+        min-height: 100dvh;
+        padding: 40px 24px;
+
+        &__content {
+            position: relative;
+            z-index: 1;
+            flex: 0 1 28rem;
+            max-width: 28rem;
+            height: max-content;
+            margin: auto;
+            border-radius: 1rem;
+        }
+
+        &__bannerimg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+    }
+}
+
+@media (max-width: 454.98px) {
+    .login {
+        padding: 24px 16px;
+
+        &__content {
+            flex-basis: 100%;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        &__option {
+            height: auto;
+            min-height: 2.85rem;
+
+            &--paragraph {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+@media (max-width: 367px) {
+    .login {
+        padding-inline: 10px;
+
+        &__content {
+            padding: 1rem;
+        }
     }
 }

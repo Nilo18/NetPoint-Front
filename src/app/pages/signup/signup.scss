@@ -9,8 +9,9 @@
 .signup {
     @include mixins.FlexContainer;
     min-height: 100dvh;
+    height: auto;
     align-items: stretch;
-    overflow-x: hidden;
+    overflow-x: clip;
     // height: 100%;
     display: flex;
     width: 100%;
@@ -25,6 +26,36 @@
         background-color: white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
             0 10px 40px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    &__home-link {
+        display: grid;
+        place-items: center;
+        align-self: flex-start;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #e2e4e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #263244;
+        text-decoration: none;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: #f3f1ff;
+            color: #5548ed;
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2;
+        }
     }
 
     &__header {
@@ -53,5 +84,54 @@
         width: 100%;
         flex: 1;
         display: flex;
+    }
+}
+
+@media (max-width: 1099.98px) {
+    .signup {
+        position: relative;
+        justify-content: center;
+        min-height: 100dvh;
+        padding: 40px 24px;
+
+        &__content {
+            position: relative;
+            z-index: 1;
+            flex: 0 1 28rem;
+            max-width: 28rem;
+            height: max-content;
+            margin: auto;
+            border-radius: 1rem;
+        }
+
+        &__bannerimg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+    }
+}
+
+@media (max-width: 454.98px) {
+    .signup {
+        padding: 24px 16px;
+
+        &__content {
+            flex-basis: 100%;
+            max-width: 100%;
+            margin: auto;
+        }
+    }
+}
+
+@media (max-width: 367px) {
+    .signup {
+        padding-inline: 10px;
+
+        &__content {
+            padding: 1rem;
+        }
     }
 }

@@ -4,11 +4,13 @@ import { AuthBanner } from '../../components/auth-banner/auth-banner';
 import { AdminLoginFirstStageForm } from '../../components/login-components/admin-login-first-stage-form/admin-login-first-stage-form';
 import { AdminLoginSecondStageForm } from '../../components/login-components/admin-login-second-stage-form/admin-login-second-stage-form';
 import { LoginStateManagementService } from '../../services/login-state-management-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
+    RouterLink,
     AuthBanner, FormsModule, 
     AdminLoginFirstStageForm,
     AdminLoginSecondStageForm

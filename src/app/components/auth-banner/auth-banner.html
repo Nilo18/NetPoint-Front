@@ -1,32 +1,34 @@
-<div class="auth__bannerimg">
-    <div class="auth__clock-icon">
-        <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-            stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M12 6v6l4 2"></path>
-            </svg>
-    </div>
-    <h1 class="auth__bannerheading">Welcome to NetPoint</h1>
-    <p class="auth__bannerheadingtext">The flexible POS and expense ecosystem designed for modern businesses. 
-        Streamline your operations with powerful 
-        analytics and customizable workflows.
-    </p>
-    <div class="auth__bannerfeatures">
-        @for (feature of bannerFeatures; track feature.id) {
-            <div class="auth__bannerfeature">
-                <div class="auth__bannericon">
-                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                    stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01">
-                        </polyline>
-                    </svg>
+<div class="auth-banner">
+    <div class="auth-banner__content">
+        <div class="auth-banner__clock-icon">
+            <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+                </svg>
+        </div>
+        <h1 class="auth-banner__heading">Welcome to NetPoint</h1>
+        <p class="auth-banner__intro">The flexible POS and expense ecosystem designed for modern businesses.
+            Streamline your operations with powerful 
+            analytics and customizable workflows.
+        </p>
+        <div class="auth-banner__features">
+            @for (feature of bannerFeatures; track feature.id) {
+                <div class="auth-banner__feature">
+                    <div class="auth-banner__feature-icon">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01">
+                            </polyline>
+                        </svg>
+                    </div>
+                    <div class="auth-banner__feature-text">
+                        <h3>{{ feature.heading }}</h3>
+                        <p>{{ feature.paragraph }}</p>
+                    </div>
                 </div>
-                <div class="auth__bannertext">
-                    <h3>{{ feature.heading }}</h3>
-                    <p>{{ feature.paragraph }}</p>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
