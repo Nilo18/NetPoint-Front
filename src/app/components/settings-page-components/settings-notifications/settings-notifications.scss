@@ -1,10 +1,19 @@
 $primary-color: #4F46E5;
 
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .notifications {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 894.4px;
+  width: 100%;
+  min-width: 0;
+  max-width: 894.4px;
 
   &__card {
     background: #ffffff;
@@ -94,6 +103,26 @@ $primary-color: #4F46E5;
 
     &::after {
       transform: translateX(20px);
+    }
+  }
+}
+
+@media (max-width: 749.98px) {
+  .notifications {
+    width: 100%;
+    max-width: 100%;
+
+    &__card {
+      padding: 18px 16px;
+      border-radius: 10px;
+    }
+
+    &__item {
+      gap: 16px;
+    }
+
+    &__item--text {
+      min-width: 0;
     }
   }
 }

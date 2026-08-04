@@ -1,9 +1,18 @@
 $primary-color: #4F46E5;
 
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .appearance {
   display: flex;
   flex-direction: column;
-  width: 894.4px;
+  width: 100%;
+  min-width: 0;
+  max-width: 894.4px;
   gap: 16px;
 
   &__card {
@@ -156,6 +165,26 @@ $primary-color: #4F46E5;
 
     &::after {
       transform: translateX(20px);
+    }
+  }
+}
+
+@media (max-width: 749.98px) {
+  .appearance {
+    width: 100%;
+    max-width: 100%;
+
+    &__card {
+      padding: 18px 16px;
+      border-radius: 10px;
+    }
+
+    &__toggle-row {
+      gap: 16px;
+    }
+
+    &__toggle-text {
+      min-width: 0;
     }
   }
 }

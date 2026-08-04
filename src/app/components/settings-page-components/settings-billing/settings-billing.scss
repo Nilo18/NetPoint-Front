@@ -4,10 +4,19 @@ $primary-color: #4F46E5;
 $danger-color: #ef4444;
 $green: #10B981;
 
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .billing {
   display: flex;
   flex-direction: column;
-  width: 894.4px;
+  width: 100%;
+  min-width: 0;
+  max-width: 894.4px;
   gap: 16px;
   position: relative;
 
@@ -543,6 +552,30 @@ $green: #10B981;
       .billing__btn {
         width: 100%;
       }
+    }
+  }
+}
+
+@media (max-width: 749.98px) {
+  .billing {
+    width: 100%;
+    max-width: 100%;
+
+    &__card {
+      padding: 18px 16px;
+      border-radius: 10px;
+    }
+
+    &__plan--header,
+    &__payment,
+    &__invoice {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    &__btn--primary {
+      max-width: 100%;
     }
   }
 }

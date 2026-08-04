@@ -1,7 +1,12 @@
 // Product Schema Component — BEM
 
 :host {
-  display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
@@ -272,5 +277,29 @@
     font-size: 13px;
     color: #9ca3af;
     padding: 6px 0 4px;
+  }
+}
+
+@media (max-width: 749.98px) {
+  .product-schema {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 16px 14px;
+    border-radius: 10px;
+
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    &__add-btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    &__row {
+      min-width: 0;
+    }
   }
 }

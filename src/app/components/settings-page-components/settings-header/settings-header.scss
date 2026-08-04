@@ -49,3 +49,35 @@
         background-color: #e5e6e7;
     }
 }
+
+@media (max-width: 749.98px) {
+    .settingsheader {
+        top: 0;
+        left: 0;
+        height: 48px;
+        gap: 10px !important;
+        padding: 8px 14px;
+
+        &__returntodbtn {
+            width: 24px;
+            height: 32px;
+            padding: 0;
+        }
+
+        &__return-text,
+        &__divider,
+        &__heading p {
+            display: none;
+        }
+
+        &__heading {
+            display: flex;
+            align-items: center;
+
+            h1 {
+                margin: 0;
+                font-size: 16px;
+            }
+        }
+    }
+}

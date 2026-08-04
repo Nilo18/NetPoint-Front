@@ -1,11 +1,24 @@
 @use '../../../../styles/variables.scss' as *;
 @use '../../../../styles/mixins.scss' as *;
 
-.settingsmanagement {
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-management {
     border: 1px solid #0000001a;
     border-radius: 0.875rem;
     background-color: white;
-    width: 64rem;
+    width: 100%;
+    max-width: 1058px;
+    // background-color: red;
+    min-width: 0;
     min-height: 21.925rem;
     margin-bottom: 1.3rem;
     // padding-top: 1.5rem;
@@ -160,12 +173,19 @@
     }
 
     &__body {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: auto;
+
         table {
+            width: 100%;
+            min-width: 720px;
             border: 1px solid $border-color;
             border-radius: 0.5rem;
             border-collapse: separate;
             border-spacing: 0;
-            overflow: hidden;
+            max-width: none;
 
             // thead {
                 tr {
@@ -346,6 +366,99 @@
             margin: 0;
             font-size: 0.875rem;
             color: #7f1d1d;
+        }
+    }
+}
+
+@media (min-width: 280px) and (max-width: 599.98px) {
+    .settings-management {
+        padding: 16px;
+        max-width: 100%;
+
+        &__header--upper-section {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        &__header button {
+            width: 100%;
+        }
+
+        &__table {
+            min-width: 640px;
+        }
+    }
+}
+
+@media (min-width: 600px) and (max-width: 899.98px) {
+    .settings-management {
+        // width: 100%;
+        // max-width: 100%;
+        // max-width: calc(100vw - 21rem);
+        padding: 20px;
+
+        .settings-management__header--btn {
+            // &--btn {
+                // padding: 20px;
+                font-size: 12px;
+                // background-color: red;
+            // }
+        }
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1199.98px) {
+    .settings-management {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 749.98px) {
+    .settings-management {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        padding: 16px;
+        border-radius: 10px;
+
+        &__header {
+            margin-bottom: 14px;
+        }
+
+        &__header--upper-section {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        &__header--text {
+            h4 {
+                margin-bottom: 4px;
+            }
+
+            p {
+                margin-bottom: 0;
+                font-size: 14px;
+            }
+        }
+
+        &__header button {
+            width: 100%;
+        }
+
+        &__body {
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            overflow-x: auto;
+            overscroll-behavior-inline: contain;
+        }
+
+        &__table {
+            min-width: 640px;
         }
     }
 }

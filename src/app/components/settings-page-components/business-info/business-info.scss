@@ -1,13 +1,25 @@
 @use '../../../../styles/variables.scss' as *;
 @use '../../../../styles/mixins.scss' as *;
 
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
 .business-form {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 2rem 2.25rem 0.5rem 2.25rem;
 //   max-width: 860px;
-    width: 894.4px;
+    width: 100%;
+    min-width: 0;
+    max-width: 894.4px;
     margin-bottom: 2rem;
 
     &__form-title {
@@ -244,6 +256,9 @@
         border: 1px solid #fecaca;
         border-radius: 12px;
         background-color: white;
+        // width: inherit;
+        max-width: 900px;
+        width: 100%;
         @include FlexContainerColumn;
         // align-items: center;
 
@@ -331,5 +346,41 @@
         display: flex;
         gap: 1rem;
         width: 100%;
+    }
+}
+
+@media (max-width: 749.98px) {
+    .business-form {
+        width: 100%;
+        max-width: 100%;
+        padding: 18px 16px 12px;
+        border-radius: 10px;
+
+        &__form-subtitle {
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        &__name-and-industry,
+        &__image-field {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        &__lower-section {
+            align-items: stretch;
+        }
+
+        &__danger-zone > div {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+
+    .business-form__skeleton {
+        &__name-and-industry {
+            flex-direction: column;
+        }
     }
 }

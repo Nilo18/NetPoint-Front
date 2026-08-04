@@ -1,9 +1,20 @@
-.rolepermissions {
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.role-permissions {
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 24px;
-    width: 64rem;
+    width: 100%;
+    min-width: 0;
+    max-width: 1058px;
     // margin-bottom: 100px;
     // height: 19rem;
 
@@ -106,6 +117,76 @@
             &::before {
                 color: #9ca3af;
             }
+        }
+    }
+}
+
+
+@media (min-width: 280px) and (max-width: 599.98px) {
+    .role-permissions {
+        padding: 16px;
+
+        &__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+@media (min-width: 600px) and (max-width: 899.98px) {
+    .role-permissions {
+        padding: 20px;
+
+        &__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1199.98px) {
+    .role-permissions {
+        &__grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .role-permissions {
+        &__grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}
+
+@media (max-width: 749.98px) {
+    .role-permissions {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        padding: 16px;
+        border-radius: 10px;
+
+        &__header {
+            margin-bottom: 18px;
+        }
+
+        &__subtitle {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+
+        &__grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        &__card {
+            min-width: 0;
+            padding: 14px;
+        }
+
+        &__card-header {
+            margin-bottom: 12px;
         }
     }
 }

@@ -1,4 +1,4 @@
-<section class="settingsmanagement">
+<section class="settings-management">
 
     @if (settingsService.isLoading()) {
         <div class="loader">
@@ -18,13 +18,13 @@
 
     <!-- <p>{{isLoading()}}</p> -->
     <!-- <p>Loader is NOT running</p> -->
-    <div class="settingsmanagement__header">
-        <div class="settingsmanagement__header--upper-section">
-            <div class="settingsmanagement__header--text">
+    <div class="settings-management__header">
+        <div class="settings-management__header--upper-section">
+            <div class="settings-management__header--text">
                 <h4>User Management</h4>
                 <p>Manage team members and their access levels</p>
             </div>
-            <button class="settingsmanagement__header--btn" (click)="open($event)">
+            <button class="settings-management__header--btn" (click)="open($event)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" class="lucide lucide-user-plus h-4 w-4 mr-2">
@@ -36,7 +36,7 @@
                 Add User
             </button>
         </div>
-        <div class="settingsmanagement__header--lower-section">
+        <div class="settings-management__header--lower-section">
             <div class="search-bar">
                 <i class="ti ti-search search-bar__icon">a</i>
                 <input type="text" class="form-control" placeholder="Search users by name or email..."
@@ -44,8 +44,8 @@
             </div>
         </div>
     </div>
-    <div class="settingsmanagement__body">
-        <table class="table table-hover">
+    <div class="settings-management__body">
+        <table class="settings-management__table table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -60,8 +60,8 @@
                 @if (gotSearchError()) {
                     <tr>
                         <td colspan="5">
-                            <div class="settingsmanagement__body--search-error" role="status">
-                                <div class="settingsmanagement__body--search-error-icon">
+                            <div class="settings-management__body--search-error" role="status">
+                                <div class="settings-management__body--search-error-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
@@ -72,8 +72,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="settingsmanagement__body--search-error-title">No matching users found</p>
-                                    <p class="settingsmanagement__body--search-error-message">{{ backendErrMsg() }}</p>
+                                    <p class="settings-management__body--search-error-title">No matching users found</p>
+                                    <p class="settings-management__body--search-error-message">{{ backendErrMsg() }}</p>
                                 </div>
                             </div>
                         </td>
@@ -87,11 +87,11 @@
                             <td>{{ user.role }}</td>
                             <td>{{ user.status }}</td>
                             <td>
-                                <div class="settingsmanagement__body--actions">
+                                <div class="settings-management__body--actions">
                                     @if (user.status === 'PENDING_APPROVAL') {
                                         <button
                                             type="button"
-                                            class="settingsmanagement__body--approvebtn"
+                                            class="settings-management__body--approvebtn"
                                             [attr.aria-label]="'Approve ' + user.name"
                                             title="Approve user"
                                             [disabled]="approvingUserId() !== null"
@@ -105,7 +105,7 @@
                                         </button>
                                         <button
                                             type="button"
-                                            class="settingsmanagement__body--rejectbtn"
+                                            class="settings-management__body--rejectbtn"
                                             [attr.aria-label]="'Reject ' + user.name"
                                             title="Reject user"
                                             (click)="deleteUser(user.id)"
@@ -118,7 +118,7 @@
                                             </svg>
                                         </button>
                                     } @else {
-                                        <button type="button" class="settingsmanagement__body--deletebtn"
+                                        <button type="button" class="settings-management__body--deletebtn"
                                         [attr.aria-label]="'Delete ' + user.name" title="Delete user"
                                         (click)="deleteUser(user.id)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

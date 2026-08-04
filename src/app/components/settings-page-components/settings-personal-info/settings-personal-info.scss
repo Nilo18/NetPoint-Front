@@ -1,8 +1,16 @@
 @use '../../../../styles/variables.scss' as *;
 
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
 .personal-info {
-    width: 1058px;
-    max-width: calc(100vw - 21rem);
+    width: 100%;
+    min-width: 0;
+    max-width: 1058px;
     min-height: 430px;
     padding: 26px 30px 30px;
     padding-top: 32px;
@@ -213,6 +221,62 @@
 
         &:active {
             transform: scale(0.98);
+        }
+    }
+}
+
+@media (min-width: 280px) and (max-width: 899.98px) {
+    .personal-info {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        // &__form {
+
+        // }
+        &__row {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            // &--two-columns {
+            //     grid-template-columns: 1fr 1fr;
+            // }
+        }
+    }
+}
+
+@media (max-width: 749.98px) {
+    .personal-info {
+        padding: 18px 16px 16px;
+        border-radius: 10px;
+
+        &__header {
+            margin-bottom: 18px;
+
+            h4 {
+                font-size: 15px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+
+        &__profile {
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        &__avatar,
+        &__profile img {
+            width: 48px;
+            height: 48px;
+        }
+
+        &__form,
+        &__row {
+            gap: 10px;
         }
     }
 }
