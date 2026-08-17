@@ -10,7 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const publicUrls = [
     `${backendUrlHolder.getBaseUrl()}/auth/login`, `${backendUrlHolder.getBaseUrl()}/auth/signup`, 
-    `/setup-account`, `${backendUrlHolder.getBaseUrl()}/auth/verify-2fa`
+    `${backendUrlHolder.getBaseUrl()}/setup-account`, `${backendUrlHolder.getBaseUrl()}/auth/verify-2fa`
   ]
 
   const isPublic = publicUrls.some(url => {
