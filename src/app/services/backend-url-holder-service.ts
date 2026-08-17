@@ -6,7 +6,7 @@ import { DOCUMENT, inject, Injectable } from '@angular/core';
 export class BackendUrlHolderService {
   private document = inject(DOCUMENT)
   private baseUrl = 'http://localhost:8080'
-  private apiUrl = 'https://netpoint-56pxwidb.b4a.run'
+  private apiUrl = 'https://netpoint-fbs48k7z.b4a.run'
 
   isLocalHost() {
     return this.document.location.hostname === 'localhost' || this.document.location.hostname === '127.0.0.1'
