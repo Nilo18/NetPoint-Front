@@ -2,12 +2,15 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TokenService } from '../../services/token-service';
 import { throwError } from 'rxjs';
+import { BackendUrlHolderService } from '../../services/backend-url-holder-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   console.log('authInterceptor is running...')
+  const backendUrlHolder = inject(BackendUrlHolderService)
+
   const publicUrls = [
-    'http://localhost:8080/auth/login', 'http://localhost:8080/auth/signup', 
-    '/setup-account', 'http://localhost:8080/auth/verify-2fa'
+    `${backendUrlHolder.getBaseUrl()}/auth/login`, `${backendUrlHolder.getBaseUrl()}/auth/signup`, 
+    `/setup-account`, `${backendUrlHolder.getBaseUrl()}/auth/verify-2fa`
   ]
 
   const isPublic = publicUrls.some(url => {

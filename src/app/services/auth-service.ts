@@ -87,7 +87,7 @@ export class AuthService {
       console.log(res)
       return res
     } catch (error) {
-      console.log('Failed to signup: ', error)
+      console.log('Failed to login: ', error)
       throw error      
     }
   }
